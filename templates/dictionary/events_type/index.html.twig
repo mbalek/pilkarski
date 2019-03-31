@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}eventsType index{% endblock %}
+
+{% block body %}
+    <h1>eventsType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for events_type in events_types %}
+            <tr>
+                <td>{{ events_type.id }}</td>
+                <td>{{ events_type.name }}</td>
+                <td>
+                    <a href="{{ path('dictionary_events_type_show', {'id': events_type.id}) }}">show</a>
+                    <a href="{{ path('dictionary_events_type_edit', {'id': events_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('dictionary_events_type_new') }}">Create new</a>
+{% endblock %}

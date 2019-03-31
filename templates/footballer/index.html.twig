@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Footballer index{% endblock %}
+
+{% block body %}
+    <h1>Footballer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Birthdate</th>
+                <th>Goals</th>
+                <th>Assists</th>
+                <th>YellowCards</th>
+                <th>RedCards</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for footballer in footballers %}
+            <tr>
+                <td>{{ footballer.id }}</td>
+                <td>{{ footballer.name }}</td>
+                <td>{{ footballer.surname }}</td>
+                <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ footballer.goals }}</td>
+                <td>{{ footballer.assists }}</td>
+                <td>{{ footballer.yellowCards }}</td>
+                <td>{{ footballer.redCards }}</td>
+                <td>
+                    <a href="{{ path('footballer_show', {'id': footballer.id}) }}">show</a>
+                    <a href="{{ path('footballer_edit', {'id': footballer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('footballer_new') }}">Create new</a>
+{% endblock %}

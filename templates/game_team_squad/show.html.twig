@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GameTeamSquad{% endblock %}
+
+{% block body %}
+    <h1>GameTeamSquad</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ game_team_squad.id }}</td>
+            </tr>
+            <tr>
+                <th>IsReserve</th>
+                <td>{{ game_team_squad.isReserve ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>IsCaptain</th>
+                <td>{{ game_team_squad.isCaptain ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('game_team_squad_index') }}">back to list</a>
+
+    <a href="{{ path('game_team_squad_edit', {'id': game_team_squad.id}) }}">edit</a>
+
+    {{ include('game_team_squad/_delete_form.html.twig') }}
+{% endblock %}

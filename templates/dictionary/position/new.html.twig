@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Position{% endblock %}
+
+{% block body %}
+    <h1>Create new Position</h1>
+
+    {{ include('dictionary_position/_form.html.twig') }}
+
+    <a href="{{ path('dictionary_position_index') }}">back to list</a>
+{% endblock %}

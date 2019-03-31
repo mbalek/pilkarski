@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+    <a href="{{ path('club_index') }}">club</a>
+    <a href="{{ path('events_index') }}">events</a>
+    <a href="{{ path('footballer_index') }}">footballer</a>
+    <a href="{{ path('league_index') }}">league</a>
+    <a href="{{ path('game_index') }}">match</a>
+    <a href="{{ path('game_team_index') }}">match team</a>
+    <a href="{{ path('round_index') }}">round</a>
+    <a href="{{ path('game_team_squad_index') }}">match team squad</a>
+    <a href="{{ path('user_index') }}">user</a>
+</div>
+{% endblock %}

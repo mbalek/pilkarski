@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GameTeamSquad index{% endblock %}
+
+{% block body %}
+    <h1>GameTeamSquad index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IsReserve</th>
+                <th>IsCaptain</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game_team_squad in game_team_squads %}
+            <tr>
+                <td>{{ game_team_squad.id }}</td>
+                <td>{{ game_team_squad.isReserve ? 'Yes' : 'No' }}</td>
+                <td>{{ game_team_squad.isCaptain ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('game_team_squad_show', {'id': game_team_squad.id}) }}">show</a>
+                    <a href="{{ path('game_team_squad_edit', {'id': game_team_squad.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('game_team_squad_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,8 @@
+
+###> symfony/framework-bundle ###
+/.env
+/.idea/
+/var/
+/vendor/
+/src/Migrations/
+###< symfony/framework-bundle ###

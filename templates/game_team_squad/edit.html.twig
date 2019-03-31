@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit GameTeamSquad{% endblock %}
+
+{% block body %}
+    <h1>Edit GameTeamSquad</h1>
+
+    {{ include('game_team_squad/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('game_team_squad_index') }}">back to list</a>
+
+    {{ include('game_team_squad/_delete_form.html.twig') }}
+{% endblock %}
