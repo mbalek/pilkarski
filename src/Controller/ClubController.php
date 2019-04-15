@@ -16,12 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClubController extends AbstractController
 {
     /**
-     * @Route("/", name="club_index", methods={"GET"})
+     * @Route("/league/{id}", name="club_index", methods={"GET"})
      */
-    public function index(ClubRepository $clubRepository): Response
+    public function index(ClubRepository $clubRepository, Request $request): Response
     {
         return $this->render('club/index.html.twig', [
-            'clubs' => $clubRepository->findAll(),
+            'clubs' => $clubRepository->findBy(array('id' => $request->get('league'))),
+            'league' => $request->get('league'),
         ]);
     }
 
@@ -33,9 +34,11 @@ class ClubController extends AbstractController
         $club = new Club();
         $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
+        $leagueId = $request->get('league');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $club->setLeague($leagueId);
             $entityManager->persist($club);
             $entityManager->flush();
 

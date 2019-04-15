@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,19 +15,15 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('usernameCanonical')
             ->add('email')
-            ->add('emailCanonical')
-            ->add('enabled')
-            ->add('salt')
             ->add('password')
-            ->add('lastLogin')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
-            ->add('roles')
+            ->add('isAdmin' , CheckboxType::class, [
+                'mapped' => false,
+                'label' => 'user.fields.isAdmin',
+                'required' => false,
+            ])
             ->add('firstName')
             ->add('lastName')
-            ->add('isSystem')
         ;
     }
 

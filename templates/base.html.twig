@@ -1,12 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Google Fonts
+		============================================ -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+        <!-- Bootstrap CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/bootstrap.min.css">
+        <!-- Bootstrap CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/font-awesome.min.css">
+        <!-- owl.carousel CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/owl.carousel.css">
+        <link rel="stylesheet" href="/assets/css/css/owl.theme.css">
+        <link rel="stylesheet" href="/assets/css/css/owl.transitions.css">
+        <!-- meanmenu CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/meanmenu/meanmenu.min.css">
+        <!-- animate CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/animate.css">
+        <!-- normalize CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/normalize.css">
+        <!-- mCustomScrollbar CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/scrollbar/jquery.mCustomScrollbar.min.css">
+        <!-- jvectormap CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/jvectormap/jquery-jvectormap-2.0.3.css">
+        <!-- notika icon CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/notika-custom-icon.css">
+        <!-- wave CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/wave/waves.min.css">
+        <!-- main CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/main.css">
+        <!-- style CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/style.css">
+        <!-- responsive CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/assets/css/css/responsive.css">
+        <!-- modernizr JS
+            ============================================ -->
+        <script src="/assets/js/vendor/modernizr-2.8.3.min.js"></script>
+        <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        <div class="header-top-area" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="logo-area">
+                            <a href="{{ path('admin_panel') }}" title="Image from freeiconspng.com">
+                                <img style="width: 40px; height: 40px" src="https://www.freeiconspng.com/uploads/soccer-ball-png-33.png" width="350" alt="Images Free Download Soccer Ball Png" />
+                                Pilkarski
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <div class="header-top-menu">
+                            <ul class="nav navbar-nav notika-top-nav">
+                                <li class="nav-item">
+
+                                    <i></i> <!-- tutaj ikona usera do wyświetlenia info o nim -->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-menu-area mg-tb-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
+                            <li ><a href="{{ path('user_index') }}"><i class="notika-icon notika-support"></i> {{ 'user.display.user' |trans }}</a>
+                            </li>
+                            <li><a href="{{ path('league_index') }}"><i class="notika-icon notika-windows"></i> {{ 'league.display.league' |trans }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScripts libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         {% block body %}{% endblock %}
+
+        <div class="footer-copyright-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="footer-copy-right">
+                            <p>Copyright © 2018
+                                . All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
