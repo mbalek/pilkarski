@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'league.display.leagueClubs' |trans }}{% endblock %}
+{% block title %}{{ 'league.display.information' |trans }}{% endblock %}
 
 {% block body %}
 <div class="data-table-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2>{{ 'league.display.league'|trans }} {{ league.name }}</h2>
     <ul class="nav nav-tabs md-tabs" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'league.display.clubs' |trans }}</a>
@@ -26,29 +27,7 @@
             {{ render(controller('App\\Controller\\ClubController::index' , {'league': league.id})) }}
         </div>
         <div class="tab-pane" id="round" role="tabpanel">
-            <div class="data-table-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="data-table-list">
-                                <div class="basic-tb-hd">
-                                    <h2>{{ 'league.display.leagueClubs' |trans }}</h2>
-                                </div>
-                                <div class="table-responsive">
-                                    <table id="data-table-basic" class="table table-striped">
-                                        <thead>
-                                        cos innego
-                                        </thead>
-                                    </table>
-                                </div>
-                                <p>
-                                    <a href="{{ path('league_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }}
         </div>
     </div>
 {% endblock %}

@@ -1,6 +1,4 @@
-
 {% block body %}
-
     <div class="data-table-area">
         <div class="container">
             <div class="row">
@@ -22,7 +20,8 @@
                                         <th>{{ 'club.fields.stadium' |trans }}</th>
                                         <th>{{ 'club.fields.championsLeagueWins' |trans }}</th>
                                         <th>{{ 'club.fields.countryCupWins' |trans }}</th>
-                                        <th>{{ 'club.fields.leagueWins' |trans }}</th>
+                                        <th>{{ 'club.fields.leagueWins' |trans }}
+                                        <th>{{ 'club.fields.logo' |trans }}</th>
                                         <th>{{ 'global.actions.global' |trans }}</th>
                                     </tr>
                                 </thead>
@@ -36,17 +35,20 @@
                                         <td>{{ club.countryCupWins }}</td>
                                         <td>{{ club.leagueWins }}</td>
                                         <td>
+                                            <img height="50" width="50" src="{{ vich_uploader_asset(club, 'imageFile') }}">
+                                        </td>
+                                        <td>
                                             <div class="btn-group dropdown-split-inverse">
                                                 <button type="button" class="btn btn-inverse dropdown-toggle dropdown-toggle-split waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <span class="sr-only">{{ 'global.actions.actions'|trans }}</span>
                                                     {{ 'global.action' |trans}}
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('club_edit', {'id': club.id}) }}">
+                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('club_edit', {'id': club.id,'league':league}) }}">
                                                         <button class="btn btn-primary">{{ 'global.actions.edit'|trans }}</button>
                                                     </a>
                                                     <a class="dropdown-item waves-effect waves-light">{{ include('club/_delete_form.html.twig') }}</a>
-                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('club_show', {'id': club.id}) }}">
+                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('club_show', {'id': club.id,'league':league}) }}">
                                                         <button class="btn btn-info">{{ 'global.actions.show'|trans }}</button>
                                                     </a>
                                                 </div>

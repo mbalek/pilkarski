@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\League;
 use App\Entity\Round;
 use App\Form\RoundType;
 use App\Repository\RoundRepository;
@@ -16,12 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoundController extends AbstractController
 {
     /**
-     * @Route("/", name="round_index", methods={"GET"})
+     * @Route("/league/{id}", name="round_index", methods={"GET"})
      */
-    public function index(RoundRepository $roundRepository): Response
+    public function index(RoundRepository $roundRepository, Request $request): Response
     {
         return $this->render('round/index.html.twig', [
-            'rounds' => $roundRepository->findAll(),
+            'rounds' => $roundRepository->findBy(array('league' => $request->get('league'))),
+            'league' => $request->get('league'),
         ]);
     }
 
@@ -33,17 +35,21 @@ class RoundController extends AbstractController
         $round = new Round();
         $form = $this->createForm(RoundType::class, $round);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $round->setLeague($league);
             $entityManager->persist($round);
             $entityManager->flush();
 
-            return $this->redirectToRoute('round_index');
+            return $this->redirectToRoute('league_show',array('id'=>$league->getId()));
         }
 
         return $this->render('round/new.html.twig', [
             'round' => $round,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -65,17 +71,18 @@ class RoundController extends AbstractController
     {
         $form = $this->createForm(RoundType::class, $round);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('round_index', [
-                'id' => $round->getId(),
-            ]);
+            return $this->redirectToRoute('league_show' ,array('id'=>$league->getId()));
         }
 
         return $this->render('round/edit.html.twig', [
             'round' => $round,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -85,12 +92,13 @@ class RoundController extends AbstractController
      */
     public function delete(Request $request, Round $round): Response
     {
+        $league = $request->get('league');
         if ($this->isCsrfTokenValid('delete'.$round->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($round);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('round_index');
+        return $this->redirectToRoute('league_show',array('id'=>$league));
     }
 }

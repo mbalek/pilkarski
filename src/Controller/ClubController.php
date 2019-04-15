@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Club;
+use App\Entity\League;
 use App\Form\ClubType;
 use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,7 @@ class ClubController extends AbstractController
     public function index(ClubRepository $clubRepository, Request $request): Response
     {
         return $this->render('club/index.html.twig', [
-            'clubs' => $clubRepository->findBy(array('id' => $request->get('league'))),
+            'clubs' => $clubRepository->findBy(array('league' => $request->get('league'))),
             'league' => $request->get('league'),
         ]);
     }
@@ -34,19 +35,21 @@ class ClubController extends AbstractController
         $club = new Club();
         $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
-        $leagueId = $request->get('league');
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $club->setLeague($leagueId);
+            $club->setLeague($league);
             $entityManager->persist($club);
             $entityManager->flush();
 
-            return $this->redirectToRoute('club_index');
+            return $this->redirectToRoute('league_show' ,array('id'=>$league->getId()));
         }
 
         return $this->render('club/new.html.twig', [
             'club' => $club,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -68,17 +71,18 @@ class ClubController extends AbstractController
     {
         $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('club_index', [
-                'id' => $club->getId(),
-            ]);
+            return $this->redirectToRoute('league_show' ,array('id'=>$league->getId()));
         }
 
         return $this->render('club/edit.html.twig', [
             'club' => $club,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -88,12 +92,13 @@ class ClubController extends AbstractController
      */
     public function delete(Request $request, Club $club): Response
     {
+        $league = $request->get('league');
         if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($club);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('club_index');
+        return $this->redirectToRoute('league_show' ,array('id'=>$league));
     }
 }

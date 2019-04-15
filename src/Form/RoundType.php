@@ -13,7 +13,6 @@ class RoundType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('league')
         ;
     }
 
