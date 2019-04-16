@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Club;
 use App\Entity\League;
 use App\Form\LeagueType;
 use App\Repository\LeagueRepository;
@@ -51,10 +52,13 @@ class LeagueController extends AbstractController
     /**
      * @Route("/{id}", name="league_show", methods={"GET"})
      */
-    public function show(League $league): Response
+    public function show(League $league , Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $clubs = $em->getRepository(Club::class)->findBy(array('league' => $league->getId()));
         return $this->render('league/show.html.twig', [
             'league' => $league,
+            'clubs' => $clubs,
         ]);
     }
 

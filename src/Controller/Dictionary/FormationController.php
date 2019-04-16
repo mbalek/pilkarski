@@ -39,7 +39,7 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('dictionary_formation_index');
+            return $this->redirectToRoute('admin_dictionary');
         }
 
         return $this->render('dictionary/formation/new.html.twig', [
@@ -69,7 +69,7 @@ class FormationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('dictionary_formation_index', [
+            return $this->redirectToRoute('admin_dictionary', [
                 'id' => $formation->getId(),
             ]);
         }
@@ -91,6 +91,6 @@ class FormationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('dictionary_formation_index');
+        return $this->redirectToRoute('admin_dictionary');
     }
 }

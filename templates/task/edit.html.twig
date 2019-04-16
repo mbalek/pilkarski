@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'task.display.editTask' |trans }}{% endblock %}
+
+{% block body %}
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="data-table-list">
+                        <div class="basic-tb-hd">
+                            <h2>{{ 'task.display.editTask' |trans }}</h2>
+                        </div>
+                        {{ include('task/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+                        <p>
+                            <a href="{{ path('task_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

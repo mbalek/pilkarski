@@ -6,6 +6,7 @@ use App\Entity\Club;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ClubType extends AbstractType
 {
@@ -18,7 +19,12 @@ class ClubType extends AbstractType
             ->add('championsLeagueWins')
             ->add('countryCupWins')
             ->add('leagueWins')
-            ->add('league')
+            ->add('imageFile',VichImageType::class, [
+                'attr' => ['class' => 'btn btn-default pull-right'],
+
+                'required' => false,
+                'allow_delete' => true,
+            ])
         ;
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Club;
 use App\Entity\Footballer;
+use App\Entity\League;
 use App\Form\FootballerType;
 use App\Repository\FootballerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,12 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class FootballerController extends AbstractController
 {
     /**
-     * @Route("/", name="footballer_index", methods={"GET"})
+     * @Route("/club/{id}", name="footballer_index", methods={"GET"})
      */
-    public function index(FootballerRepository $footballerRepository): Response
+    public function index(FootballerRepository $footballerRepository, Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
         return $this->render('footballer/index.html.twig', [
-            'footballers' => $footballerRepository->findAll(),
+            'footballers' => $footballerRepository->findBy(array('club' => $request->get('id'))),
+            'club' => $request->get('id'),
+            'league' => $league,
         ]);
     }
 
@@ -34,16 +40,24 @@ class FootballerController extends AbstractController
         $form = $this->createForm(FootballerType::class, $footballer);
         $form->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+        $club = $em->getRepository(Club::class)->findOneBy(array('id'=>$request->get('club')));
+
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $footballer->setClub($club);
             $entityManager->persist($footballer);
             $entityManager->flush();
-
-            return $this->redirectToRoute('footballer_index');
+            return $this->redirectToRoute('club_show' , array('id' =>$club->getId() , 'league'=>$league->getId() ));
         }
 
         return $this->render('footballer/new.html.twig', [
             'footballer' => $footballer,
+            'club' => $club,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -65,17 +79,22 @@ class FootballerController extends AbstractController
     {
         $form = $this->createForm(FootballerType::class, $footballer);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $club = $em->getRepository(Club::class)->findOneBy(array('id'=>$request->get('club')));
+
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('footballer_index', [
-                'id' => $footballer->getId(),
-            ]);
+            return $this->redirectToRoute('club_show' , array('id' =>$club->getId() , 'league'=>$league->getId() ));
         }
 
         return $this->render('footballer/edit.html.twig', [
             'footballer' => $footballer,
+            'club' => $club,
+            'league' => $league,
             'form' => $form->createView(),
         ]);
     }
@@ -85,12 +104,18 @@ class FootballerController extends AbstractController
      */
     public function delete(Request $request, Footballer $footballer): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $club = $em->getRepository(Club::class)->findOneBy(array('id'=>$request->get('club')));
+
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
+
         if ($this->isCsrfTokenValid('delete'.$footballer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($footballer);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('footballer_index');
+        return $this->redirectToRoute('club_show' , array('id' =>$club->getId() , 'league'=>$league->getId() ));
     }
 }

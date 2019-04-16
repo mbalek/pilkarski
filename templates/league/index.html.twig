@@ -1,37 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}League index{% endblock %}
+{% block title %}{{ 'league.display.leagueList' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>League index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Country</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for league in leagues %}
-            <tr>
-                <td>{{ league.id }}</td>
-                <td>{{ league.name }}</td>
-                <td>{{ league.country }}</td>
-                <td>
-                    <a href="{{ path('league_show', {'id': league.id}) }}">show</a>
-                    <a href="{{ path('league_edit', {'id': league.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('league_new') }}">Create new</a>
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="data-table-list">
+                        <div class="basic-tb-hd">
+                            <h2>{{ 'league.display.leagueList' |trans }}</h2>
+                            <a href="{{ path('league_new') }}">
+                                <button class="btn btn-warning btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="data-table-basic" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{ 'league.fields.name' |trans }}</th>
+                                    <th>{{ 'league.fields.country' |trans }}</th>
+                                    <th>{{ 'global.actions.global' |trans }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for league in leagues %}
+                                    <tr>
+                                        <td>{{ league.name }}</td>
+                                        <td>{{ league.country }}</td>
+                                        <td>
+                                            <div class="btn-group dropdown-split-inverse">
+                                                <button type="button" class="btn btn-inverse dropdown-toggle dropdown-toggle-split waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">{{ 'global.actions.actions'|trans }}</span>
+                                                    {{ 'global.action' |trans}}
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('league_edit' , {'id':league.id}) }}">
+                                                        <button class="btn btn-primary">{{ 'global.actions.edit'|trans }}</button>
+                                                    </a>
+                                                    <a class="dropdown-item waves-effect waves-light">{{ include('league/_delete_form.html.twig') }}</a>
+                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('league_show' , {'id':league.id}) }}">
+                                                        <button class="btn btn-info">{{ 'global.actions.show'|trans }}</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

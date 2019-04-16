@@ -39,6 +39,16 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $data = $form->get("isAdmin")->getData();
+            if ($data)
+            {
+                $user->addRole("ROLE_ADMIN");
+            }
+            else
+            {
+                $user->addRole("ROLE_USER");
+            }
+            $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -68,8 +78,25 @@ class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $check = false;
+        foreach ($user->getRoles() as $role)
+        {
+            if ($role == "ROLE_ADMIN"){
+                $check=true;
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->get("isAdmin")->getData();
+            if ($data)
+            {
+                $user->addRole("ROLE_ADMIN");
+            }
+            else
+            {
+                $user->removeRole("ROLE_ADMIN");
+                $user->addRole("ROLE_USER");
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_index', [
@@ -80,11 +107,12 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'check' => $check,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {

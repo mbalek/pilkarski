@@ -1,13 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}{{ 'user.display.editUser' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="data-table-list">
+                        <div class="basic-tb-hd">
+                            <h2>{{ 'user.display.editUser' |trans }}</h2>
+                        </div>
+                        {{ include('user/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+                        <p>
+                            <a href="{{ path('user_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
+                        </p>
+                        <div id="isChecked" data-is-checked="{{ check|json_encode }}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('user_isAdmin').checked = true;
+        })
+    </script>
 {% endblock %}

@@ -1,0 +1,128 @@
+global:
+  action: 'Akcje'
+  backToList: 'Powrót'
+  add: 'Dodaj'
+  delete: 'Usuń'
+  actions:
+    global: 'Akcje'
+    actions: 'Akcje'
+    adminDash: 'Panel administratora'
+    edit: 'Edytuj'
+    show: 'Pokaż'
+    backToList: 'Powrót'
+    deleteMessage: 'Czy na pewno chcesz usunąć pozycję?'
+    save: 'Zatwierdź'
+  noRecords: 'Brak wyników'
+
+dictionary:
+  display:
+    dictionary: 'Słowniki'
+
+position:
+  display:
+    position: 'Pozycja'
+    edit: 'Edycja pozycji'
+    newPosition: 'Dodaj pozycje'
+  fields:
+    name: 'Nazwa'
+
+eventType:
+  display:
+    eventType: 'Typ zdarzenia'
+
+eventsType:
+  display:
+    edit: 'Edycja typu zdarzenia'
+    eventsType: 'Typy zdarzeń'
+    newEventType: 'Dodaj typ zdarzenia'
+  fields:
+    name: 'Nazwa'
+
+formation:
+  display:
+    formation: 'Formacja'
+    edit: 'Edycja formacji'
+    newPosition: 'Dodaj formacje'
+  fields:
+    name: 'Nazwa'
+
+task:
+  fields:
+    title: 'Tytuł'
+    finishDate: 'Zakończyć do'
+    assigmentDate: 'Przydzielono'
+    description: 'Opis'
+  display:
+    taskToDo: 'Informacje/Zadania do zrobienia'
+    editTask: 'Edytuj zadanie/informacje'
+    newTask: 'Nowe zadanie/informacja'
+    taskList: 'Lista zadań/informacji'
+    tasks: 'Zadania/informacje'
+
+user:
+  display:
+    user: 'Użytkownicy'
+    editUser: 'Edytuj użytkownika'
+    userList: 'Lista użytkowników'
+    newUser: 'Dodaj użytkownika'
+  fields:
+    firstName: 'Imię'
+    lastName: 'Nazwisko'
+    username: 'Login'
+    email: 'Email'
+    lastLogin: 'Ostatnie logowanie'
+    roles: 'Uprawnienia'
+    password: 'Hasło'
+    isAdmin: 'Czy użytkownik ma mieć uprawnienia ADMINa'
+
+league:
+  display:
+    league: 'Ligi'
+    editLeague: 'Edytuj lige'
+    leagueList: 'Lista lig'
+    newLeague: 'Dodaj lige'
+    information: 'Informacje o lidze'
+    clubs: 'Kluby'
+    round: 'Kolejki'
+  fields:
+    name: 'Nazwa'
+    country: 'Kraj'
+
+club:
+  display:
+    edit: 'Edycja klubu'
+    club: 'Kluby'
+    newClub: 'Dodaj klub'
+    baseInformation: 'Podstawowe informacje'
+    footballers: 'Piłkarze'
+  fields:
+    name: 'Nazwa'
+    city: 'Miasto'
+    stadium: 'Stadion'
+    championsLeagueWins: 'Wygranych ligii mistrzów'
+    countryCupWins: 'Wygranych pucharów kraju'
+    leagueWins: 'Wygranych ligii'
+    logo: 'Logo'
+
+footballer:
+  display:
+    edit: 'Edycja piłkarza'
+    footballer: 'Piłkarze'
+    newFootballer: 'Dodaj piłkarza'
+  fields:
+    image: 'Zdjęcie'
+    name: 'Imie'
+    surname: 'Nazwisko'
+    birthdate: 'Data urodzenia'
+    goal: 'Ilość goli'
+    assists: 'Ilość asyst'
+    yellowCards: 'Żółte kartki'
+    redCards: 'Czerwone kartki'
+
+round:
+  display:
+    edit: 'Edycja kolejki'
+    round: 'Kolejka'
+    newRound: 'Nowa kolejka'
+  fields:
+    name: 'Nazwa'

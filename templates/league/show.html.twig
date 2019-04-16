@@ -1,30 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}League{% endblock %}
+{% block title %}{{ 'league.display.information' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>League</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ league.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ league.name }}</td>
-            </tr>
-            <tr>
-                <th>Country</th>
-                <td>{{ league.country }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('league_index') }}">back to list</a>
-
-    <a href="{{ path('league_edit', {'id': league.id}) }}">edit</a>
-
-    {{ include('league/_delete_form.html.twig') }}
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2>{{ 'league.display.league'|trans }} {{ league.name }}</h2>
+    <ul class="nav nav-tabs md-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'league.display.clubs' |trans }}</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#round" role="tab">{{ 'league.display.round' |trans }}</a>
+            <div class="slide"></div>
+        </li>
+    </ul>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="tab-content card-block">
+        <div class="tab-pane active" id="clubs" role="tabpanel">
+            {{ render(controller('App\\Controller\\ClubController::index' , {'league': league.id})) }}
+        </div>
+        <div class="tab-pane" id="round" role="tabpanel">
+            {{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }}
+        </div>
+    </div>
 {% endblock %}

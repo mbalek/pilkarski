@@ -1,13 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Footballer{% endblock %}
+{% block title %}{{ 'footballer.display.edit' |trans}}{% endblock %}
 
 {% block body %}
-    <h1>Edit Footballer</h1>
-
-    {{ include('footballer/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('footballer_index') }}">back to list</a>
-
-    {{ include('footballer/_delete_form.html.twig') }}
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="data-table-list">
+                        <div class="basic-tb-hd">
+                            <h2></h2>
+                        </div>
+                        {{ include('footballer/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+                        <p>
+                            <a href="{{ path('club_show', {'id': club.id , 'league': league.id}) }}"><button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
