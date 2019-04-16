@@ -6,6 +6,7 @@ use App\Entity\Footballer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class FootballerType extends AbstractType
 {
@@ -20,7 +21,12 @@ class FootballerType extends AbstractType
             ->add('yellowCards')
             ->add('redCards')
             ->add('position')
-            ->add('club')
+            ->add('imageFile',VichImageType::class, [
+                'attr' => ['class' => 'btn btn-default pull-right'],
+
+                'required' => false,
+                'allow_delete' => true,
+            ])
         ;
     }
 

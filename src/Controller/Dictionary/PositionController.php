@@ -39,7 +39,7 @@ class PositionController extends AbstractController
             $entityManager->persist($position);
             $entityManager->flush();
 
-            return $this->redirectToRoute('dictionary_position_index');
+            return $this->redirectToRoute('admin_dictionary');
         }
 
         return $this->render('dictionary/position/new.html.twig', [
@@ -69,7 +69,7 @@ class PositionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('dictionary_position_index', [
+            return $this->redirectToRoute('admin_dictionary', [
                 'id' => $position->getId(),
             ]);
         }
@@ -91,6 +91,6 @@ class PositionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('dictionary_position_index');
+        return $this->redirectToRoute('admin_dictionary');
     }
 }

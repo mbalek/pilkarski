@@ -88,6 +88,12 @@
                             </li>
                             <li><a href="{{ path('league_index') }}"><i class="notika-icon notika-windows"></i> {{ 'league.display.league' |trans }}</a>
                             </li>
+                            <li><a href="{{ path('admin_dictionary') }}"><i class="notika-icon notika-windows"></i> {{ 'dictionary.display.dictionary' |trans }}</a>
+                            </li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li><a href="{{ path('task_index') }}"><i class="notika-icon notika-windows"></i> {{ 'task.display.tasks' |trans }}</a>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

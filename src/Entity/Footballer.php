@@ -5,10 +5,16 @@ namespace App\Entity;
 use App\Entity\Dictionary\Position;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FootballerRepository")
+ * @Vich\Uploadable
  */
 class Footballer
 {
@@ -23,11 +29,13 @@ class Footballer
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Assert\NotBlank(message = "assert.global.notBlank")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Assert\NotBlank(message = "assert.global.notBlank")
      */
     private $surname;
 
@@ -78,11 +86,52 @@ class Footballer
      */
     private $gameTeamSquads;
 
+    /**
+     *
+     * @Vich\UploadableField(mapping="images", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
+     *
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
+     *
+     * @var EmbeddedFile
+     */
+    private $image;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->matchTeamSquads = new ArrayCollection();
         $this->gameTeamSquads = new ArrayCollection();
+        $this->image = new EmbeddedFile();
+    }
+
+    /**
+     * @param File|UploadedFile $image
+     */
+    public function setImageFile(?File $image = null): void
+    {
+        $this->imageFile = $image;
+        if (null !== $image) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage(EmbeddedFile $image)
+    {
+        $this->image = $image;
+    }
+
+    public function getImage(): ?EmbeddedFile
+    {
+        return $this->image;
     }
 
     public function getId(): ?int

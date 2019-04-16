@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Dictionary\eventsType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventsRepository")
@@ -21,6 +22,7 @@ class Events
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message = "assert.global.notBlank")
      */
     private $eventTime;
 

@@ -55,12 +55,16 @@ class ClubController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="club_show", methods={"GET"})
+     * @Route("/show/league/{id}", name="club_show", methods={"GET"})
      */
-    public function show(Club $club): Response
+    public function show(Club $club, Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
+
         return $this->render('club/show.html.twig', [
             'club' => $club,
+            'league' => $league,
         ]);
     }
 

@@ -3,24 +3,48 @@
 {% block title %}Round{% endblock %}
 
 {% block body %}
-    <h1>Round</h1>
+    <p>
+    DO ZROBIENIA ZAKŁADKI Z MECZAMI ROZEGRANYMI, PRZYSZŁYMI I TRWAJĄCYMI
+    </p>
+    <p>
+    DO ZROBIENIA WSZYSTKIE FORMY I WYGLĄDY DODAWANIA MECZU, KLUBÓW DO MECZU, SKŁADU KLUB NA DANY MECZ
+    </p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ round.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ round.name }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('round_index') }}">back to list</a>
-
-    <a href="{{ path('round_edit', {'id': round.id}) }}">edit</a>
-
-    {{ include('round/_delete_form.html.twig') }}
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2>Miejsce na tyutł</h2>
+                    <ul class="nav nav-tabs md-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#upcomingmatches" role="tab">nazwa zakladki</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#livematches" role="tab">nazwa zakladki</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#finishedmatches" role="tab">nazwa zakladki</a>
+                            <div class="slide"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content card-block">
+        <div class="tab-pane active" id="upcomingmatches" role="tabpanel">
+            Miejsca na zrenderowanie wygladu z danego kontrolera(dodaj do services.yaml kontroler z ktorego korzystasz)
+           {# {{ render(controller('App\\Controller\\ClubController::index' , {'league': league.id})) }} #}
+        </div>
+        <div class="tab-pane" id="livematches" role="tabpanel">
+            Miejsca na zrenderowanie wygladu z danego kontrolera(dodaj do services.yaml kontroler z ktorego korzystasz)
+            {#{{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }} #}
+        </div>
+        <div class="tab-pane" id="finishedmatches" role="tabpanel">
+            Miejsca na zrenderowanie wygladu z danego kontrolera(dodaj do services.yaml kontroler z ktorego korzystasz)
+            {# {{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }} #}
+        </div>
+        </div>
 {% endblock %}

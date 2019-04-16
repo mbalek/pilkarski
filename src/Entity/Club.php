@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClubRepository")
@@ -27,11 +28,13 @@ class Club
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "assert.global.notBlank")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message = "assert.global.notBlank")
      */
     private $city;
 

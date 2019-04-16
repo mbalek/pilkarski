@@ -30,5 +30,14 @@ services:
     app.round_controller:
         class: App\Controller\RoundController
 
+    app.formation_controller:
+        class: App\Controller\Dictionary\FormationController
+
+    app.eventsType_controller:
+        class: App\Controller\Dictionary\eventsTypeController
+
+    app.position_controller:
+        class: App\Controller\Dictionary\PositionController
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

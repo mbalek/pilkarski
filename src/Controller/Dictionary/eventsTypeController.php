@@ -39,7 +39,7 @@ class eventsTypeController extends AbstractController
             $entityManager->persist($eventsType);
             $entityManager->flush();
 
-            return $this->redirectToRoute('dictionary_events_type_index');
+            return $this->redirectToRoute('admin_dictionary');
         }
 
         return $this->render('dictionary/events_type/new.html.twig', [
@@ -69,7 +69,7 @@ class eventsTypeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('dictionary_events_type_index', [
+            return $this->redirectToRoute('admin_dictionary', [
                 'id' => $eventsType->getId(),
             ]);
         }
@@ -91,6 +91,6 @@ class eventsTypeController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('dictionary_events_type_index');
+        return $this->redirectToRoute('admin_dictionary');
     }
 }

@@ -1,46 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Club{% endblock %}
+{% block title %}{{ 'club.display.club' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>Club</h1>
+    <div class="data-table-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2>{{ 'club.display.club' |trans }} {{ club.name }}</h2>
+                    <p>
+                        <a href="{{ path('league_show' , {'id':league.id}) }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
+                    </p>
+                    <ul class="nav nav-tabs md-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'club.display.baseInformation' |trans }}</a>
+                            <div class="slide"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#round" role="tab">{{ 'club.display.footballers' |trans }}</a>
+                            <div class="slide"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content card-block">
+        <div class="tab-pane active" id="clubs" role="tabpanel">
+            <div class="data-table-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="data-table-list">
+                                <div class="table-responsive">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <label>{{ 'club.fields.name' |trans }}</label>
+                                                <p>club.name</p>
+                                                <label>{{ 'club.fields.city' |trans }}</label>
+                                                <p>{{ club.city }}</p>
+                                                <label>{{ 'club.fields.stadium' |trans }}</label>
+                                                <p>{{ club.stadium }}</p>
+                                                <label>{{ 'club.fields.championsLeagueWins' |trans }}</label>
+                                                <p>{{ club.championsLeagueWins }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <label>{{ 'club.fields.countryCupWins' |trans }}</label>
+                                                <p>{{ club.countryCupWins }}</p>
+                                                <label>{{ 'club.fields.leagueWins' |trans }}</label>
+                                                <p>{{ club.leagueWins }}</p>
+                                                <label>{{ 'club.fields.logo' |trans }}</label>
+                                                <p><img height="100" width="100" src="{{ vich_uploader_asset(club, 'imageFile') }}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="round" role="tabpanel">
+            {{ render(controller('App\\Controller\\FootballerController::index' , {'id': club.id , 'league': league.id })) }}
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ club.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ club.name }}</td>
-            </tr>
-            <tr>
-                <th>City</th>
-                <td>{{ club.city }}</td>
-            </tr>
-            <tr>
-                <th>Stadium</th>
-                <td>{{ club.stadium }}</td>
-            </tr>
-            <tr>
-                <th>ChampionsLeagueWins</th>
-                <td>{{ club.championsLeagueWins }}</td>
-            </tr>
-            <tr>
-                <th>CountryCupWins</th>
-                <td>{{ club.countryCupWins }}</td>
-            </tr>
-            <tr>
-                <th>LeagueWins</th>
-                <td>{{ club.leagueWins }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('club_index') }}">back to list</a>
-
-    <a href="{{ path('club_edit', {'id': club.id}) }}">edit</a>
-
-    {{ include('club/_delete_form.html.twig') }}
 {% endblock %}

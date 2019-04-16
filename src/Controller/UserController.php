@@ -48,6 +48,7 @@ class UserController extends AbstractController
             {
                 $user->addRole("ROLE_USER");
             }
+            $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();
 
