@@ -3,37 +3,43 @@
 {% block title %}{{ 'global.actions.adminDash' |trans }}{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h2>{{ 'dictionary.display.dictionary'|trans }}</h2>
-                    <ul class="nav nav-tabs md-tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#positions" role="tab">{{ 'position.display.position' |trans }}</a>
-                            <div class="slide"></div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#events-type" role="tab">{{ 'eventType.display.eventType' |trans }}</a>
-                            <div class="slide"></div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#formations" role="tab">{{ 'formation.display.formation' |trans }}</a>
-                            <div class="slide"></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="tab-content card-block">
-        <div class="tab-pane active" id="positions" role="tabpanel">
+    {# ========= Tabs ========= #}
+    <ul class="nav nav-tabs" id="myTab5" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active border-left-0" id="positions-tab" data-toggle="tab" href="#positions" role="tab" aria-controls="positions" aria-selected="true">{{ 'position.display.position'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link border-left-0" id="events-tab" data-toggle="tab" href="#events" role="tab" aria-controls="events" aria-selected="false">{{ 'eventType.display.eventType'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link border-left-0" id="formations-tab" data-toggle="tab" href="#formations" role="tab" aria-controls="formations" aria-selected="false">{{ 'formation.display.formation'|trans }}</a>
+        </li>
+    </ul>
+
+    {# ========= example contents ========= #}
+    {#
+    <div class="tab-content" id="myTabContent5">
+        <div class="tab-pane fade show active" id="position" role="tabpanel" aria-labelledby="position-tab">
             {{ render(controller('App\\Controller\\Dictionary\\PositionController::index')) }}
         </div>
         <div class="tab-pane" id="events-type" role="tabpanel">
             {{ render(controller('App\\Controller\\Dictionary\\eventsTypeController::index')) }}
         </div>
         <div class="tab-pane" id="formations" role="tabpanel">
+            {{ render(controller('App\\Controller\\Dictionary\\FormationController::index' )) }}
+        </div>
+    </div>
+    #}
+
+    {# ========= Contents ========= #}
+    <div class="tab-content" id="myTabContent5">
+        <div class="tab-pane fade show active" id="positions" role="tabpanel" aria-labelledby="positions-tab">
+            {{ render(controller('App\\Controller\\Dictionary\\PositionController::index')) }}
+        </div>
+        <div class="tab-pane fade show" id="events" role="tabpanel" aria-labelledby="events-tab">
+            {{ render(controller('App\\Controller\\Dictionary\\eventsTypeController::index')) }}
+        </div>
+        <div class="tab-pane fade show" id="formations" role="tabpanel" aria-labelledby="formations-tab">
             {{ render(controller('App\\Controller\\Dictionary\\FormationController::index' )) }}
         </div>
     </div>

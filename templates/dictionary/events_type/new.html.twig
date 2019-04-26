@@ -3,21 +3,18 @@
 {% block title %}{{ 'eventsType.display.newEventType'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'eventsType.display.newEventType'|trans }}</h2>
-                        </div>
-                        {{ include('dictionary/events_type/_form.html.twig') }}
-                        <p>
-                            <a href="{{ path('admin_dictionary')}}"><button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <h3 class="card-header">
+        {{ 'eventsType.display.newEventType'|trans }}
+    </h3>
+    <div class="card-body">
+        {{ include('dictionary/events_type/_form.html.twig') }}
     </div>
+
+    <div class="card-footer">
+        <a href="{{ path('admin_dictionary') }}">
+            <button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button>
+        </a>
+    </div>
+
 {% endblock %}
