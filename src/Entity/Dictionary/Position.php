@@ -28,6 +28,29 @@ class Position
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $shortName;
+
+    /**
+     * @return mixed
+     */
+    public function getShortName()
+    {
+        return $this->shortName;
+    }
+
+    /**
+     * @param mixed $shortName
+     * @return Position
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+        return $this;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Footballer", mappedBy="position")
      */
     private $footballers;

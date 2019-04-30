@@ -15,7 +15,7 @@
             <tbody>
             {% for position in positions %}
                 <tr>
-                    <td>{{ position.name }}</td>
+                    <td>{{ position.name }} <span class="text-primary">({{ position.shortName }})</span></td>
                     <td>
                         <button type="button" data-toggle="dropdown"
                                 class="btn btn-primary dropdown-toggle">{{ 'global.actions.actions'|trans }}</button>

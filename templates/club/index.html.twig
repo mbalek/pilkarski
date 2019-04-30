@@ -1,14 +1,10 @@
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'club.display.club' |trans }}</h2>
+                    <div class="p-1">
+                        <div class="card-header">
+                            <h3>{{ 'club.display.club' |trans }}</h3>
                             <p>
                             <a href="{{ path('club_new' , {'league':league}) }}">
-                                <button class="btn btn-warning btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
+                                <button class="btn btn-success btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
                             </p>
                         </div>
                         <div class="table-responsive">
@@ -18,9 +14,6 @@
                                         <th>{{ 'club.fields.name' |trans }}</th>
                                         <th>{{ 'club.fields.city' |trans }}</th>
                                         <th>{{ 'club.fields.stadium' |trans }}</th>
-                                        <th>{{ 'club.fields.championsLeagueWins' |trans }}</th>
-                                        <th>{{ 'club.fields.countryCupWins' |trans }}</th>
-                                        <th>{{ 'club.fields.leagueWins' |trans }}</th>
                                         <th>{{ 'club.fields.logo' |trans }}</th>
                                         <th>{{ 'global.actions.global' |trans }}</th>
                                     </tr>
@@ -31,9 +24,8 @@
                                         <td>{{ club.name }}</td>
                                         <td>{{ club.city }}</td>
                                         <td>{{ club.stadium }}</td>
-                                        <td>{{ club.championsLeagueWins }}</td>
-                                        <td>{{ club.countryCupWins }}</td>
-                                        <td>{{ club.leagueWins }}</td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
                                             <img height="50" width="50" src="{{ vich_uploader_asset(club, 'imageFile') }}">
                                         </td>
@@ -65,8 +57,4 @@
                         </div>
 
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

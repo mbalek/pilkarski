@@ -15,10 +15,6 @@ class ClubType extends AbstractType
         $builder
             ->add('name')
             ->add('city')
-            ->add('stadium')
-            ->add('championsLeagueWins')
-            ->add('countryCupWins')
-            ->add('leagueWins')
             ->add('imageFile',VichImageType::class, [
                 'attr' => ['class' => 'btn btn-default pull-right'],
 

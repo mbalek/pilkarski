@@ -2,25 +2,24 @@
 
 namespace App\Form\Dictionary;
 
-use App\Entity\Dictionary\Position;
+use App\Entity\Dictionary\Format;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PositionType extends AbstractType
+class FormatType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-            ->add('shortName')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Position::class,
+            'data_class' => Format::class,
         ]);
     }
 }

@@ -43,20 +43,6 @@ class Club
      */
     private $stadium;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $championsLeagueWins;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $countryCupWins;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $leagueWins;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\league", inversedBy="clubs")
@@ -162,41 +148,6 @@ class Club
         return $this;
     }
 
-    public function getChampionsLeagueWins(): ?int
-    {
-        return $this->championsLeagueWins;
-    }
-
-    public function setChampionsLeagueWins(?int $championsLeagueWins): self
-    {
-        $this->championsLeagueWins = $championsLeagueWins;
-
-        return $this;
-    }
-
-    public function getCountryCupWins(): ?int
-    {
-        return $this->countryCupWins;
-    }
-
-    public function setCountryCupWins(?int $countryCupWins): self
-    {
-        $this->countryCupWins = $countryCupWins;
-
-        return $this;
-    }
-
-    public function getLeagueWins(): ?int
-    {
-        return $this->leagueWins;
-    }
-
-    public function setLeagueWins(?int $leagueWins): self
-    {
-        $this->leagueWins = $leagueWins;
-
-        return $this;
-    }
 
     public function getLeague(): ?league
     {
