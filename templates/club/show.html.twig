@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}{{ 'club.display.club' |trans }}{% endblock %}
 
@@ -40,14 +40,8 @@
                                                 <p>{{ club.city }}</p>
                                                 <label>{{ 'club.fields.stadium' |trans }}</label>
                                                 <p>{{ club.stadium }}</p>
-                                                <label>{{ 'club.fields.championsLeagueWins' |trans }}</label>
-                                                <p>{{ club.championsLeagueWins }}</p>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                <label>{{ 'club.fields.countryCupWins' |trans }}</label>
-                                                <p>{{ club.countryCupWins }}</p>
-                                                <label>{{ 'club.fields.leagueWins' |trans }}</label>
-                                                <p>{{ club.leagueWins }}</p>
                                                 <label>{{ 'club.fields.logo' |trans }}</label>
                                                 <p><img height="100" width="100" src="{{ vich_uploader_asset(club, 'imageFile') }}"></p>
                                     </div>

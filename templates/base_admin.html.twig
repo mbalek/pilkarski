@@ -17,13 +17,16 @@
             <link rel="stylesheet" href="/assets/vendor/charts/c3charts/c3.css">
             <link rel="stylesheet" href="/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
             <style>
+                button {
+                    margin: 0.5vh 0;
+                }
             </style>
         {% endblock %}
     </head>
     <body>
     <div class="dashboard-main-wrapper">
-        {% include 'topbar.html.twig' %}
-        {% include 'left-sidebar.html.twig' %}
+        {% include 'topbar_admin.html.twig' %}
+        {% include 'left_sidebar_admin.html.twig' %}
         <div class="dashboard-wrapper">
             <div class="dashboard-ecommerce">
                 <div class="container-fluid dashboard-content ">

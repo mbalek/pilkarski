@@ -1,33 +1,38 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}{{ 'league.display.information' |trans }}{% endblock %}
 
 {% block body %}
-<div class="data-table-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2>{{ 'league.display.league'|trans }} {{ league.name }}</h2>
-    <ul class="nav nav-tabs md-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'league.display.clubs' |trans }}</a>
-            <div class="slide"></div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#round" role="tab">{{ 'league.display.round' |trans }}</a>
-            <div class="slide"></div>
-        </li>
-    </ul>
+
+
+    <div class="card-header"><h3>{{ 'league.display.league'|trans }}<span style="font-weight: 100"> - {{ league.name }}</span></h3></div>
+    <div class="card-body">
+        {# ========= Tabs ========= #}
+        <ul class="nav nav-tabs" id="myTab5" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active border-left-0" id="clubs-tab" data-toggle="tab" href="#clubs" role="tab" aria-controls="clubs" aria-selected="true">
+                    {{ 'league.display.clubs' |trans }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" id="rounds-tab" data-toggle="tab" href="#rounds" role="tab" aria-controls="rounds" aria-selected="false">
+                    {{ 'league.display.round' |trans }}
+                </a>
+            </li>
+        </ul>
+
+
+        {# ========= Contents ========= #}
+        <div class="tab-content" id="myTabContent5">
+            <div class="tab-pane fade show active" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
+                {{ render(controller('App\\Controller\\ClubController::index' , {'league': league.id})) }}
+            </div>
+            <div class="tab-pane fade show" id="rounds" role="tabpanel" aria-labelledby="rounds-tab">
+                {{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }}
             </div>
         </div>
     </div>
-</div>
-    <div class="tab-content card-block">
-        <div class="tab-pane active" id="clubs" role="tabpanel">
-            {{ render(controller('App\\Controller\\ClubController::index' , {'league': league.id})) }}
-        </div>
-        <div class="tab-pane" id="round" role="tabpanel">
-            {{ render(controller('App\\Controller\\RoundController::index' , {'league': league.id})) }}
-        </div>
-    </div>
+
+
+
 {% endblock %}
