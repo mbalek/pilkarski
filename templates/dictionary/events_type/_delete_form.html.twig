@@ -1,5 +1,5 @@
 <form method="post" action="{{ path('dictionary_events_type_delete', {'id': events_type.id}) }}" onsubmit="return confirm('{{ 'global.actions.deleteMessage'|trans }}');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ events_type.id) }}">
-    <button class="btn">{{ 'global.delete' |trans }}</button>
+    <button class="dropdown-item text-danger">{{ 'global.delete' |trans }}</button>
 </form>

@@ -12,8 +12,9 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description')
-            ->add('matchId')
+            ->add('description' , null , [
+                'label' => 'comment.fields.description'
+            ])
         ;
     }
 
