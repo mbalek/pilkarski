@@ -138,3 +138,6 @@ comment:
 game:
   display:
     games: 'Mecze'
+    finishedGames: 'Zakończone mecze'
+    liveGames: 'Trwające mecze'
+    upcomingGames: 'Nadchodzące mecze'

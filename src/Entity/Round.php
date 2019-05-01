@@ -103,4 +103,10 @@ class Round
         return $this;
     }
 
+
+    public function __toString()
+    {
+        return $this->league->getName()." / ".$this->name;
+    }
+
 }

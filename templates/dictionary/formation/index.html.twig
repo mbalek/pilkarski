@@ -5,6 +5,8 @@
         <a href="{{ path('dictionary_formation_new') }}" class="btn btn-success"><i
                     class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</a>
     </div>
+
+
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
@@ -14,6 +16,7 @@
             </tr>
             </thead>
             <tbody>
+
             {% for formation in formations %}
                 <tr>
                     <td>{{ formation.name }}</td>
@@ -33,6 +36,7 @@
                     <td colspan="8">{{ 'global.noRecords'|trans }}</td>
                 </tr>
             {% endfor %}
+
             </tbody>
         </table>
     </div>

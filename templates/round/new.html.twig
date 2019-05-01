@@ -1,23 +1,16 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}{{ 'round.display.newRound' |trans}}{% endblock %}
+{% block title %}{{ 'round.display.newRound' |trans }}{% endblock %}
 
 {% block body %}
-        <div class="data-table-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="data-table-list">
-                            <div class="basic-tb-hd">
-                                <h2>{{ 'round.display.newRound' |trans}}</h2>
-                            </div>
-                            {{ include('round/_form.html.twig') }}
-                            <p>
-                                <a href="{{ path('league_show' , {'id':league.id}) }}"><button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button></a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <h2 class="card-header">{{ 'round.display.newRound' |trans }}</h2>
+    <div class="card-body">
+        {{ include('round/_form.html.twig') }}
+    </div>
+    <div class="card-footer">
+        <a href="{{ path('league_show' , {'id':league.id}) }}">
+            <button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button>
+        </a>
+    </div>
 {% endblock %}

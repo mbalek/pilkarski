@@ -1,58 +1,54 @@
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'round.display.round' |trans }}</h2>
-                            <p>
-                                <a href="{{ path('round_new' , {'league':league}) }}">
-                                    <button class="btn btn-warning btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
-                            </p>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="data-table-basic" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>{{ 'round.fields.name' |trans }}</th>
-                                    <th>{{ 'global.actions.global' |trans }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for round in rounds %}
-                                    <tr>
-                                        <td>{{ round.name }}</td>
-                                        <td>
-                                            <div class="btn-group dropdown-split-inverse">
-                                                <button type="button" class="btn btn-inverse dropdown-toggle dropdown-toggle-split waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="sr-only">{{ 'global.actions.actions'|trans }}</span>
-                                                    {{ 'global.action' |trans}}
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('round_edit', {'id': round.id,'league':league}) }}">
-                                                        <button class="btn btn-primary">{{ 'global.actions.edit'|trans }}</button>
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect waves-light">{{ include('round/_delete_form.html.twig') }}</a>
-                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('round_show', {'id': round.id,'league':league}) }}">
-                                                        <button class="btn btn-info">{{ 'global.actions.show'|trans }}</button>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="8">{{ 'global.noRecords'|trans }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="p-1">
+    <div class="card-header">
+        <h3>{{ 'round.display.round' |trans }}</h3>
+        <a href="{{ path('round_new' , {'league':league}) }}" class="btn btn-success btn-block">{{ 'global.add'|trans }}</a>
     </div>
+
+    <div>
+    <div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>{{ 'round.fields.name' |trans }}</th>
+                <th>{{ 'global.actions.global' |trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for round in rounds %}
+                <tr>
+                    <td>{{ round.name }}</td>
+                    <td>
+                        <div class="btn-group dropdown-split-inverse">
+                            <button type="button"
+                                    class="btn btn-inverse dropdown-toggle dropdown-toggle-split waves-effect waves-light"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">{{ 'global.actions.actions'|trans }}</span>
+                                {{ 'global.action' |trans }}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item waves-effect waves-light"
+                                   href="{{ path('round_edit', {'id': round.id,'league':league}) }}">
+                                    <button class="btn btn-primary">{{ 'global.actions.edit'|trans }}</button>
+                                </a>
+                                <a class="dropdown-item waves-effect waves-light">{{ include('round/_delete_form.html.twig') }}</a>
+                                <a class="dropdown-item waves-effect waves-light"
+                                   href="{{ path('round_show', {'id': round.id,'league':league}) }}">
+                                    <button class="btn btn-info">{{ 'global.actions.show'|trans }}</button>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">{{ 'global.noRecords'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
 {% endblock %}

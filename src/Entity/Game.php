@@ -29,6 +29,7 @@ class Game
      */
     private $result;
 
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Round", inversedBy="games")
      */
@@ -48,6 +49,9 @@ class Game
      * @ORM\OneToMany(targetEntity="App\Entity\GameTeam", mappedBy="game")
      */
     private $gameTeams;
+
+
+
 
     public function __construct()
     {

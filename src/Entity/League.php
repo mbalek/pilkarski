@@ -38,6 +38,11 @@ class League
      */
     private $clubs;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Round", mappedBy="league")
+     */
+    private $rounds;
+
 
 
     public function __construct()
