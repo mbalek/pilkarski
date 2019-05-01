@@ -104,9 +104,6 @@ club:
     name: 'Nazwa'
     city: 'Miasto'
     stadium: 'Stadion'
-    championsLeagueWins: 'Wygranych ligii mistrzów'
-    countryCupWins: 'Wygranych pucharów kraju'
-    leagueWins: 'Wygranych ligii'
     logo: 'Logo'
 
 footballer:
@@ -135,6 +132,8 @@ round:
 comment:
   display:
     comments: 'Komentarze'
+  fields:
+    description: 'Treść komentarza'
 
 game:
   display:

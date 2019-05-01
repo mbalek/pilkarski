@@ -13,11 +13,18 @@ class ClubType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('city')
+            ->add('name', null, [
+                'label' => 'club.fields.name',
+            ])
+            ->add('city', null, [
+                'label' => 'club.fields.city',
+            ])
+            ->add('stadium', null, [
+                'label' => 'club.fields.stadium',
+            ])
             ->add('imageFile',VichImageType::class, [
                 'attr' => ['class' => 'btn btn-default pull-right'],
-
+                'label' => 'club.fields.logo',
                 'required' => false,
                 'allow_delete' => true,
             ])
