@@ -56,9 +56,10 @@ class LeagueController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $clubs = $em->getRepository(Club::class)->findBy(array('league' => $league->getId()));
+
         return $this->render('league/show.html.twig', [
             'league' => $league,
-            'clubs' => $clubs,
+            'clubs' => $clubs
         ]);
     }
 
