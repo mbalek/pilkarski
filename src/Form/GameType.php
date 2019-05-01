@@ -20,6 +20,7 @@ class GameType extends AbstractType
                 'html5' => true,
                 'attr' => ['class' => 'js-datepicker']
             ])
+            ->add('isActive')
             ->add('round')
         ;
     }
