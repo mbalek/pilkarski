@@ -14,6 +14,7 @@ class GameType extends AbstractType
         $builder
             ->add('gameDateTime')
             ->add('result')
+            ->add('isActive')
             ->add('round')
         ;
     }
