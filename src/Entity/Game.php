@@ -52,14 +52,14 @@ class Game
 
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isActive;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $status;
 
     public function __construct()
     {
@@ -207,17 +207,6 @@ class Game
         return $this->result;
     }
 
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -227,6 +216,18 @@ class Game
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
