@@ -46,9 +46,15 @@ class Game
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GameTeam", mappedBy="game")
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", mappedBy="game")
      */
-    private $gameTeams;
+    private $homeTeam;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", mappedBy="game")
+     */
+    private $awayTeam;
 
 
     /**

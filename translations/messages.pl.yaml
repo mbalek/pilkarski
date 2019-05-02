@@ -141,3 +141,11 @@ game:
     finishedGames: 'Zakończone mecze'
     liveGames: 'Trwające mecze'
     upcomingGames: 'Nadchodzące mecze'
+    deactivatedGames: "Mecze niekatywne"
+  status:
+    deactivated: "Nieaktywny"
+    live: "Trwający"
+    upcoming: "Nadchodzący"
+    finished: "Zakończony"
+
+
