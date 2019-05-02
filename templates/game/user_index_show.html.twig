@@ -5,6 +5,7 @@
         {{ 'index.display.round'|trans }}: {{ game.round.name }}
         {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
         {{ game.description }}
+        <input type="hidden" value="{{ game.id }}" id="game-id"/>
 
         <!-- Budowanie pierwszej drużyny -->
         {{ game.gameTeams[0].club.name }}
@@ -31,13 +32,79 @@
         {% endfor %}
 
         <!-- eventy w danym zakonczonym meczu -->
-        {% for event in game.events %}
+        {% for event in game.events|reverse %}
             {{ event.eventTime|date('Y-m-d H:i:s') }}
             {{ event.eventType.name }}
             {{ event.teamSquad.footballer.name }}
             {{ event.teamSquad.footballer.surname }}
             {{ event.teamSquad.number }}
         {% else %}
+            {{ 'index.display.noEvents' |trans }}
         {% endfor %}
+
+        <div>
+            <form id="comment" action="javascript:void('');" method="post">
+                <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
+                    <div class="form-group">
+                        <label for="comment_description"></label>
+                        <textarea class="form-control" id="comment-description" required="required"></textarea>
+                    </div>
+                    <input type="submit" value=""/>
+                </div>
+            </form>
+        </div>
+        <br/>
+        {{ app.user.username }}<br/>
+        <!-- komentarze -->
+        {{ 'index.display.comments'|trans }}
+        <div id="comments">
+        {% for comment in game.comments|reverse %}
+            <div>
+            {{ comment.createdBy }}
+            {{ comment.description }}
+            {{ comment.createdAt|date('j.m.Y, H:i:s') }}
+            </div>
+        {% endfor %}
+        </div>
     </div>
+{% endblock %}
+
+{% block customJavaScript %}
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#comment").submit(function (e) {
+                $.ajax({
+                    url:$("#comment-div").data('url'),
+                    dataType: "JSON",
+                    data: {
+                        username: '{{ app.user.id }}',
+                        description: $("#comment-description").val(),
+                        game: $("#game-id").val(),
+                    },
+                    success: function (response) {
+                        let div = document.createElement('div');
+                        let user = document.createTextNode(response.createdBy.username);
+                        let description = document.createTextNode(response.description);
+                        let date = new Date(response.createdAt.timestamp * 1000).toLocaleString();
+                        let dateText = document.createTextNode(date);
+                        console.log(response);
+                        console.log(user);
+                        console.log(description);
+                        console.log(date);
+                        div.appendChild(user);
+                        div.appendChild(description);
+                        div.appendChild(dateText);
+                        $("#comments").prepend(div);
+                    },
+                    error:function () {
+                     console.log('errror');
+                    }
+                });
+            console.log('{{ app.user.id }}');
+            console.log($("#comment-description").val());
+            console.log($("#game-id").val())
+            console.log($("#comment-div").data('url'));
+        })
+    })
+    </script>
 {% endblock %}
