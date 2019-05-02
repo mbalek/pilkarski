@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Game;
 use App\Entity\League;
+use App\Entity\User;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/game")
@@ -94,4 +99,44 @@ class GameController extends AbstractController
 
         return $this->redirectToRoute('game_index');
     }
+
+    /**
+     * @Route("/usercomment/new" , name="user_comment_new_ajax" , methods={"GET","POST"})
+     */
+    public function addComment(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $userId = $request->get('username');
+            $gameId = $request->get('game');
+            $description = $request->get('description');
+
+            $em = $this->getDoctrine()->getManager();
+            $game = $em->getRepository(Game::class)->find($gameId);
+            $user = $em->getRepository(User::class)->find($userId);
+            $comment = new Comment();
+            $comment->setGame($game);
+            $comment->setDescription($description);
+            $comment->setCreatedBt($user);
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $em->persist($comment);
+            $em->flush();
+
+            $encoders = [
+                new JsonEncoder(),
+            ];
+            $normalizers = [
+                (new ObjectNormalizer())->setIgnoredAttributes([ 'updatedBy' , 'changedBy', 'game' ,'updatedAt' , 'changedAt'] )
+            ];
+            $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+            $data = $serializer->serialize($comment , 'json');
+
+            return new JsonResponse($data, 200, [],true);
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
+    }
+
 }
