@@ -27,7 +27,7 @@ class GameTeam
     private $club;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="gameTeams")
+     * @ORM\OneToOne(targetEntity="App\Entity\Game", inversedBy="gameTeams")
      */
     private $game;
 

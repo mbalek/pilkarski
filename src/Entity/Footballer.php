@@ -77,6 +77,30 @@ class Footballer
     private $club;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $country;
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     * @return Footballer
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\GameTeamSquad", mappedBy="footballer")
      */
     private $gameTeamSquads;
