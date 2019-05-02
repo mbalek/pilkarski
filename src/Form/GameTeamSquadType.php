@@ -16,6 +16,7 @@ class GameTeamSquadType extends AbstractType
             ->add('isCaptain')
             ->add('footballer')
             ->add('gameTeam')
+            ->add('number')
         ;
     }
 

@@ -45,7 +45,7 @@ class Club
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\league", inversedBy="clubs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\League", inversedBy="clubs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $league;
@@ -149,12 +149,12 @@ class Club
     }
 
 
-    public function getLeague(): ?league
+    public function getLeague(): ?League
     {
         return $this->league;
     }
 
-    public function setLeague(?league $league): self
+    public function setLeague(?League $league): self
     {
         $this->league = $league;
 

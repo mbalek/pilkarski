@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\League;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,7 +50,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="game_show", methods={"GET"})
+     * @Route("/show/{id}", name="game_show", methods={"GET"})
      */
     public function show(Game $game): Response
     {

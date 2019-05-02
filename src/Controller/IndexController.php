@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\League;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
@@ -17,8 +18,10 @@ class IndexController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $leagues = $em->getRepository(League::class)->findAll();
+        $games = $em->getRepository(Game::class)->findAll();
         return $this->render('index/index.html.twig', [
             'leagues' => $leagues,
+            'games' => $games,
         ]);
     }
 
@@ -46,6 +49,20 @@ class IndexController extends AbstractController
         }
         return $this->render('index/live_matches.html.twig', [
             'liveGames' => $liveGames,
+            'leagues' => $leagues,
+        ]);
+    }
+
+    /**
+     * @route("/display/match/{id}" , name="index_game_show" , methods={"GET"})
+     */
+    public function showIndex(Game $game): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $leagues = $em->getRepository(League::class)->findAll();
+        return $this->render('game/user_index_show.html.twig',[
+            'game' => $game,
             'leagues' => $leagues,
         ]);
     }

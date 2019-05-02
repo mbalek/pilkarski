@@ -1,4 +1,14 @@
 {% extends 'base_user.html.twig' %}
 {% block body %}
 
+    <!-- tutaj bedzie zrobienie prostokatow z meczami wszelkimi(nadchodzace, live, zakonczone)-->
+    {% for game in games %}
+        <div class="container"><!-- kontener dla pojedynczego meczu -->
+            {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
+            {{ 'index.display.round'|trans }}: {{ game.round.name }}
+            {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
+            {{ game.description }}
+            <a href="{{ path('index_game_show' , {'id': game.id, 'game': game}) }}">{{ 'index.display.details' |trans }}</a>
+        </div>
+    {% endfor %}
 {% endblock %}

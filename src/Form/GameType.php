@@ -22,6 +22,7 @@ class GameType extends AbstractType
             ])
             ->add('isActive')
             ->add('round')
+            ->add('description')
         ;
     }
 
