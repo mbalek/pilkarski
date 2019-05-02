@@ -77,11 +77,6 @@ class Footballer
     private $club;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Events", mappedBy="footballer")
-     */
-    private $events;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\GameTeamSquad", mappedBy="footballer")
      */
     private $gameTeamSquads;
@@ -103,7 +98,6 @@ class Footballer
 
     public function __construct()
     {
-        $this->events = new ArrayCollection();
         $this->matchTeamSquads = new ArrayCollection();
         $this->gameTeamSquads = new ArrayCollection();
         $this->image = new EmbeddedFile();
@@ -248,37 +242,6 @@ class Footballer
     }
 
     /**
-     * @return Collection|Events[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Events $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->setFootballer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Events $event): self
-    {
-        if ($this->events->contains($event)) {
-            $this->events->removeElement($event);
-            // set the owning side to null (unless already changed)
-            if ($event->getFootballer() === $this) {
-                $event->setFootballer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|GameTeamSquad[]
      */
     public function getGameTeamSquads(): Collection
@@ -307,6 +270,11 @@ class Footballer
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName().' '.$this.$this->getSurname();
     }
 
 }

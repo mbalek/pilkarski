@@ -6,7 +6,7 @@
      {{ game.gameDateTime|date('Y-m-d H:i:s') }}
         {% if game.isActive == true %}
             <!-- przycisk od przejscia do szcegolow moderowanego meczu -->
-            <button class="btn">Szczegoly </button>
+            <button class="btn">{{ 'index.display.details' |trans }} </button>
         {% endif %}
     {% endfor %}
 {% endblock %}

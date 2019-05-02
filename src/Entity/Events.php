@@ -33,15 +33,15 @@ class Events
     private $eventType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Footballer", inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $footballer;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="events")
      */
     private $game;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameTeamSquad", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $teamSquad;
 
     public function getId(): ?int
     {
@@ -72,18 +72,6 @@ class Events
         return $this;
     }
 
-    public function getFootballer(): ?Footballer
-    {
-        return $this->footballer;
-    }
-
-    public function setFootballer(?Footballer $footballer): self
-    {
-        $this->footballer = $footballer;
-
-        return $this;
-    }
-
     public function getGame(): ?Game
     {
         return $this->game;
@@ -95,5 +83,18 @@ class Events
 
         return $this;
     }
+
+    public function getTeamSquad(): ?GameTeamSquad
+    {
+        return $this->teamSquad;
+    }
+
+    public function setTeamSquad(?GameTeamSquad $teamSquad): self
+    {
+        $this->teamSquad = $teamSquad;
+
+        return $this;
+    }
+
 
 }

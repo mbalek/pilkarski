@@ -1,0 +1,43 @@
+{% extends 'base_user.html.twig' %}
+{% block body %}
+    <div class="container">
+        {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
+        {{ 'index.display.round'|trans }}: {{ game.round.name }}
+        {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
+        {{ game.description }}
+
+        <!-- Budowanie pierwszej drużyny -->
+        {{ game.gameTeams[0].club.name }}
+        <img height="50" width="50" src="{{ vich_uploader_asset(game.gameTeams[0].club, 'imageFile') }}">
+        {% for gamesquad in game.gameTeams[0].gameTeamSquads %}
+            {{ gamesquad.number }}
+            {{ gamesquad.footballer.name }}
+            {{ gamesquad.footballer.surname }}
+            {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+        {% else %}
+            {{ 'index.display.noFootballers' |trans }}
+        {% endfor %}
+
+        <!-- Budowanie drugiej drużyny -->
+        {{ game.gameTeams[1].club.name }}
+        <img height="50" width="50" src="{{ vich_uploader_asset(game.gameTeams[1].club, 'imageFile') }}">
+        {% for gamesquad in game.gameTeams[1].gameTeamSquads %}
+            {{ gamesquad.number }}
+            {{ gamesquad.footballer.name }}
+            {{ gamesquad.footballer.surname }}
+            {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+        {% else %}
+            {{ 'index.display.noFootballers' |trans }}
+        {% endfor %}
+
+        <!-- eventy w danym zakonczonym meczu -->
+        {% for event in game.events %}
+            {{ event.eventTime|date('Y-m-d H:i:s') }}
+            {{ event.eventType.name }}
+            {{ event.teamSquad.footballer.name }}
+            {{ event.teamSquad.footballer.surname }}
+            {{ event.teamSquad.number }}
+        {% else %}
+        {% endfor %}
+    </div>
+{% endblock %}
