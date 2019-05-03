@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\GameTeam;
 use App\Entity\Game;
+use App\Entity\GameTeamSquad;
 use App\Form\GameTeamType;
 use App\Repository\GameTeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,13 +28,28 @@ class GameTeamController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="game_team_new", methods={"GET","POST"})
+     * @Route("/add", name="game_team_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $gameTeam = new GameTeam();
+
+        /*
+        $tag1 = new Tag();
+        $tag1->setName('tag1');
+        $task->getTags()->add($tag1);
+        */
+
+
+        $player1 = new GameTeamSquad();
+        $gameTeam->getGameTeamSquads()->add($player1);
+
+
+
         $form = $this->createForm(GameTeamType::class, $gameTeam);
+
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
