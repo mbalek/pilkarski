@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Club;
+use App\Entity\Country;
 use App\Entity\Dictionary\Position;
 use App\Entity\Footballer;
 use App\Entity\League;
@@ -14,9 +15,16 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $faker = Faker\Factory::create();
 
+        $faker = Faker\Factory::create();
         $positions = $manager->getRepository(Position::class)->findAll();
+
+
+        //Country
+        $country = new Country();
+        $country->setName("Poland");
+        $manager->persist($country);
+
 
         //League
         $league = new League();
@@ -52,6 +60,7 @@ class AppFixtures extends Fixture
                     $fb->setYellowCards(0);
                     $fb->setPosition($pos);
                     $fb->setClub($club);
+                    $fb->setCountry($country);
 
                     $manager->persist($fb);
 

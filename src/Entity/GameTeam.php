@@ -28,7 +28,7 @@ class GameTeam
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dictionary\Formation", inversedBy="gameTeams")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $formation;
 
@@ -100,5 +100,10 @@ class GameTeam
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getClub()." - ".$this->getId();
     }
 }

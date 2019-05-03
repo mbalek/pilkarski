@@ -3,23 +3,16 @@
 namespace App\Form;
 
 use App\Entity\GameTeam;
-use App\Entity\GameTeamSquad;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GameTeamType extends AbstractType
+class GameTeamTypeSimple extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('club')
-            ->add('formation')
-            ->add('gameTeamSquads', CollectionType::class, [
-                'entry_type' => GameTeamSquadType::class,
-                'entry_options' => ['label' => false]
-            ])
         ;
     }
 
