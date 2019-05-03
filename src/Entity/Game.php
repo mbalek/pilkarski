@@ -46,13 +46,15 @@ class Game
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", mappedBy="game")
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam")
+     * @ORM\JoinColumn(name="home_team_id", referencedColumnName="id")
      */
     private $homeTeam;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", mappedBy="game")
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam")
+     * @ORM\JoinColumn(name="away_team_id", referencedColumnName="id")
      */
     private $awayTeam;
 
@@ -71,7 +73,6 @@ class Game
     {
         $this->events = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->gameTeams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,37 +178,6 @@ class Game
         return $this;
     }
 
-    /**
-     * @return Collection|GameTeam[]
-     */
-    public function getGameTeams(): Collection
-    {
-        return $this->gameTeams;
-    }
-
-    public function addGameTeam(GameTeam $gameTeam): self
-    {
-        if (!$this->gameTeams->contains($gameTeam)) {
-            $this->gameTeams[] = $gameTeam;
-            $gameTeam->setGame($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGameTeam(GameTeam $gameTeam): self
-    {
-        if ($this->gameTeams->contains($gameTeam)) {
-            $this->gameTeams->removeElement($gameTeam);
-            // set the owning side to null (unless already changed)
-            if ($gameTeam->getGame() === $this) {
-                $gameTeam->setGame(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->result;
@@ -237,4 +207,41 @@ class Game
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHomeTeam()
+    {
+        return $this->homeTeam;
+    }
+
+    /**
+     * @param mixed $homeTeam
+     * @return Game
+     */
+    public function setHomeTeam($homeTeam)
+    {
+        $this->homeTeam = $homeTeam;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAwayTeam()
+    {
+        return $this->awayTeam;
+    }
+
+    /**
+     * @param mixed $awayTeam
+     * @return Game
+     */
+    public function setAwayTeam($awayTeam)
+    {
+        $this->awayTeam = $awayTeam;
+        return $this;
+    }
+    
 }

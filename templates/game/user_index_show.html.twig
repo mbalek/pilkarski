@@ -8,28 +8,36 @@
         <input type="hidden" value="{{ game.id }}" id="game-id"/>
 
         <!-- Budowanie pierwszej drużyny -->
-        {{ game.gameTeams[0].club.name }}
-        <img height="50" width="50" src="{{ vich_uploader_asset(game.gameTeams[0].club, 'imageFile') }}">
-        {% for gamesquad in game.gameTeams[0].gameTeamSquads %}
-            {{ gamesquad.number }}
-            {{ gamesquad.footballer.name }}
-            {{ gamesquad.footballer.surname }}
-            {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+        {% if game.homeTeam %}
+            {{ game.homeTeam.club.name }}
+            <img height="50" width="50" src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
+            {% for gamesquad in game.homeTeam.gameTeamSquads %}
+                {{ gamesquad.number }}
+                {{ gamesquad.footballer.name }}
+                {{ gamesquad.footballer.surname }}
+                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+            {% else %}
+                {{ 'index.display.noFootballers' |trans }}
+            {% endfor %}
         {% else %}
-            {{ 'index.display.noFootballers' |trans }}
-        {% endfor %}
+            {{ 'index.display.noHomeTeam' |trans }}
+        {% endif %}
 
         <!-- Budowanie drugiej drużyny -->
-        {{ game.gameTeams[1].club.name }}
-        <img height="50" width="50" src="{{ vich_uploader_asset(game.gameTeams[1].club, 'imageFile') }}">
-        {% for gamesquad in game.gameTeams[1].gameTeamSquads %}
-            {{ gamesquad.number }}
-            {{ gamesquad.footballer.name }}
-            {{ gamesquad.footballer.surname }}
-            {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+        {% if game.awayTeam %}
+            {{ game.awayTeam.club.name }}
+            <img height="50" width="50" src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
+            {% for gamesquad in game.awayTeam.gameTeamSquads %}
+                {{ gamesquad.number }}
+                {{ gamesquad.footballer.name }}
+                {{ gamesquad.footballer.surname }}
+                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+            {% else %}
+                {{ 'index.display.noFootballers' |trans }}
+            {% endfor %}
         {% else %}
-            {{ 'index.display.noFootballers' |trans }}
-        {% endfor %}
+            {{ 'index.display.noAwayTeam' |trans }}
+        {% endif %}
 
         <!-- eventy w danym zakonczonym meczu -->
         {% for event in game.events|reverse %}
@@ -53,8 +61,7 @@
                 </div>
             </form>
         </div>
-        <br/>
-        {{ app.user.username }}<br/>
+
         <!-- komentarze -->
         {{ 'index.display.comments'|trans }}
         <div id="comments">
