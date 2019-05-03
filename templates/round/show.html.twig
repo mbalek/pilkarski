@@ -17,36 +17,136 @@
         <ul class="nav nav-tabs md-tabs" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#upcomingmatches" role="tab">{{ 'game.display.upcomingGames'|trans }}</a>
-                <div class="slide"></div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#livematches" role="tab">{{ 'game.display.liveGames'|trans }}</a>
-                <div class="slide"></div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#finishedmatches" role="tab">{{ 'game.display.finishedGames'|trans }}</a>
-                <div class="slide"></div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#deactivatedmatches" role="tab">{{ 'game.display.deactivatedGames'|trans }}</a>
             </li>
         </ul>
 
-        <div class="tab-content border">
+        <div class="tab-content">
 
             <div class="tab-pane active" id="upcomingmatches" role="tabpanel">
-                <table class="table-hover">
-                    <thead>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
-
+                            <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                            <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                            <th>{{ 'game.fields.round' |trans }}</th>
+                            <th>{{ 'game.fields.date' |trans }}</th>
+                            <th>{{ 'global.actions.global' |trans }}</th>
                         </tr>
-                    </thead>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for game in round.games if game.status == 3 %}
+                            <tr>
+                            <td>{{ game.homeTeam.club.name }}</td>
+                            <td>{{ game.awayTeam.club.name }}</td>
+                            <td>{{ game.round }}</td>
+                            <td>{{ game.gameDateTime|date }}</td>
+                            <td></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="tab-pane" id="livematches" role="tabpanel">
-
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                        <th>{{ 'game.fields.round' |trans }}</th>
+                        <th>{{ 'game.fields.date' |trans }}</th>
+                        <th>{{ 'global.actions.global' |trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for game in round.games if game.status == 2 %}
+                        <tr>
+                        <td>{{ game.homeTeam.club.name }}</td>
+                        <td>{{ game.awayTeam.club.name }}</td>
+                        <td>{{ game.round }}</td>
+                        <td>{{ game.gameDateTime|date }}</td>
+                        <td></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
             <div class="tab-pane" id="finishedmatches" role="tabpanel">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                        <th>{{ 'game.fields.round' |trans }}</th>
+                        <th>{{ 'game.fields.date' |trans }}</th>
+                        <th>{{ 'global.actions.global' |trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for game in round.games if game.status == 1 %}
+                        <tr>
+                        <td>{{ game.homeTeam.club.name }}</td>
+                        <td>{{ game.awayTeam.club.name }}</td>
+                        <td>{{ game.round }}</td>
+                        <td>{{ game.gameDateTime|date }}</td>
+                        <td></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
+            <div class="tab-pane" id="deactivatedmatches" role="tabpanel">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                        <th>{{ 'game.fields.round' |trans }}</th>
+                        <th>{{ 'game.fields.date' |trans }}</th>
+                        <th>{{ 'global.actions.global' |trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for game in round.games if game.status == 0 %}
+                        <tr>
+                        <td>{{ game.homeTeam.club.name }}</td>
+                        <td>{{ game.awayTeam.club.name }}</td>
+                        <td>{{ game.round }}</td>
+                        <td>{{ game.gameDateTime|date }}</td>
+                        <td></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
         </div>

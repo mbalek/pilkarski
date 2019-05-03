@@ -46,14 +46,14 @@ class Game
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam")
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", cascade={"persist"})
      * @ORM\JoinColumn(name="home_team_id", referencedColumnName="id")
      */
     private $homeTeam;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam")
+     * @ORM\OneToOne(targetEntity="App\Entity\GameTeam", cascade={"persist"})
      * @ORM\JoinColumn(name="away_team_id", referencedColumnName="id")
      */
     private $awayTeam;
