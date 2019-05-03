@@ -139,4 +139,67 @@ class GameController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/usercomment/delete" , name="user_comment_delete_ajax" , methods={"GET","POST"})
+     */
+    public function deleteComment(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $commentId = $request->get('commentId');
+
+            $em = $this->getDoctrine()->getManager();
+            $comment=$em->getRepository(Comment::class)->find($commentId);
+            $em->remove($comment);
+            $em->flush();
+
+            $encoders = [
+                new JsonEncoder(),
+            ];
+            $normalizers = [
+                new ObjectNormalizer(),
+            ];
+            $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+            $data = $serializer->serialize($commentId , 'json');
+
+            return new JsonResponse($data, 200, [],true);
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
+    }
+
+    /**
+     * @Route("/usercomment/replace" , name="user_comment_edit_ajax" , methods={"GET","POST"})
+     */
+    public function editComment(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $commentId = $request->get('commentId');
+            $description = $request->get('description');
+
+            $em = $this->getDoctrine()->getManager();
+            $comment = $em->getRepository(Comment::class)->find($commentId);
+            $comment->setDescription($description);
+            $em->flush();
+
+            $encoders = [
+                new JsonEncoder(),
+            ];
+            $normalizers = [
+                (new ObjectNormalizer())->setIgnoredAttributes(['game']),
+            ];
+            $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+            $data = $serializer->serialize($comment , 'json');
+
+            return new JsonResponse($data, 200, [],true);
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
+    }
+
 }

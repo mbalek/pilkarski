@@ -243,5 +243,5 @@ class Game
         $this->awayTeam = $awayTeam;
         return $this;
     }
-    
+
 }
