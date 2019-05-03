@@ -27,11 +27,6 @@ class GameTeam
     private $club;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Game", inversedBy="gameTeams")
-     */
-    private $game;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dictionary\Formation", inversedBy="gameTeams")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -60,18 +55,6 @@ class GameTeam
     public function setClub(?Club $club): self
     {
         $this->club = $club;
-
-        return $this;
-    }
-
-    public function getGame(): ?Game
-    {
-        return $this->game;
-    }
-
-    public function setGame(?Game $game): self
-    {
-        $this->game = $game;
 
         return $this;
     }
