@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Club;
+use App\Entity\Footballer;
 use App\Entity\GameTeam;
 use App\Entity\Game;
 use App\Entity\GameTeamSquad;
 use App\Form\GameTeamType;
 use App\Repository\GameTeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/gameteam")
@@ -28,7 +33,7 @@ class GameTeamController extends AbstractController
     }
 
     /**
-     * @Route("/add", name="game_team_new", methods={"GET","POST"})
+     * @Route("/new", name="game_team_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -42,7 +47,13 @@ class GameTeamController extends AbstractController
 
 
         $player1 = new GameTeamSquad();
+        $player2 = new GameTeamSquad();
+        $player3 = new GameTeamSquad();
+        $player4 = new GameTeamSquad();
         $gameTeam->getGameTeamSquads()->add($player1);
+        $gameTeam->getGameTeamSquads()->add($player2);
+        $gameTeam->getGameTeamSquads()->add($player3);
+        $gameTeam->getGameTeamSquads()->add($player4);
 
 
 
@@ -52,9 +63,9 @@ class GameTeamController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            /*$entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($gameTeam);
-            $entityManager->flush();
+            $entityManager->flush();*/
 
             return $this->redirectToRoute('game_team_index');
         }
@@ -109,5 +120,35 @@ class GameTeamController extends AbstractController
         }
 
         return $this->redirectToRoute('game_team_index');
+    }
+
+    /**
+     * @Route("/load/footballer", name="game_team_load_footballer" , methods={"GET","POST"})
+     */
+    public function loadFootballer(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $clubid = $request->get('clubId');
+            $em = $this->getDoctrine()->getManager();
+            $club = $em->getRepository(Club::class)->find($clubid);
+            $footballers = $em->getRepository(Footballer::class)->findBy(array('club' => $club->getId()));
+
+            $encoders = [
+                new JsonEncoder(),
+            ];
+            $normalizers = [
+                (new ObjectNormalizer())->setIgnoredAttributes(['imageFile' , 'image' , 'gameTeamSquads',
+                    'country' , 'club' , 'position']),
+            ];
+            $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+            $data = $serializer->serialize($footballers , 'json');
+
+            return new JsonResponse($data, 200, [],true);
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\GameTeam;
+use App\Entity\GameTeamSquad;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +18,11 @@ class GameTeamType extends AbstractType
             ->add('formation')
             ->add('gameTeamSquads', CollectionType::class, [
                 'entry_type' => GameTeamSquadType::class,
-                'entry_options' => ['label' => false]
+                'entry_options' => ['label' => false],
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
     }
