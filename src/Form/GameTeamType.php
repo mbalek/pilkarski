@@ -18,7 +18,11 @@ class GameTeamType extends AbstractType
             ->add('formation')
             ->add('gameTeamSquads', CollectionType::class, [
                 'entry_type' => GameTeamSquadType::class,
-                'entry_options' => ['label' => false]
+                'entry_options' => ['label' => false],
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
     }

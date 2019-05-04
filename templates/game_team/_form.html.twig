@@ -1,4 +1,15 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.club) }}
+    {{ form_row(form.formation) }}
+
+<h3>gameTeamSquads</h3>
+<ul class="gameTeamSquads">
+    {% for gameTeamSquad in form.gameTeamSquads %}
+        <li>{{ form_row(gameTeamSquad.isReserve) }}</li>
+        <li>{{ form_row(gameTeamSquad.isCaptain) }}</li>
+        <li>{{ form_row(gameTeamSquad.number) }}</li>
+        <li>{{ form_row(gameTeamSquad.footballer) }}</li>
+    {% endfor %}
+</ul>
 {{ form_end(form) }}
+

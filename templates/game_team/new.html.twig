@@ -9,3 +9,52 @@
 
     <a href="{{ path('game_team_index') }}">back to list</a>
 {% endblock %}
+
+{% block customJavaScript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let selectedval = $("#game_team_club").children("option:selected").val();
+            loadFootballers(selectedval);
+        });
+
+        $('#game_team_club').on('change' , function () {
+            let selectedval = $("#game_team_club").children("option:selected").val();
+            loadFootballers(selectedval);
+        });
+
+        function loadFootballers(value) {
+            let url = '{{ path('game_team_load_footballer') }}';
+            console.log(url);
+            console.log(value);
+            $.ajax({
+                url: url,
+                dataType: "JSON",
+                data: {
+                    clubId: value,
+                },
+                success: function (response) {
+                    let select = document.getElementsByClassName("dropdown-with-footballers");
+                    console.log(response);
+                    for(let i = 0; i<select.length; i++)
+                    {
+                        while(select[i].options.length > 0){
+                            select[i].remove(0);
+                        }
+
+                        for(let j = 0; j<response.length; j++){
+                            let option = document.createElement('option');
+                            option.value = response[j].id;
+                            option.innerHTML = response[j].name + ' ' + response[j].surname;
+                            select[i].appendChild(option);
+                        }
+                    }
+                    console.log(response.length);
+                },
+                error:function () {
+                    console.log('error');
+                }
+            })
+        };
+
+    </script>
+{% endblock %}

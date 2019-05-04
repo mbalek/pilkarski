@@ -16,10 +16,6 @@
         {% for game_team in game_teams %}
             <tr>
                 <td>{{ game_team.id }}</td>
-                <td>
-                    <a href="{{ path('game_team_show', {'id': game_team.id}) }}">show</a>
-                    <a href="{{ path('game_team_edit', {'id': game_team.id}) }}">edit</a>
-                </td>
             </tr>
         {% else %}
             <tr>
