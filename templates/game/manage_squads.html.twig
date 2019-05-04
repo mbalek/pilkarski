@@ -1,0 +1,74 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}New Game{% endblock %}
+
+{% block templateCss %}
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card-header">
+        <h3><span class="text-primary">Zarządzanie składami</span> / <span
+                    class="text-secondary">{{ game.homeTeam.club.name }} - {{ game.awayTeam.club.name }}</span></h3>
+        <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        {{ form_start(form) }}
+
+
+        <div>
+            {{ form_errors(form) }}
+        </div>
+
+        {# ========== Hidden inputs ========== #}
+
+        <div class="hidden">
+            {{ form_row(form.gameDateTime) }}
+            {{ form_row(form.status) }}
+            {{ form_row(form.round) }}
+            {{ form_row(form.description) }}
+        </div>
+
+        {# ========== Team panels  ========== #}
+
+
+        <div class="row p-1 m-1">
+            <div class="col-sm-12 col-md-5 m-2 border">
+                <h4 class="border-bottom text-center">{{ game.homeTeam.club.name }} </h4>
+                {{ form_start(form.homeTeam) }}
+                <div class="hidden">
+                    {{ form_row(form.homeTeam.club) }}
+                </div>
+                <h3>gameTeamSquads</h3>
+                <ul class="gameTeamSquads">
+                    {% for gameTeamSquad in form.homeTeam.gameTeamSquads %}
+                        <li>{{ form_row(gameTeamSquad.isReserve) }}</li>
+                        <li>{{ form_row(gameTeamSquad.isCaptain) }}</li>
+                        <li>{{ form_row(gameTeamSquad.number) }}</li>
+                        <li>{{ form_row(gameTeamSquad.footballer) }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form_end(form.homeTeam) }}
+            </div>
+
+            <div class="col-sm-12 col-md-5 m-2 border pull-right">
+                {{ form_row(form.awayTeam) }}
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Zatwierdź</button>
+
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

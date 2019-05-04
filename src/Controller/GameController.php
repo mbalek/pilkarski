@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Footballer;
 use App\Entity\Game;
+use App\Entity\GameTeamSquad;
 use App\Entity\League;
 use App\Entity\User;
 use App\Form\GameType;
@@ -199,6 +201,47 @@ class GameController extends AbstractController
         return new JsonResponse([
             'type' => 'error',
             'message' => 'AJAX only'
+        ]);
+    }
+
+    /**
+     * @Route("/manageSquads/{id}" , name="game_manage_squads" , methods={"GET","POST"})
+     */
+    public function manageSquads($id, Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $game = $entityManager->getRepository(Game::class)->find($id);
+
+        //Squad Shit
+        if(sizeof($game->getHomeTeam()->getGameTeamSquads()) < 11) {
+
+            foreach($game->getHomeTeam()->getGameTeamSquads() as $existingSquad) {
+                $game->getHomeTeam()->removeGameTeamSquad($existingSquad);
+            }
+
+            for($i = 0; $i < 11; $i++) {
+              $player = new GameTeamSquad();
+              $player->setIsReserve(false);
+              $game->getHomeTeam()->addGameTeamSquad($player);
+            }
+
+        }
+
+
+        //Form handle shit
+        $form = $this->createForm(GameType::class, $game);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($game);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('game_index');
+        }
+
+        return $this->render('game/manage_squads.html.twig', [
+            'game' => $game,
+            'form' => $form->createView(),
         ]);
     }
 

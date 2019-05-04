@@ -33,7 +33,7 @@ class GameTeam
     private $formation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GameTeamSquad", mappedBy="gameTeam")
+     * @ORM\OneToMany(targetEntity="App\Entity\GameTeamSquad", mappedBy="gameTeam", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $gameTeamSquads;
 
