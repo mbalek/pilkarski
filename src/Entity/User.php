@@ -57,6 +57,12 @@ class User extends BaseUser implements SoftDeleteable
      */
     private $moderatingLeague;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->roles = array('ROLE_USER');
+    }
+
     /**
      * @return int
      */
