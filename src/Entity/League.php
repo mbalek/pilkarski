@@ -43,12 +43,18 @@ class League
      */
     private $rounds;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="moderatingLeague")
+     */
+    private $Users;
+
 
 
     public function __construct()
     {
         $this->clubs = new ArrayCollection();
         $this->rounds = new ArrayCollection();
+        $this->Users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,5 +151,36 @@ class League
     public function __toString()
     {
      return $this->getName();
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->Users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->Users->contains($user)) {
+            $this->Users[] = $user;
+            $user->setModeratingLeague($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->Users->contains($user)) {
+            $this->Users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getModeratingLeague() === $this) {
+                $user->setModeratingLeague(null);
+            }
+        }
+
+        return $this;
     }
 }

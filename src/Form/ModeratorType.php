@@ -1,16 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Ikki
+ * Date: 10.05.2019
+ * Time: 11:22
+ */
 
 namespace App\Form;
 
+
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
 
-class UserType extends AbstractType
+class ModeratorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -29,6 +34,9 @@ class UserType extends AbstractType
             ])
             ->add('lastName', null, [
                 'label' => 'user.fields.lastName'
+            ])
+            ->add('moderatingLeague' , null , [
+                'label' => 'user.fields.moderatingLeague'
             ])
         ;
     }
