@@ -53,6 +53,11 @@ class User extends BaseUser implements SoftDeleteable
     protected $isSystem = false;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\League", inversedBy="Users")
+     */
+    private $moderatingLeague;
+
+    /**
      * @return int
      */
     public function getId()
@@ -113,4 +118,29 @@ class User extends BaseUser implements SoftDeleteable
         $this->isSystem = $isSystem;
         return $this;
     }
+
+    public function getModeratingLeague(): ?League
+    {
+        return $this->moderatingLeague;
+    }
+
+    public function setModeratingLeague(?League $moderatingLeague): self
+    {
+        $this->moderatingLeague = $moderatingLeague;
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+
+
+        return array_unique($roles);
+    }
+
 }
