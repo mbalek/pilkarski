@@ -15,7 +15,6 @@
                         <p>
                             <a href="{{ path('user_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
                         </p>
-                        <div id="isChecked" data-is-checked="{{ check|json_encode }}"></div>
                     </div>
                 </div>
             </div>
@@ -23,10 +22,21 @@
     </div>
 
 {% endblock %}
-{% block javascripts %}
-    <script type="text/javascript">
+{% block customJavaScript %}
+    <script>
         $(document).ready(function () {
-            document.getElementById('user_isAdmin').checked = true;
-        })
+            let role = '{{ user.roles[0] }}';
+            let select = document.getElementById('edit_user_permissions');
+            let opts = document.getElementById('edit_user_permissions').getElementsByTagName('option');
+            console.log(opts);
+            for (let i=0; opts.length; i++){
+                if(opts[i].value == role){
+                    select.selectedIndex = i;
+                    console.log(i,'tutaj');
+                }
+            }
+            console.log(role);
+        });
     </script>
 {% endblock %}
+

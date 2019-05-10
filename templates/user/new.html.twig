@@ -9,7 +9,14 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
                     <div class="basic-tb-hd">
-                        <h2>{{ 'user.display.newUser' |trans }}</h2>
+                        <h2>{% if type == 1 %}
+                                {{ 'user.display.newAdmin' |trans }}
+                            {% elseif type == 2 %}
+                                {{ 'user.display.newModerator' |trans }}
+                            {% else %}
+                                {{ 'user.display.newUser' |trans }}
+                            {% endif %}
+                        </h2>
                     </div>
                         {{ include('user/_form.html.twig') }}
                     <p>

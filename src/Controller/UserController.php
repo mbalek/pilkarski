@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\EditUserType;
+use App\Form\ModeratorType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,19 +21,24 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        $users = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findAll();
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+        $role = $roles[0];
+            $users = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findAll();
+
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'role' => $role,
         ]);
     }
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @Route("/new/administrator", name="user_new_admin", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function newAdmin(Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -39,15 +46,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $data = $form->get("isAdmin")->getData();
-            if ($data)
-            {
-                $user->addRole("ROLE_ADMIN");
-            }
-            else
-            {
-                $user->addRole("ROLE_USER");
-            }
+            $user->addRole('ROLE_ADMIN');
             $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();
@@ -58,6 +57,33 @@ class UserController extends AbstractController
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'type' => $request->get('type'),
+        ]);
+    }
+
+    /**
+     * @Route("/new/moderator", name="user_new_moderator", methods={"GET","POST"})
+     */
+    public function newModerator(Request $request): Response
+    {
+        $user = new User();
+        $form = $this->createForm(ModeratorType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user->addRole("ROLE_MODERATOR");
+            $user->setEnabled(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render('user/new.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+            'type' => $request->get('type'),
         ]);
     }
 
@@ -76,29 +102,18 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
-        $check = false;
-        foreach ($user->getRoles() as $role)
-        {
-            if ($role == "ROLE_ADMIN"){
-                $check=true;
-            }
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->get("isAdmin")->getData();
-            if ($data)
+            $selected = $form->get('permissions')->getData();
+            $roles = $user->getRoles();
+            if($roles[0] != $selected)
             {
-                $user->addRole("ROLE_ADMIN");
-            }
-            else
-            {
-                $user->removeRole("ROLE_ADMIN");
-                $user->addRole("ROLE_USER");
+                $user->addRole($selected);
+                $user->removeRole($roles[0]);
             }
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('user_index', [
                 'id' => $user->getId(),
             ]);
@@ -107,7 +122,6 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            'check' => $check,
         ]);
     }
 
