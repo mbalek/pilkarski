@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
  * @Route("/footballer")
  */
 class FootballerController extends AbstractController
