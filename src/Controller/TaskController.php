@@ -9,8 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_ADMIN" , message="Error 404, no permissions")
  * @Route("/task")
  */
 class TaskController extends AbstractController
@@ -26,6 +28,7 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN" , message="Error 404, no permissions")
      * @Route("/new", name="task_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -60,6 +63,7 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN" , message="Error 404, no permissions")
      * @Route("/{id}/edit", name="task_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Task $task): Response
@@ -83,6 +87,7 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN" , message="Error 404, no permissions")
      * @Route("/{id}", name="task_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Task $task): Response

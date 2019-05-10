@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_ADMIN" , message="Error 404, no permissions")
  * @Route("/user")
  */
 class UserController extends AbstractController
@@ -47,6 +49,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->addRole('ROLE_ADMIN');
+            $user->removeRole('ROLE_USER');
             $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();
@@ -73,6 +76,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->addRole("ROLE_MODERATOR");
+            $user->removeRole('ROLE_USER');
             $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();

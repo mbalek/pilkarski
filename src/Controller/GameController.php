@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/game")
@@ -24,6 +25,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class GameController extends AbstractController
 {
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/", name="game_index", methods={"GET"})
      */
     public function index(GameRepository $gameRepository): Response
@@ -34,6 +36,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/new", name="game_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -57,6 +60,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/show/{id}", name="game_show", methods={"GET"})
      */
     public function show(Game $game): Response
@@ -67,6 +71,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/{id}/edit", name="game_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Game $game): Response
@@ -89,6 +94,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/{id}", name="game_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Game $game): Response
@@ -103,6 +109,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER" , message="Error 404, no permissions")
      * @Route("/usercomment/new" , name="user_comment_new_ajax" , methods={"GET","POST"})
      */
     public function addComment(Request $request)
@@ -142,6 +149,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER" , message="Error 404, no permissions")
      * @Route("/usercomment/delete" , name="user_comment_delete_ajax" , methods={"GET","POST"})
      */
     public function deleteComment(Request $request)
@@ -173,6 +181,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER" , message="Error 404, no permissions")
      * @Route("/usercomment/replace" , name="user_comment_edit_ajax" , methods={"GET","POST"})
      */
     public function editComment(Request $request)
@@ -205,6 +214,7 @@ class GameController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
      * @Route("/manageSquads/{id}" , name="game_manage_squads" , methods={"GET","POST"})
      */
     public function manageSquads($id, Request $request)

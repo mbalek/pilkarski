@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
  * @Route("/league")
  */
 class LeagueController extends AbstractController
@@ -19,14 +21,31 @@ class LeagueController extends AbstractController
     /**
      * @Route("/", name="league_index", methods={"GET"})
      */
-    public function index(LeagueRepository $leagueRepository): Response
+    public function index(): Response
     {
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+        $role = $roles[0];
+        $em = $this->getDoctrine()->getManager();
+
+        if($role == "ROLE_MODERATOR")
+        {
+            $leag = $user->getModeratingLeague();
+            $leagues = $em->getRepository(League::class)->findBy(array('id' => $leag->getId()));
+        }
+        else
+        {
+            $leagues = $em->getRepository(League::class)->findAll();
+        }
+
         return $this->render('league/index.html.twig', [
-            'leagues' => $leagueRepository->findAll(),
+            'leagues' => $leagues,
+            'username' => $user->getUsername(),
         ]);
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN" , message="Error 404, no permissions")
      * @Route("/new", name="league_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -64,6 +83,7 @@ class LeagueController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN" , message="Error 404, no permissions")
      * @Route("/{id}/edit", name="league_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, League $league): Response
@@ -86,6 +106,7 @@ class LeagueController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN" , message="Error 404, no permissions")
      * @Route("/{id}", name="league_delete", methods={"DELETE"})
      */
     public function delete(Request $request, League $league): Response

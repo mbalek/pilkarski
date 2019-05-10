@@ -5,8 +5,10 @@
 {% block body %}
     <h3 class="card-header">{{ 'league.display.leagueList' |trans }}</h3>
     <div class="p-2">
+        {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('league_new') }}" class="btn btn-success"><i
                     class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</a>
+        {% endif %}
     </div>
     <div class="table-responsive">
         <table class="table table-hover">
