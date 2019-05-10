@@ -33,8 +33,8 @@ class GameType extends AbstractType
             ->add('round')
             ->add('description')
 
-            ->add('homeTeam', GameTeamTypeSimple::class)
-            ->add('awayTeam', GameTeamTypeSimple::class)
+            ->add('homeTeam', GameTeamType::class)
+            ->add('awayTeam', GameTeamType::class)
 
 
         ;

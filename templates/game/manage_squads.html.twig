@@ -47,17 +47,24 @@
                 <div class="hidden">
                     {{ form_row(form.homeTeam.club) }}
                 </div>
-                <h3>gameTeamSquads</h3>
+
+                {{ form_row(form.homeTeam.formation) }}
+
                 <ul class="gameTeamSquads">
                     {% for gameTeamSquad in form.homeTeam.gameTeamSquads %}
-                        <li>{{ form_row(gameTeamSquad.isReserve) }}</li>
-                        <li>{{ form_row(gameTeamSquad.isCaptain) }}</li>
-                        <li>{{ form_row(gameTeamSquad.number) }}</li>
-                        <li>{{ form_row(gameTeamSquad.footballer) }}</li>
+                        <li class="border-bottom">
+                            <div class="row">
+                                <div class="hidden">{{ form_row(gameTeamSquad.isReserve) }}</div>
+                                <div>{{ form_row(gameTeamSquad.isCaptain) }}</div>
+                                <div> {{ form_row(gameTeamSquad.number) }}</div>
+                                <div>{{ form_row(gameTeamSquad.footballer) }}</div>
+                            </div>
+                        </li>
                     {% endfor %}
                 </ul>
+
                 {{ form_end(form.homeTeam) }}
-            </div>
+            </div>git
 
             <div class="col-sm-12 col-md-5 m-2 border pull-right">
                 {{ form_row(form.awayTeam) }}

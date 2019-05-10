@@ -225,6 +225,12 @@ class GameController extends AbstractController
               $game->getHomeTeam()->addGameTeamSquad($player);
             }
 
+            for($i = 0; $i < 7; $i++) {
+                $player = new GameTeamSquad();
+                $player->setIsReserve(true);
+                $game->getHomeTeam()->addGameTeamSquad($player);
+            }
+
         }
 
 
