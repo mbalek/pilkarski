@@ -8,6 +8,7 @@ use App\Entity\Game;
 use App\Entity\GameTeamSquad;
 use App\Entity\League;
 use App\Entity\User;
+use App\Form\GameManageSquadsType;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -222,20 +223,44 @@ class GameController extends AbstractController
             for($i = 0; $i < 11; $i++) {
               $player = new GameTeamSquad();
               $player->setIsReserve(false);
+                $player->setNumber(99);
               $game->getHomeTeam()->addGameTeamSquad($player);
             }
 
             for($i = 0; $i < 7; $i++) {
                 $player = new GameTeamSquad();
                 $player->setIsReserve(true);
+                $player->setNumber(99);
                 $game->getHomeTeam()->addGameTeamSquad($player);
+            }
+
+        }
+
+        if(sizeof($game->getAwayTeam()->getGameTeamSquads()) < 11) {
+
+            foreach($game->getAwayTeam()->getGameTeamSquads() as $existingSquad) {
+                $game->getAwayTeam()->removeGameTeamSquad($existingSquad);
+            }
+
+            for($i = 0; $i < 11; $i++) {
+                $player = new GameTeamSquad();
+                $player->setIsReserve(false);
+                $player->setNumber(99);
+                $game->getAwayTeam()->addGameTeamSquad($player);
+            }
+
+            for($i = 0; $i < 7; $i++) {
+                $player = new GameTeamSquad();
+                $player->setIsReserve(true);
+                $player->setNumber(99);
+                $game->getAwayTeam()->addGameTeamSquad($player);
             }
 
         }
 
 
         //Form handle shit
-        $form = $this->createForm(GameType::class, $game);
+        $form = $this->createForm(GameManageSquadsType::class, $game);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
