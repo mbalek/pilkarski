@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GameType extends AbstractType
+class GameManageSquadsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -21,7 +21,6 @@ class GameType extends AbstractType
 
                 // prevents rendering it as type="date", to avoid HTML5 date pickers
                 'html5' => true,
-                'attr' => ['class' => 'js-datepicker']
             ])
             ->add('status', ChoiceType::class, [
                 'choices'  => [
@@ -34,9 +33,9 @@ class GameType extends AbstractType
             ->add('round')
             ->add('description')
 
-            ->add('homeTeam', GameTeamTypeSimple::class)
-            ->add('awayTeam', GameTeamTypeSimple::class)
-            ->add('save', SubmitType::class, ['label' => 'Add Game'])
+            ->add('homeTeam', GameTeamType::class)
+            ->add('awayTeam', GameTeamType::class)
+            ->add('save', SubmitType::class, ['label' => 'Update Squads'])
 
 
         ;
