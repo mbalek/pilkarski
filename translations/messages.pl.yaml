@@ -14,11 +14,14 @@ global:
     save: 'Zatwierdź'
     list: 'Lista'
     new: 'Dodaj'
+    logout: 'Wyloguj'
   noRecords: 'Brak wyników'
 
 dictionary:
   display:
     dictionary: 'Słowniki'
+    users: 'Użytkownicy'
+    tasks: 'Zadania'
 
 position:
   display:
@@ -27,9 +30,15 @@ position:
     newPosition: 'Dodaj pozycje'
   fields:
     name: 'Nazwa'
+    shortName: 'Skrót'
 
 events:
-  display: 'Wydarzenia meczu'
+  display:
+    eventsType: 'Wydarzenia meczu'
+  fields:
+    eventTime: 'Czas wydarzenia'
+    eventType: 'Typ wydarzenia'
+
 
 eventType:
   display:
@@ -70,7 +79,11 @@ user:
     editUser: 'Edytuj użytkownika'
     userList: 'Lista użytkowników'
     newUser: 'Dodaj użytkownika'
+    newModerator: 'Dodaj moderatora'
+    newAdministrator: 'Dodaj administratora'
+    newAdmin: 'Dodaj administratora'
   fields:
+    moderatingLeague: 'Liga, którą będzie obsługiwał'
     firstName: 'Imię'
     lastName: 'Nazwisko'
     username: 'Login'
@@ -92,6 +105,7 @@ league:
   fields:
     name: 'Nazwa'
     country: 'Kraj'
+    logo: 'Logo'
 
 club:
   display:
@@ -100,6 +114,7 @@ club:
     newClub: 'Dodaj klub'
     baseInformation: 'Podstawowe informacje'
     footballers: 'Piłkarze'
+    selClub: 'Klub'
   fields:
     name: 'Nazwa'
     city: 'Miasto'
@@ -142,10 +157,53 @@ game:
     liveGames: 'Trwające mecze'
     upcomingGames: 'Nadchodzące mecze'
     deactivatedGames: "Mecze niekatywne"
+    addGame: 'Dodaj mecz'
   status:
     deactivated: "Nieaktywny"
     live: "Trwający"
     upcoming: "Nadchodzący"
     finished: "Zakończony"
+  fields:
+    homeTeam: 'Gospodarze'
+    awayTeam: 'Goście'
+    round: 'Kolejka'
+    date: 'Data'
 
+format:
+  fields:
+    name: 'Nazwa'
+
+gameManageSquads:
+  fields:
+    gameDateTime: 'Czas rozpoczęcia meczu'
+    status: 'Status'
+    description: 'Opis'
+    homeTeam: 'Gospodoarze'
+    awayTeam: 'Goście'
+    updateSquads: 'Uaktualnij składy'
+    deactivated: 'Nieaktywny'
+    finished: 'Zakończony'
+    live: 'Na żywo'
+    upcoming: 'Nadchodzący'
+
+topbar:
+  user:
+    myMatches: 'Moje mecze'
+    myComments: 'Moje komentarze'
+
+index:
+  display:
+    homepage: 'Strona główna'
+    liveMatches: 'Mecze na żywo'
+    league: 'Liga'
+    round: 'Kolejka'
+    datetime: 'Data meczu'
+    noFootballers: 'Brak przypisanych piłkarzy'
+    noHomeTeam: 'Nie przypisano gospodarzy'
+    noAwayTeam: 'Nie przypisano gości'
+    noEvents: 'Brak wydarzeń'
+    ableToAddComments: 'Aby móc dodawać komentarze, zaloguj się!'
+    comments: 'Komentarze'
+    confirm: 'Potwierdź'
+    details: 'Szczegóły'
 

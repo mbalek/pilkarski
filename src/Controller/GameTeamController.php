@@ -19,6 +19,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
+ * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
  * @Route("/gameteam")
  */
 class GameTeamController extends AbstractController

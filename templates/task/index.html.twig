@@ -1,6 +1,6 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}Task index{% endblock %}
+{% block title %}{{ 'task.display.taskList'|trans }}{% endblock %}
 
 {% block body %}
     <div class="data-table-area">
@@ -10,8 +10,10 @@
                     <div class="data-table-list">
                         <div class="basic-tb-hd">
                             <h2>{{ 'task.display.taskList'|trans }}</h2>
+                            <div class="p-2">
                             <a href="{{ path('task_new') }}">
-                                <button class="btn btn-warning btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
+                                <button class="btn btn-success"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table id="data-table-basic" class="table table-striped">

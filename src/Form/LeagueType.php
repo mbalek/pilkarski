@@ -12,8 +12,12 @@ class LeagueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('country')
+            ->add('name', null, [
+                'label' => 'league.fields.name'
+            ])
+            ->add('country', null, [
+                'label' => 'league.fields.country'
+            ])
         ;
     }
 

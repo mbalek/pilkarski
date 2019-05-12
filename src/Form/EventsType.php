@@ -12,10 +12,12 @@ class EventsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('eventTime')
-            ->add('eventType')
-            ->add('matchId')
-            ->add('footballer')
+            ->add('eventTime', null, [
+                'label' => 'events.fields.eventTime'
+            ])
+            ->add('eventType', null, [
+                'label' => 'events.fields.eventType'
+            ])
         ;
     }
 

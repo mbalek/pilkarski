@@ -6,10 +6,10 @@
                     <div class="data-table-list">
                         <div class="basic-tb-hd">
                             <h2>{{ 'footballer.display.footballer' |trans }}</h2>
-                            <p>
+                            <div class="p-2">
                                 <a href="{{ path('footballer_new' , {'club': club , 'league':league.id}) }}">
-                                    <button class="btn btn-warning btn-block"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
-                            </p>
+                                    <button class="btn btn-success"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table id="data-table-basic" class="table table-striped">
