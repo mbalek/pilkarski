@@ -26,21 +26,9 @@
 <body>
 
 <!-- panel od nawigacji bedzie gdzies tu -->
-
-<a href=" {{  path('index') }}">{{ 'index.display.homepage' |trans }}</a>
-<div class="btn-group">
-<button type="button" data-toggle="dropdown"
-        class="">{{ 'index.display.league' |trans }}</button>
-        <div class="dropdown-menu">
-            {% for league in leagues %}
-                <a href=""
-                   class="dropdown-item">{{ league.name }}</a>
-            {% else %}
-            {% endfor %}
-        </div>
+<div class="dashboard-main-wrapper">
+    {% include 'topbar_user.html.twig' %}
 </div>
-
-<a href="{{ path('liveGames') }}">{{ 'index.display.liveMatches' |trans }}</a>
 
 {% block body %}
 {% endblock %}

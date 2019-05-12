@@ -1,10 +1,22 @@
 <div class="dashboard-header">
     <nav class="navbar navbar-expand-lg bg-white fixed-top">
-        <a href="{{ path('admin_panel') }}" class="navbar-brand">Pilkarski</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a href=" {{  path('index') }}">{{ 'index.display.homepage' |trans }}</a>
+        <div class="btn-group">
+            <button type="button" data-toggle="dropdown"
+                    class="">{{ 'index.display.league' |trans }}</button>
+            <div class="dropdown-menu">
+                {% for league in leagues %}
+                    <a href=""
+                       class="dropdown-item">{{ league.name }}</a>
+                {% else %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="{{ path('liveGames') }}">{{ 'index.display.liveMatches' |trans }}</a>
+
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            {% if app.user %}
             <ul class="navbar-nav ml-auto navbar-right-top">
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,12 +27,15 @@
                         <div class="nav-user-info">
                             <h5 class="mb-0 text-white nav-user-name">{{ app.user.username }}</h5>
                         </div>
-                        <!-- w tym linku będą mecze nadchodzące które może komentować dany mod -->
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>{{ 'topbar.user.myMatches' |trans }}</a>
+                        <!-- w tym linku będą komentarze danego uzytkownika -->
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>{{ 'topbar.user.myComments' |trans }}</a>
                         <a class="dropdown-item" href="./logout"><i class="fas fa-user mr-2"></i>{{ 'global.actions.logout' |trans }}</a>
                     </div>
                 </li>
             </ul>
+            {% else %}
+                <a class="" href="./login">{{ 'global.actions.login' |trans }}</a>
+            {% endif %}
         </div>
     </nav>
 </div>

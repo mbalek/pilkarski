@@ -21,21 +21,29 @@ class GameManageSquadsType extends AbstractType
 
                 // prevents rendering it as type="date", to avoid HTML5 date pickers
                 'html5' => true,
+                'label' => 'gameManageSquads.fields.gameDateTime'
             ])
             ->add('status', ChoiceType::class, [
                 'choices'  => [
-                    'Deactivated' => 0,
-                    'Finished' => 1,
-                    'Live' => 2,
-                    'Upcoming' => 3
+                    'gameManageSquads.fields.deactivated' => 0,
+                    'gameManageSquads.fields.finished' => 1,
+                    'gameManageSquads.fields.live' => 2,
+                    'gameManageSquads.fields.upcoming' => 3
                 ],
+                'label' => 'gameManageSquads.fields.status'
             ])
             ->add('round')
-            ->add('description')
+            ->add('description' , null, [
+                'label' => 'gameManageSquads.fields.description'
+            ])
 
-            ->add('homeTeam', GameTeamType::class)
-            ->add('awayTeam', GameTeamType::class)
-            ->add('save', SubmitType::class, ['label' => 'Update Squads'])
+            ->add('homeTeam', GameTeamType::class,[
+                'label' => 'gameManageSquads.fields.homeTeam'
+            ])
+            ->add('awayTeam', GameTeamType::class, [
+                'label' => 'gameManageSquads.fields.awayTeam'
+            ])
+            ->add('save', SubmitType::class, ['label' => 'gameManageSquads.fields.updateSquads'])
 
 
         ;

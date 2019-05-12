@@ -12,7 +12,9 @@ class GameTeamTypeSimple extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('club')
+            ->add('club', null, [
+                'label' => 'club.display.selClub'
+            ])
         ;
     }
 

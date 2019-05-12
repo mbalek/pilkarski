@@ -12,8 +12,12 @@ class PositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('shortName')
+            ->add('name', null, [
+                'label' => 'position.fields.name'
+            ])
+            ->add('shortName', null, [
+                'label' => 'position.fields.shortName'
+            ])
         ;
     }
 

@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 trait ModificationData
 {
     /**
@@ -15,7 +13,6 @@ trait ModificationData
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     protected $createdAt;
-
     /**
      * @var UserInterface
      *
@@ -24,7 +21,6 @@ trait ModificationData
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $createdBy;
-
     /**
      * @var \DateTime
      *
@@ -32,7 +28,6 @@ trait ModificationData
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updatedAt;
-
     /**
      * @var UserInterface
      *
@@ -41,14 +36,12 @@ trait ModificationData
      * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $updatedBy;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $changedAt;
-
     /**
      * @var UserInterface
      *
@@ -56,7 +49,6 @@ trait ModificationData
      * @ORM\JoinColumn(name="changed_by", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $changedBy;
-
     /**
      * @return \DateTimeImmutable
      */
@@ -64,7 +56,6 @@ trait ModificationData
     {
         return $this->createdAt;
     }
-
     /**
      * @param \DateTimeImmutable $createdAt
      * @return mixed
@@ -74,7 +65,6 @@ trait ModificationData
         $this->createdAt = $createdAt;
         return $this;
     }
-
     /**
      * @return UserInterface
      */
@@ -82,7 +72,6 @@ trait ModificationData
     {
         return $this->createdBy;
     }
-
     /**
      * @param UserInterface $createdBy
      * @return mixed
@@ -92,7 +81,6 @@ trait ModificationData
         $this->createdBy = $createdBy;
         return $this;
     }
-
     /**
      * @return \DateTime
      */
@@ -100,7 +88,6 @@ trait ModificationData
     {
         return $this->updatedAt;
     }
-
     /**
      * @param \DateTime $updatedAt
      * @return mixed
@@ -110,7 +97,6 @@ trait ModificationData
         $this->updatedAt = $updatedAt;
         return $this;
     }
-
     /**
      * @return UserInterface
      */
@@ -118,7 +104,6 @@ trait ModificationData
     {
         return $this->updatedBy;
     }
-
     /**
      * @param UserInterface $updatedBy
      * @return mixed
@@ -128,7 +113,6 @@ trait ModificationData
         $this->updatedBy = $updatedBy;
         return $this;
     }
-
     /**
      * @return \DateTime
      */
@@ -136,7 +120,6 @@ trait ModificationData
     {
         return $this->changedAt;
     }
-
     /**
      * @param \DateTime $changedAt
      * @return mixed
@@ -146,7 +129,6 @@ trait ModificationData
         $this->changedAt = $changedAt;
         return $this;
     }
-
     /**
      * @return UserInterface
      */
@@ -154,7 +136,6 @@ trait ModificationData
     {
         return $this->changedBy;
     }
-
     /**
      * @param UserInterface $changedBy
      * @return mixed
