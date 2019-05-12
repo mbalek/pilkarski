@@ -7,10 +7,9 @@
     <div class="card-header">
         <h3 class="font-light"><span class="text-primary">{{ round.league.name }}</span> / <span class="font-bold text-secondary">{{ round.name }}</span></h3>
         <div class="row ">
-            <a href="{{ path('game_new') }}" class="btn btn-primary">Dodaj mecz</a>
+            <a href="{{ path('game_new' , {'leagueId':round.league.id}) }}" class="btn btn-primary">Dodaj mecz</a>
         </div>
     </div>
-
 
 
     <div class="card-body">
