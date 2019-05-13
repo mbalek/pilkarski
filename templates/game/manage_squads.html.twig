@@ -6,12 +6,14 @@
     <style>
         .hidden {
             display: none;
-
-
         }
 
         tr.playerfield.first-squad > td {
-            border-bottom: solid 2px #5969ff !important;
+            /*border: dashed 3px #5969ff !important;*/
+        }
+
+        tr.playerfield.first-squad:last-child  > td {
+            border: dashed 3px #5969ff !important;
         }
 
         tr.playerfield.first-squad > td.position-name-field {
@@ -20,15 +22,13 @@
         }
 
         tr.playerfield.subs > td {
-            border-bottom: solid 2px #ff407b !important;
+            /*border: dashed 3px #ff407b !important;*/
         }
 
         tr.playerfield.subs > td.position-name-field {
             color: #ff407b !important;
             font-weight: bold;
         }
-
-
 
 
     </style>
@@ -48,7 +48,7 @@
         {{ form_start(form) }}
 
         <div class="row">
-            
+
             <div class="col-md-5">
                 <div class="my-2 py-2 border-bottom">
                     <div class="hidden"><label>Klub:</label>{{ form_widget(form.homeTeam.club) }}</div>
@@ -57,28 +57,29 @@
                 </div>
                 <table class="table table-bordered" id="squad-table-home">
                     <thead>
-                        <tr>
-                            <th>Pozycja</th>
-                            <th>Kapitan</th>
-                            <th>Numer</th>
-                            <th>Gracz</th>
-                        </tr>
-                    </thead>
-                {% for sm in form.homeTeam.gameTeamSquads %}
-                    {% set counter = ( counter | default(0) ) + 1 %}
-                    <tr class="border-bottom {{ (counter <= 11 ) ? 'playerfield first-squad' : 'playerfield subs' }}">
-                        <td class="position-name-field"></td>
-                        <td class="hidden">{{ form_widget(sm.isReserve) }}</td>
-                        <td class=""><div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
-                        <td class=""> {{ form_widget(sm.number) }}</td>
-                        <td class="">{{ form_widget(sm.footballer) }}</td>
+                    <tr>
+                        <th>Pozycja</th>
+                        <th>Kapitan</th>
+                        <th>Numer</th>
+                        <th>Gracz</th>
                     </tr>
-                {% endfor %}
+                    </thead>
+                    {% for sm in form.homeTeam.gameTeamSquads %}
+                        {% set counter = ( counter | default(0) ) + 1 %}
+                        <tr class="border-bottom {{ (counter <= 11 ) ? 'playerfield first-squad' : 'playerfield subs' }}">
+                            <td class="position-name-field"></td>
+                            <td class="hidden">{{ form_widget(sm.isReserve) }}</td>
+                            <td class="">
+                                <div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
+                            <td class=""> {{ form_widget(sm.number) }}</td>
+                            <td class="">{{ form_widget(sm.footballer) }}</td>
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
-            
+
             <div class="col-md-1"></div>
-            
+
             <div class="col-md-5">
                 <div class="my-2 py-2 border-bottom">
                     <div class="hidden"><label>Klub:</label>{{ form_widget(form.awayTeam.club) }}</div>
@@ -99,7 +100,8 @@
                         <tr class="border-bottom {{ (counter <= 11 ) ? 'playerfield first-squad' : 'playerfield subs' }}">
                             <td class="position-name-field"></td>
                             <td class="hidden">{{ form_widget(sm.isReserve) }}</td>
-                            <td class=""><div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
+                            <td class="">
+                                <div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
                             <td class=""> {{ form_widget(sm.number) }}</td>
                             <td class="">{{ form_widget(sm.footballer) }}</td>
                         </tr>
@@ -107,8 +109,8 @@
                 </table>
             </div>
             <div class="col-md-1"></div>
-            
-            
+
+
         </div>
 
 
@@ -116,14 +118,15 @@
             {{ form_widget(form) }}
         </div>
 
-        <input type="submit" value="Zapisz składy" class="btn btn-primary">
 
+        <div class="col-sm-12 m-2">
+        <input type="submit" value="Zapisz składy" class="btn btn-primary">
+        </div>
 
         {{ form_end(form) }}
 
     </div>
 
-    <div onload="loadPositions()">
 
     </div>
 
@@ -131,24 +134,17 @@
         let homeFormationSelect = document.getElementById("game_manage_squads_homeTeam_formation");
         let awayFormationSelect = document.getElementById("game_manage_squads_awayTeam_formation");
 
-        function loadPositions() {
-
-            formationChangeHandle(homeFormationSelect,document.getElementById('squad-table-home'));
-            formationChangeHandle(awayFormationSelect,document.getElementById('squad-table-away'));
-
-        }
-
 
         //Select events
         homeFormationSelect.addEventListener('change', function () {
-            formationChangeHandle(homeFormationSelect,document.getElementById('squad-table-home'))
+            formationChangeHandle(homeFormationSelect, document.getElementById('squad-table-home'))
         })
 
         awayFormationSelect.addEventListener('change', function () {
-            formationChangeHandle(awayFormationSelect,document.getElementById('squad-table-away'))
+            formationChangeHandle(awayFormationSelect, document.getElementById('squad-table-away'))
         })
 
-        function formationChangeHandle(select,table) {
+        function formationChangeHandle(select, table) {
 
             let formation = select.options[select.selectedIndex].text;
             formation = formation.split("-");
@@ -160,34 +156,41 @@
             let gkCount = 1;
             let defCount = Number.parseInt(formation[0]);
             let midCount = 0;
-            for(let i = 1; i < formation.length-1; i++) midCount += Number.parseInt(formation[i]);
-            let attCount = Number.parseInt(formation[formation.length-1]);
+            for (let i = 1; i < formation.length - 1; i++) midCount += Number.parseInt(formation[i]);
+            let attCount = Number.parseInt(formation[formation.length - 1]);
 
 
             //GK
             positionFields[0].innerText = "Bramkarz";
 
             //DEF
-            for(let i = 0; i < defCount; i++) {
-                positionFields[i+1].innerText = "Obrońca";
+            for (let i = 0; i < defCount; i++) {
+                positionFields[i + 1].innerText = "Obrońca";
             }
 
             //MID
-            for(let i = 0; i < midCount; i++) {
-                positionFields[i+1+defCount].innerText = "Pomocnik";
+            for (let i = 0; i < midCount; i++) {
+                positionFields[i + 1 + defCount].innerText = "Pomocnik";
             }
 
             //ATT
-            for(let i = 0; i < attCount; i++) {
-                positionFields[i+1+defCount+midCount].innerText = "Napastnik";
+            for (let i = 0; i < attCount; i++) {
+                positionFields[i + 1 + defCount + midCount].innerText = "Napastnik";
             }
 
             //SUB
-            for(let i = 0; i < 18; i++) {
-                positionFields[i+1+defCount+midCount+attCount].innerText = "Rezerwowy";
+            for (let i = 0; i < 7; i++) {
+                positionFields[i + 11].innerText = "Rezerwowy";
             }
 
         }
+    </script>
+
+    <script>
+
+        formationChangeHandle(homeFormationSelect, document.getElementById('squad-table-home'));
+        formationChangeHandle(awayFormationSelect, document.getElementById('squad-table-away'));
+
     </script>
 
 
