@@ -51,6 +51,22 @@ class EventsController extends AbstractController
     }
 
     /**
+     * @Route("/newFromPanel/{type}_{minute}", name="events_new_from_panel", methods={"GET","POST"})
+     */
+    public function newFromPanel($type,$minute, Request $request): Response
+    {
+
+        if( $type === 1 ) {
+
+
+            return $this->redirectToRoute('game_panel');
+        }
+
+
+        return $this->redirectToRoute('game_panel');
+    }
+
+    /**
      * @Route("/{id}", name="events_show", methods={"GET"})
      */
     public function show(Events $event): Response

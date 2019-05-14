@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Footballer;
 use App\Entity\GameTeamSquad;
 use App\Repository\FootballerRepository;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,14 +22,16 @@ class GameTeamSquadType extends AbstractType
                 'class' => Footballer::class,
                 'choice_label' => 'surname',
                 'query_builder' => function(FootballerRepository $repo) {
-                    return $repo->createQueryBuilder('u')
-                        ->orderBy('u.surname', 'ASC');
+                    return $repo->createQueryBuilder('sm')
+                        ->orderBy('sm.position', 'ASC');
                 },
                 'attr' => array(
                     'class' => 'dropdown-with-footballers',
                 ),
             ])
             ->add('number')
+
+            //$builder->getData();
         ;
     }
 

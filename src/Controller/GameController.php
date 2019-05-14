@@ -8,8 +8,10 @@ use App\Entity\Game;
 use App\Entity\GameTeamSquad;
 use App\Entity\League;
 use App\Entity\User;
+use App\Form\EventsType;
 use App\Form\GameManageSquadsType;
 use App\Form\GameType;
+use App\Repository\Dictionary\eventsTypeRepository;
 use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,6 +70,20 @@ class GameController extends AbstractController
     {
         return $this->render('game/show.html.twig', [
             'game' => $game,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/panel/{id}", name="game_panel", methods={"GET"})
+     */
+    public function panel(Game $game): Response
+    {
+
+
+        return $this->render('game/panel.html.twig', [
+            'game' => $game,
+            'eventTypes' => $repository = $this->getDoctrine()->getRepository(\App\Entity\Dictionary\eventsType::class )->findAll(),
         ]);
     }
 

@@ -72,7 +72,7 @@
                             <td class="">
                                 <div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
                             <td class=""> {{ form_widget(sm.number) }}</td>
-                            <td class="">{{ form_widget(sm.footballer) }}</td>
+                            <td class=home-td">{{ form_widget(sm.footballer, { 'attr': { 'class': 'select-sm-h'}}) }}</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -103,7 +103,7 @@
                             <td class="">
                                 <div class="{% if counter > 11 %}hidden{% endif %}">{{ form_widget(sm.isCaptain) }}</td>
                             <td class=""> {{ form_widget(sm.number) }}</td>
-                            <td class="">{{ form_widget(sm.footballer) }}</td>
+                            <td class="away-td">{{ form_widget(sm.footballer, { 'attr': { 'class': 'select-sm-a'} }) }}</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -129,6 +129,7 @@
 
 
     </div>
+
 
     <script>
         let homeFormationSelect = document.getElementById("game_manage_squads_homeTeam_formation");

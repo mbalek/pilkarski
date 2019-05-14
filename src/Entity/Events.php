@@ -21,10 +21,15 @@ class Events
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer", nullable=false)
      * @Assert\NotBlank(message = "assert.global.notBlank")
      */
-    private $eventTime;
+    private $minute;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Dictionary\eventsType", inversedBy="events")
