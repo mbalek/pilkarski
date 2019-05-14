@@ -1,0 +1,328 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Game{% endblock %}
+
+
+{% block body %}
+    <div class="card-header">
+        <h3><span class="text-primary">Zarządzanie meczem</span> / <span
+                    class="text-secondary">{{ game.homeTeam.club.name }} - {{ game.awayTeam.club.name }}</span></h3>
+        <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
+        </div>
+
+        <div class="row m-1 p-2 border-top">
+
+            <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj składami</a>
+
+            <a href="" class="btn btn-secondary m-1">Zarządzaj komentarzami</a>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
+
+        </div>
+    </div>
+    <div class="card-body">
+        {% if game.events|length < 1 %}
+            <div><h2 class="text-gray text-center">Brak wydarzeń meczu</h2></div>
+        {% else %}
+            <div class="pre-scrollable">
+                {% for e in game.events %}
+                    x
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <div class="row m-1 p-2">
+        </div>
+    </div>
+
+    {# Modals section #}
+
+    {% block addEventModal %}
+
+        <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEventModalLabel">Dodaj wydarzenie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="border-bottom">
+                            <div class="form-group">
+                                <label for="addEvent-eventType">Typ wydarzenia</label>
+                                <select id="addEvent-eventType" class="form-control">
+                                    {% for et in eventTypes %}
+                                        <option value="{{ loop.index }}">{{ et.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div id="addEvent-eventForm" class="p-1 m-1">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            etSelect =  document.getElementById('addEvent-eventType');
+            etSelect.addEventListener('change', function() {
+                let eventValue = etSelect.options[etSelect.selectedIndex].value;
+
+                if(eventValue === "1") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("basicEventForm").innerHTML;
+                } else if(eventValue === "2") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("cardEventForm").innerHTML;
+                } else if(eventValue === "3") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("penaltyEventForm").innerHTML;
+                } else if(eventValue === "4") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("goalEventForm").innerHTML;
+                } else if(eventValue === "5") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("subEventForm").innerHTML;
+                } else if(eventValue === "6") {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("addTimeEventForm").innerHTML;
+                }
+                else {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("notFoundTypeForm").innerHTML;
+                }
+
+            })
+        </script>
+
+        <div style="display: none;">
+        {% block addEventModalForms %}
+
+            {# Not found Form #}
+            <div id="notFoundTypeForm">
+                <div class="text-danger text-center">Nieobsługiwany typ zdarzenia</div>
+            </div>
+            {# / #}
+
+            {# Basic Event #}
+            <div id="basicEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 1, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message"></textarea>
+                    </div>
+
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+            {# Card Event #}
+            <div id="cardEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 2, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kolor Kartki</label>
+                        <select class="form-control" name="cardColor">
+                            <option value="yellow">Żółta</option>
+                            <option value="yellow">Czerwona</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Zawodnik</label>
+                        <select class="form-control" name="player">
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                            {% for sm in game.homeTeam.gameTeamSquads  %}
+                                <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                            {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                            {% for sm in game.awayTeam.gameTeamSquads  %}
+                                <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                            {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+            {# Penalty Event #}
+            <div id="penaltyEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 3, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message">Rzut karny...</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dla:</label>
+                        <select name="forTeam" class="form-control">
+                            <option value="{{ game.homeTeam.club.id }}">{{ game.homeTeam.club.name }}</option>
+                            <option value="{{ game.awayTeam.club.id }}">{{ game.awayTeam.club.name }}</option>
+                        </select>
+                    </div>
+
+
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+            {# Goal Event #}
+            <div id="goalEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 4, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message">Gol!</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Strzelec</label>
+                        <select class="form-control" name="scored">
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                                {% for sm in game.homeTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                                {% for sm in game.awayTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Asysta</label>
+                        <select class="form-control" name="assisted">
+                            <option value="-1">-</option>
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                                {% for sm in game.homeTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                                {% for sm in game.awayTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="owngoal">Samobój:</label>
+                        <input type="checkbox" name="owngoal" id="owngoal">
+                    </div>
+
+
+
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+            {# Substituttion Event #}
+            <div id="subEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 5, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message">Zmiana...</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Schodzi:</label>
+                        <select class="form-control" name="off">
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                                {% for sm in game.homeTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                                {% for sm in game.awayTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Wchodzi:</label>
+                        <select class="form-control" name="in">
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                                {% for sm in game.homeTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                                {% for sm in game.awayTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+
+
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+            {# Add Time Event #}
+            <div id="addTimeEventForm">
+                <form action="{{ path("events_new_from_panel", { "type": 6, "minute": 1 }) }}" method="post">
+
+                    <div class="form-group">
+                        <label>Treść</label>
+                        <textarea class="form-control" name="message">Doliczony czas</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Część gry:</label>
+                        <select class="form-control" name="off">
+                            <option value="1">1. Połowa</option>
+                            <option value="2">2. Połowa</option>
+                            <option value="3">1. Połowa dogrywki</option>
+                            <option value="4">2. Połowa dogrywki</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Doliczone minuty:</label>
+                        <input type="number" value="1" min="1" max="20" class="form-control">
+                    </div>
+
+
+                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                </form>
+            </div>
+            {# / #}
+
+
+        {% endblock %}
+        </div>
+
+    {% endblock %}
+
+{% endblock %}

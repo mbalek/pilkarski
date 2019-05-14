@@ -51,6 +51,8 @@ class GameTeamSquad
      */
     private $events;
 
+
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
