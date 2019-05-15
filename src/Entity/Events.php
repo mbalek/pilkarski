@@ -31,9 +31,18 @@ class Events
      */
     private $message;
 
+    /*
+     * Event types:
+     * 1 - Basic
+     * 2 - Card
+     * 3 - Penalty
+     * 4 - Goal
+     * 5 - Substitution
+     * 6 - Added Time
+     */
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Dictionary\eventsType", inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $eventType;
 
@@ -44,33 +53,127 @@ class Events
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\GameTeamSquad", inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $teamSquad;
+    private $player1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameTeamSquad", inversedBy="events")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $player2;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $otherData;
+
+    /**
+     * @return mixed
+     */
+    public function getOtherData()
+    {
+        return $this->otherData;
+    }
+
+    /**
+     * @param mixed $otherData
+     * @return Events
+     */
+    public function setOtherData($otherData)
+    {
+        $this->otherData = $otherData;
+        return $this;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getMinute()
+    {
+        return $this->minute;
+    }
+
+    /**
+     * @param mixed $minute
+     * @return Events
+     */
+    public function setMinute($minute)
+    {
+        $this->minute = $minute;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param mixed $message
+     * @return Events
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayer1()
+    {
+        return $this->player1;
+    }
+
+    /**
+     * @param mixed $player1
+     * @return Events
+     */
+    public function setPlayer1($player1)
+    {
+        $this->player1 = $player1;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getPlayer2()
+    {
+        return $this->player2;
+    }
+
+    /**
+     * @param mixed $player2
+     * @return Events
+     */
+    public function setPlayer2($player2)
+    {
+        $this->player2 = $player2;
+        return $this;
+    }
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEventTime(): ?\DateTimeInterface
-    {
-        return $this->eventTime;
-    }
-
-    public function setEventTime(\DateTimeInterface $eventTime): self
-    {
-        $this->eventTime = $eventTime;
-
-        return $this;
-    }
-
-    public function getEventType(): ?eventsType
+    public function getEventType(): ?int
     {
         return $this->eventType;
     }
 
-    public function setEventType(?eventsType $eventType): self
+    public function setEventType(?int $eventType): self
     {
         $this->eventType = $eventType;
 
@@ -85,18 +188,6 @@ class Events
     public function setGame(?Game $game): self
     {
         $this->game = $game;
-
-        return $this;
-    }
-
-    public function getTeamSquad(): ?GameTeamSquad
-    {
-        return $this->teamSquad;
-    }
-
-    public function setTeamSquad(?GameTeamSquad $teamSquad): self
-    {
-        $this->teamSquad = $teamSquad;
 
         return $this;
     }

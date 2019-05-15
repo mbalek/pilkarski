@@ -26,7 +26,7 @@
         {% else %}
             <div class="pre-scrollable">
                 {% for e in game.events %}
-                    x
+                    {{ loop.index }}
                 {% endfor %}
             </div>
         {% endif %}
@@ -107,7 +107,7 @@
 
             {# Basic Event #}
             <div id="basicEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 1, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 1, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
@@ -122,7 +122,7 @@
 
             {# Card Event #}
             <div id="cardEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 2, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 2, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
@@ -133,7 +133,7 @@
                         <label>Kolor Kartki</label>
                         <select class="form-control" name="cardColor">
                             <option value="yellow">Żółta</option>
-                            <option value="yellow">Czerwona</option>
+                            <option value="red">Czerwona</option>
                         </select>
                     </div>
 
@@ -160,7 +160,7 @@
 
             {# Penalty Event #}
             <div id="penaltyEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 3, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 3, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
@@ -170,8 +170,8 @@
                     <div class="form-group">
                         <label>Dla:</label>
                         <select name="forTeam" class="form-control">
-                            <option value="{{ game.homeTeam.club.id }}">{{ game.homeTeam.club.name }}</option>
-                            <option value="{{ game.awayTeam.club.id }}">{{ game.awayTeam.club.name }}</option>
+                            <option value="{{ game.homeTeam.id }}">{{ game.homeTeam.club.name }}</option>
+                            <option value="{{ game.awayTeam.id }}">{{ game.awayTeam.club.name }}</option>
                         </select>
                     </div>
 
@@ -184,7 +184,7 @@
 
             {# Goal Event #}
             <div id="goalEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 4, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 4, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
@@ -240,7 +240,7 @@
 
             {# Substituttion Event #}
             <div id="subEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 5, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id,  "type": 5, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
@@ -289,7 +289,7 @@
 
             {# Add Time Event #}
             <div id="addTimeEventForm">
-                <form action="{{ path("events_new_from_panel", { "type": 6, "minute": 1 }) }}" method="post">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id,  "type": 6, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>

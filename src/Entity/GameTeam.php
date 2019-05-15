@@ -37,7 +37,51 @@ class GameTeam
      */
     private $gameTeamSquads;
 
+    /**
+     * @return mixed
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
 
+    /**
+     * @param mixed $score
+     * @return GameTeam
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPenaltyShootoutScore()
+    {
+        return $this->penaltyShootoutScore;
+    }
+
+    /**
+     * @param mixed $penaltyShootoutScore
+     * @return GameTeam
+     */
+    public function setPenaltyShootoutScore($penaltyShootoutScore)
+    {
+        $this->penaltyShootoutScore = $penaltyShootoutScore;
+        return $this;
+    }
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $score;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $penaltyShootoutScore;
 
 
     public function __construct()
