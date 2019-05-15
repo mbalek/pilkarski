@@ -51,11 +51,25 @@ class GameTeamSquad
      */
     private $events;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Substitution", mappedBy="playerIn")
+     */
+    private $substituted;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Substitution", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $substitution;
+
+
+
 
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->substituted = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +164,49 @@ class GameTeamSquad
                 $event->setTeamSquad(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Substitution[]
+     */
+    public function getSubstituted(): Collection
+    {
+        return $this->substituted;
+    }
+
+    public function addSubstituted(Substitution $substituted): self
+    {
+        if (!$this->substituted->contains($substituted)) {
+            $this->substituted[] = $substituted;
+            $substituted->setPlayerIn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubstituted(Substitution $substituted): self
+    {
+        if ($this->substituted->contains($substituted)) {
+            $this->substituted->removeElement($substituted);
+            // set the owning side to null (unless already changed)
+            if ($substituted->getPlayerIn() === $this) {
+                $substituted->setPlayerIn(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSubstitution(): ?Substitution
+    {
+        return $this->substitution;
+    }
+
+    public function setSubstitution(Substitution $substitution): self
+    {
+        $this->substitution = $substitution;
 
         return $this;
     }

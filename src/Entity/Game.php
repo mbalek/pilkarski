@@ -24,11 +24,6 @@ class Game
      */
     private $gameDateTime;
 
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $result;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Round", inversedBy="games")
