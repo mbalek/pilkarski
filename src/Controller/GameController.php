@@ -7,6 +7,7 @@ use App\Entity\Footballer;
 use App\Entity\Game;
 use App\Entity\GameTeamSquad;
 use App\Entity\League;
+use App\Entity\Round;
 use App\Entity\User;
 use App\Form\EventsType;
 use App\Form\GameManageSquadsType;
@@ -45,15 +46,17 @@ class GameController extends AbstractController
     public function new(Request $request): Response
     {
         $game = new Game();
-        $form = $this->createForm(GameType::class, $game);
+        $form = $this->createForm(GameType::class, $game, array('leagueId' => $request->get('leagueId')));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $round = $entityManager->getRepository(Round::class)->find($request->get('roundId'));
+            $game->setRound($round);
             $entityManager->persist($game);
             $entityManager->flush();
 
-            return $this->redirectToRoute('game_index');
+            return $this->redirectToRoute('round_show' , array('id' => $round->getId() ,'round' => $round));
         }
 
         return $this->render('game/new.html.twig', [
@@ -286,7 +289,9 @@ class GameController extends AbstractController
 
 
         //Form handle shit
-        $form = $this->createForm(GameManageSquadsType::class, $game);
+        $homeTeam = $game->getHomeTeam()->getClub()->getId();
+        $awayTeam = $game->getAwayTeam()->getClub()->getId();
+        $form = $this->createForm(GameManageSquadsType::class, $game, array('home' => $homeTeam , 'away' => $awayTeam));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -299,6 +304,8 @@ class GameController extends AbstractController
         return $this->render('game/manage_squads.html.twig', [
             'game' => $game,
             'form' => $form->createView(),
+            'home' => $homeTeam,
+            'away' => $awayTeam,
         ]);
     }
 
