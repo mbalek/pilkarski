@@ -1,0 +1,11 @@
+.event-card {
+    display: block;
+}
+
+.yellow-card {
+    background-color: #fffdc1;
+}
+
+.red-card {
+    background-color: #ffcec1;
+}
