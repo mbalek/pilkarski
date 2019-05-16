@@ -156,6 +156,7 @@
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Cabin:400,700i');
 
 :root {
     background: url("https://images.unsplash.com/photo-1459865264687-595d652de67e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80") no-repeat fixed center;
@@ -163,7 +164,7 @@
 }
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Cabin', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -181,7 +182,7 @@ h5,
 h6 {
     color: #3d405c;
     margin: 0px 0px 15px 0px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Cabin', sans-serif;
     font-weight: 700;
 }
 
