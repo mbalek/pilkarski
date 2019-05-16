@@ -22,6 +22,9 @@ class FootballerType extends AbstractType
             ->add('birthdate', null , [
                 'label' => 'footballer.fields.birthdate',
             ])
+            ->add('country' , null ,[
+                'label' => 'footballer.fields.country'
+            ])
             ->add('goals', null , [
                 'label' => 'footballer.fields.goal',
             ])

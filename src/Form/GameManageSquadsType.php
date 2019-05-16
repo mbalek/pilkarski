@@ -15,6 +15,8 @@ class GameManageSquadsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $home = $options['home'];
+        $away = $options['away'];
         $builder
             ->add('gameDateTime', DateTimeType::class, [
                 'widget' => 'single_text',
@@ -38,10 +40,12 @@ class GameManageSquadsType extends AbstractType
             ])
 
             ->add('homeTeam', GameTeamType::class,[
-                'label' => 'gameManageSquads.fields.homeTeam'
+                'label' => 'gameManageSquads.fields.homeTeam',
+                'home_id' => $home,
             ])
             ->add('awayTeam', GameTeamType::class, [
-                'label' => 'gameManageSquads.fields.awayTeam'
+                'label' => 'gameManageSquads.fields.awayTeam',
+                'away_id' => $away,
             ])
             ->add('save', SubmitType::class, ['label' => 'gameManageSquads.fields.updateSquads'])
 
@@ -53,6 +57,10 @@ class GameManageSquadsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Game::class,
+        ]);
+        $resolver->setRequired([
+            'home',
+            'away'
         ]);
     }
 }

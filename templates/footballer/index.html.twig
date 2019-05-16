@@ -19,6 +19,7 @@
                                     <th>{{ 'footballer.fields.name' |trans }}</th>
                                     <th>{{ 'footballer.fields.surname' |trans }}</th>
                                     <th>{{ 'footballer.fields.birthdate' |trans }}</th>
+                                    <th>{{ 'footballer.fields.country' |trans }}</th>
                                     <th>{{ 'footballer.fields.goal' |trans }}</th>
                                     <th>{{ 'footballer.fields.assists' |trans }}</th>
                                     <th>{{ 'footballer.fields.yellowCards' |trans }}</th>
@@ -35,6 +36,7 @@
                                         <td>{{ footballer.name }}</td>
                                         <td>{{ footballer.surname }}</td>
                                         <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d H:i:s') : ''}}</td>
+                                        <td>{{ footballer.country }}</td>
                                         <td>{{ footballer.goals }}</td>
                                         <td>{{ footballer.assists }}</td>
                                         <td>{{ footballer.yellowCards }}</td>

@@ -15,15 +15,26 @@ class GameTeamSquadType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $home = $options['home_id'];
+        $away = $options['away_id'];
+        if($home == null)
+        {
+            $queryId = $away;
+        }
+        else if ($away == null)
+        {
+            $queryId = $home;
+        }
         $builder
             ->add('isReserve')
             ->add('isCaptain')
             ->add('footballer' , EntityType::class, [
                 'class' => Footballer::class,
                 'choice_label' => 'surname',
-                'query_builder' => function(FootballerRepository $repo) {
+                'query_builder' => function(FootballerRepository $repo) use ($queryId){
                     return $repo->createQueryBuilder('sm')
-                        ->orderBy('sm.position', 'ASC');
+                        ->andWhere('sm.club = :param1')
+                        ->setParameter('param1' , $queryId );
                 },
                 'attr' => array(
                     'class' => 'dropdown-with-footballers',
@@ -39,6 +50,8 @@ class GameTeamSquadType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => GameTeamSquad::class,
+            'home_id' => null,
+            'away_id' => null,
         ]);
     }
 }
