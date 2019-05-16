@@ -131,8 +131,20 @@ class EventsController extends AbstractController
             if (($request->request->get('assisted') != "-1")) $p2 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('assisted'));
 
             if ($request->request->get('owngoal') != "on") $p1->getFootballer()->setGoals($p1->getFootballer()->getGoals()+1);
-            if ($request->request->get('owngoal') != "on") $p1->getGameTeam()->setScore($p1->getGameTeam()->getScore()+1);
-            //Tutaj trzeba dodac handling Saqmoboja - jakos dodac punkt drugiej druzynie, ide spac
+
+            //Own goal handling
+            if ($request->request->get('owngoal') == "on") {
+                $game = $this->getDoctrine()->getRepository(Game::class)->find($id);
+                $playerTeam = $p1->getGameTeam();
+
+                if($game->getHomeTeam()->getId() == $playerTeam->getId()) $game->getAwayTeam()->setScore($game->getAwayTeam()->getScore()+1);
+                else $game->getHomeTeam()->setScore($game->getHomeTeam()->getScore()+1);
+
+            }
+            else {
+                $p1->getGameTeam()->setScore($p1->getGameTeam()->getScore()+1);
+            }
+
 
 
             if (($request->request->get('assisted') != "-1")) $p2->getFootballer()->setAssists($p2->getFootballer()->getAssists()+1);
@@ -171,6 +183,24 @@ class EventsController extends AbstractController
 
 
             $event->setOtherData($sub->getId());
+            $em->persist($event);
+            $em->flush();
+
+
+            return $this->redirectToRoute('game_panel', [ 'id' => $id]);
+
+        } else if( $type === "6" ) {
+            //Penalty Shootout
+            $event = new Events();
+            $event->setMessage($formData = $request->request->get('message'));
+            $event->setEventType($type);
+            $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
+            $event->setMinute($minute);
+
+            $p1 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('scored'));
+            $p1->getGameTeam()->setPenaltyShootoutScore($p1->getGameTeam()->getPenaltyShootoutScore()+1);
+
+
             $em->persist($event);
             $em->flush();
 

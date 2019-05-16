@@ -5,8 +5,12 @@
 
 {% block body %}
     <div class="card-header">
-        <h3><span class="text-primary">Zarządzanie meczem</span> / <span
-                    class="text-secondary">{{ game.homeTeam.club.name }} - {{ game.awayTeam.club.name }}</span></h3>
+        <h3><span class="text-primary">Zarządzanie meczem</span> /
+            <span class="text-secondary">
+            {{ game.homeTeam.club.name }} ({% if game.homeTeam.score %}{{ game.homeTeam.score }}{% else %} 0 {% endif %})
+                -
+             {{ game.awayTeam.club.name }} ({% if game.awayTeam.score %}{{ game.awayTeam.score }}{% else %} 0 {% endif %})
+            </span></h3>
         <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
         </div>
 
@@ -61,7 +65,18 @@
                             </div>
                         </div>
                         <div id="addEvent-eventForm" class="p-1 m-1">
+                            <div id="basicEventForm">
+                                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 1, "minute": 1 }) }}" method="post">
 
+                                    <div class="form-group">
+                                        <label>Treść</label>
+                                        <textarea class="form-control" name="message"></textarea>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -87,9 +102,8 @@
                 } else if(eventValue === "5") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("subEventForm").innerHTML;
                 } else if(eventValue === "6") {
-                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("addTimeEventForm").innerHTML;
-                }
-                else {
+                    document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("shootoutGoalEventForm").innerHTML;
+                } else {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("notFoundTypeForm").innerHTML;
                 }
 
@@ -287,31 +301,30 @@
             </div>
             {# / #}
 
-            {# Add Time Event #}
-            <div id="addTimeEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id,  "type": 6, "minute": 1 }) }}" method="post">
+            {# P. Shootout Goal Event #}
+            <div id="shootoutGoalEventForm">
+                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 6, "minute": 1 }) }}" method="post">
 
                     <div class="form-group">
                         <label>Treść</label>
-                        <textarea class="form-control" name="message">Doliczony czas</textarea>
+                        <textarea class="form-control" name="message">Gol!</textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Część gry:</label>
-                        <select class="form-control" name="off">
-                            <option value="1">1. Połowa</option>
-                            <option value="2">2. Połowa</option>
-                            <option value="3">1. Połowa dogrywki</option>
-                            <option value="4">2. Połowa dogrywki</option>
+                        <label>Strzelec</label>
+                        <select class="form-control" name="scored">
+                            <optgroup label="{{ game.homeTeam.club.name }}">
+                                {% for sm in game.homeTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="{{ game.awayTeam.club.name }}">
+                                {% for sm in game.awayTeam.gameTeamSquads  %}
+                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
+                                {% endfor %}
+                            </optgroup>
                         </select>
                     </div>
-
-
-                    <div class="form-group">
-                        <label>Doliczone minuty:</label>
-                        <input type="number" value="1" min="1" max="20" class="form-control">
-                    </div>
-
 
                     <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
 
