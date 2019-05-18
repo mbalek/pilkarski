@@ -61,7 +61,6 @@ class EventsController extends AbstractController
     {
 
         $em = $this->getDoctrine()->getManager();
-        $eventTypes = $this->getDoctrine()->getRepository(\App\Entity\Dictionary\eventsType::class)->findAll();
         //$formData = $request->request->get('addEventForm');
 
 
@@ -198,6 +197,8 @@ class EventsController extends AbstractController
             $event->setMinute($minute);
 
             $p1 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('scored'));
+            $event->setPlayer1($p1);
+
             $p1->getGameTeam()->setPenaltyShootoutScore($p1->getGameTeam()->getPenaltyShootoutScore()+1);
 
 
@@ -209,6 +210,94 @@ class EventsController extends AbstractController
         }
 
         return $this->redirectToRoute('game_panel', [ 'id' => $id]);
+    }
+
+    /**
+     * @Route("/undo_event/{id}/{type}", name="events_undo", methods={"GET","POST"})
+     */
+    public function undoEvent($id, $type, Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository(Events::class)->find($id);
+        $game = $event->getGame();
+
+
+        //Basic Event
+        if( $type === "1" ) {
+
+            $em->remove($event);
+            $em->flush();
+
+
+        } else if( $type === "2" )  {
+            //Card event
+
+            //Undo statistics change
+            $player = $event->getPlayer1();
+            if ($event->getOtherData() == 'red')
+                $player->getFootballer()->setRedCards($player->getFootballer()->getRedCards()-1);
+
+            if ($event->getOtherData() == 'yellow')
+                $player->getFootballer()->setYellowCards($player->getFootballer()->getYellowCards()-1);
+
+            //Remove event entry
+            $em->remove($event);
+            $em->flush();
+
+        } else if( $type === "4" ) {
+            //Goal event
+
+            $p1 = $event->getPlayer1();
+            $p2 = $event->getPlayer2();
+
+            if ($event->getOtherData() != "on") $p1->getFootballer()->setGoals($p1->getFootballer()->getGoals()-1);
+
+            //Own goal handling
+            if ($event->getOtherData() == "on") {
+                $game = $event->getGame();
+                $playerTeam = $p1->getGameTeam();
+
+                if($game->getHomeTeam()->getId() == $playerTeam->getId()) $game->getAwayTeam()->setScore($game->getAwayTeam()->getScore()-1);
+                else $game->getHomeTeam()->setScore($game->getHomeTeam()->getScore()-1);
+
+            }
+            else {
+                $p1->getGameTeam()->setScore($p1->getGameTeam()->getScore()-1);
+            }
+
+
+            if ($p2) $p2->getFootballer()->setAssists($event->getPlayer2()->getFootballer()->getAssists()-1);
+
+            //Remove event entry
+            $em->remove($event);
+            $em->flush();
+        }
+        else if( $type === "5" ) {
+            //Sub event
+
+            $p1 = $event->getPlayer1();
+
+            //Delete substitution entry
+            $sub = $p1->getSubstitution();
+            $p1->removeSubstituted($sub);
+
+            //Delete event entry
+            $em->remove($event);
+            $em->flush();
+
+        } else if( $type === "6" ) {
+            //Penalty Shootout
+
+            //Undo statistics entries
+            $p1 = $event->getPlayer1();
+            $p1->getGameTeam()->setPenaltyShootoutScore($p1->getGameTeam()->getPenaltyShootoutScore()-1);
+
+            //Delete event entry
+            $em->remove($event);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('game_panel', [ 'id' => $game->getId()]);
     }
 
     /**

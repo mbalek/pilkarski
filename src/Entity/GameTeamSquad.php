@@ -161,7 +161,7 @@ class GameTeamSquad
             $this->events->removeElement($event);
             // set the owning side to null (unless already changed)
             if ($event->getTeamSquad() === $this) {
-                $event->setTeamSquad(null);
+                $event->setTeamSquad(new Substitution());
             }
         }
 
