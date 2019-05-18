@@ -95,4 +95,16 @@ class CommentController extends AbstractController
 
         return $this->redirectToRoute('comment_index');
     }
+
+    /**
+     * @Route("/remove/{id}", name="comment_remove")
+     */
+    public function remove(Request $request, Comment $comment): Response
+    {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
+            $entityManager->flush();
+
+        return $this->redirectToRoute('game_panel');
+    }
 }

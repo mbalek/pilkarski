@@ -155,7 +155,7 @@
 /* 0.1. Body / Typography
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Arimo&display=swap');
 
 :root {
     background: url("https://images.unsplash.com/photo-1459865264687-595d652de67e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80") no-repeat fixed center;
@@ -163,10 +163,10 @@
 }
 
 body {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Arimo', sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 12px;
     color: #71748d;
     /*background-color: #efeff6;*/
     background-color: rgba(52,58,64,0.66);
@@ -181,7 +181,7 @@ h5,
 h6 {
     color: #3d405c;
     margin: 0px 0px 15px 0px;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Arimo', sans-serif;
     font-weight: 700;
 }
 

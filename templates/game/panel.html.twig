@@ -18,7 +18,7 @@
 
             <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj składami</a>
 
-            <a href="" class="btn btn-secondary m-1">Zarządzaj komentarzami</a>
+            <a href="" class="btn btn-primary m-1" data-toggle="modal" data-target="#commentsModal">Zarządzaj komentarzami</a>
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
 
@@ -97,6 +97,44 @@
     </div>
 
     {# Modals section #}
+
+    {% block commentsModal %}
+
+        <div class="modal fade" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEventModalLabel">Komentarze</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% if game.comments|length < 1 %}
+                            <div class="text-gray">Brak komentarzy do wyświetlenia</div>
+                        {% else %}
+                            <div class="pre-scrollable p-2">
+                                {% for c in game.comments %}
+                                    <div class="border p-2 m-2 rounded shadow-sm">
+                                        <div class="border-bottom">
+                                            <div class="row m-1">
+                                                <a href="{{ path('comment_remove', { 'id': c.id}) }}" class="btn-sm btn-outline-danger">Usuń</a>
+                                            </div>
+                                        </div>
+                                        <div class="m-2">{{ c.description }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
 
     {% block addEventModal %}
 
