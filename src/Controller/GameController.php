@@ -83,8 +83,6 @@ class GameController extends AbstractController
      */
     public function panel(Game $game): Response
     {
-
-
         return $this->render('game/panel.html.twig', [
             'game' => $game,
             'eventTypes' => $repository = $this->getDoctrine()->getRepository(\App\Entity\Dictionary\eventsType::class )->findAll(),

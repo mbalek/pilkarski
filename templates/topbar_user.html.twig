@@ -6,7 +6,7 @@
                     class="">{{ 'index.display.league' |trans }}</button>
             <div class="dropdown-menu">
                 {% for league in leagues %}
-                    <a href=""
+                    <a href="{{ path('index_league_show' , {'id':league.id}) }}"
                        class="dropdown-item">{{ league.name }}</a>
                 {% else %}
                 {% endfor %}

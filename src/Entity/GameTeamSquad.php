@@ -47,11 +47,6 @@ class GameTeamSquad
     private $number;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Events", mappedBy="teamSquad")
-     */
-    private $events;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Substitution", mappedBy="playerIn")
      */
     private $substituted;
@@ -63,12 +58,8 @@ class GameTeamSquad
     private $substitution;
 
 
-
-
-
     public function __construct()
     {
-        $this->events = new ArrayCollection();
         $this->substituted = new ArrayCollection();
     }
 
@@ -137,36 +128,6 @@ class GameTeamSquad
         return $this;
     }
 
-    /**
-     * @return Collection|Events[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Events $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->setTeamSquad($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Events $event): self
-    {
-        if ($this->events->contains($event)) {
-            $this->events->removeElement($event);
-            // set the owning side to null (unless already changed)
-            if ($event->getTeamSquad() === $this) {
-                $event->setTeamSquad(new Substitution());
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Substitution[]

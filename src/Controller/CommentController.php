@@ -101,10 +101,11 @@ class CommentController extends AbstractController
      */
     public function remove(Request $request, Comment $comment): Response
     {
+            $gameId = $request->get('gameId');
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
 
-        return $this->redirectToRoute('game_panel');
+        return $this->redirectToRoute('game_panel' , array('id'=>$gameId));
     }
 }
