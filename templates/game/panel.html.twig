@@ -118,7 +118,7 @@
                                     <div class="border p-2 m-2 rounded shadow-sm">
                                         <div class="border-bottom">
                                             <div class="row m-1">
-                                                <a href="{{ path('comment_remove', { 'id': c.id}) }}" class="btn-sm btn-outline-danger">Usuń</a>
+                                                <a href="{{ path('comment_remove', { 'id': c.id , 'gameId': game.id}) }}" class="btn-sm btn-outline-danger">Usuń</a>
                                             </div>
                                         </div>
                                         <div class="m-2">{{ c.description }}</div>

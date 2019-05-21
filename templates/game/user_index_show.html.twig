@@ -10,7 +10,9 @@
         <!-- Budowanie pierwszej drużyny -->
         {% if game.homeTeam %}
             {{ game.homeTeam.club.name }}
+            {% if game.homeTeam.formation %}
             {{ game.homeTeam.formation.name }}
+            {% endif %}
             <img height="50" width="50" src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
             {% for gamesquad in game.homeTeam.gameTeamSquads %}
                 {{ gamesquad.number }}
@@ -27,7 +29,9 @@
         <!-- Budowanie drugiej drużyny -->
         {% if game.awayTeam %}
             {{ game.awayTeam.club.name }}
+            {% if game.awayTeam.formation %}
             {{ game.awayTeam.formation.name }}
+            {% endif %}
             <img height="50" width="50" src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
             {% for gamesquad in game.awayTeam.gameTeamSquads %}
                 {{ gamesquad.number }}

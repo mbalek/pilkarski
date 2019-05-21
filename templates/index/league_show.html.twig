@@ -1,0 +1,68 @@
+{% extends 'base_user.html.twig' %}
+{% block body %}
+    <div class="card-body">
+        <ul class="nav nav-tabs md-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'league.display.clubs'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#upcomingmatches" role="tab">{{ 'game.display.upcomingGames'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#livematches" role="tab">{{ 'game.display.liveGames'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#finishedmatches" role="tab">{{ 'game.display.finishedGames'|trans }}</a>
+            </li>
+        </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="clubs" role="tabpanel">
+            {% for club in league.clubs %}
+                <img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
+                {{ club.name }}
+                {{ club.city }}
+                {{ club.stadium }}
+                <a href="{{ path('index_footballers_show' , {'club':club.id}) }}">{{ 'club.display.footballers' |trans }}</a>
+                <br/>
+            {% else %}
+                {{ 'global.noRecords' |trans }}
+            {% endfor %}
+        </div>
+        <div class="tab-pane" id="upcomingmatches" role="tabpanel">
+            {% for round in league.rounds %}
+                {% for game in round.games if game.status == 3 %}
+                    Kolejka: {{ game.round.name }}
+                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
+                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
+                {% else %}
+                    {{ 'global.noRecords' |trans }}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="tab-pane" id="livematches" role="tabpanel">
+            {% for round in league.rounds %}
+                {% for game in round.games if game.status == 2 %}
+                    Kolejka: {{ game.round.name }}
+                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
+                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
+                {% else %}
+                    {{ 'global.noRecords' |trans }}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="tab-pane" id="finishedmatches" role="tabpanel">
+            {% for round in league.rounds %}
+                {% for game in round.games if game.status == 1 %}
+                    Kolejka: {{ game.round.name }}
+                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
+                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
+                    <a href="{{ path('index_game_show' , {'id':game.id}) }}">Szczegoly</a>
+                {% else %}
+                    {{ 'global.noRecords' |trans }}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
