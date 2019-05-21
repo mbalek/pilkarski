@@ -46,6 +46,7 @@ class GameController extends AbstractController
     public function new(Request $request): Response
     {
         $game = new Game();
+        $game->setCurrentStage(-1);
         $form = $this->createForm(GameType::class, $game, array('leagueId' => $request->get('leagueId')));
         $form->handleRequest($request);
 

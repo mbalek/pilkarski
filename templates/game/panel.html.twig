@@ -20,8 +20,20 @@
 
             <a href="" class="btn btn-primary m-1" data-toggle="modal" data-target="#commentsModal">Zarządzaj komentarzami</a>
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
 
+            <a href="{{ path("game_edit", { 'id': game.id}) }}" class="btn btn-primary m-1" >Edytuj informacje o meczu</a>
+
+        </div>
+
+        <div class="row m-1 p-2 border-top">
+            <h5>
+                {% if not game.currentStage or game.currentStage == -1 %}
+                    Status: <span class="text-secondary">Nieaktywny</span>
+                    {% set minute = date("now"|date).diff(game.currentStageStart).minutes %}
+                    {{ minute }}'
+                {% endif %}
+            </h5>
         </div>
     </div>
     <div class="card-body">
