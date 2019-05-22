@@ -256,7 +256,7 @@ class Game
 
     public function __toString()
     {
-        return $this->result;
+        return $this->id;
     }
 
 

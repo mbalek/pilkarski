@@ -21,8 +21,7 @@ class Events
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @Assert\NotBlank(message = "assert.global.notBlank")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $minute;
 
