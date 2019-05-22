@@ -55,23 +55,22 @@ class EventsController extends AbstractController
     }
 
     /**
-     * @Route("/newFromPanel/{id}/{type}/{minute}", name="events_new_from_panel", methods={"GET","POST"})
+     * @Route("/newFromPanel/{id}/{type}", name="events_new_from_panel", methods={"GET","POST"})
      */
-    public function newFromPanel($id, $type, $minute, Request $request): Response
+    public function newFromPanel($id, $type, Request $request): Response
     {
 
         $em = $this->getDoctrine()->getManager();
-        //$formData = $request->request->get('addEventForm');
+        $event = new Events();
+        if($request->request->get('minute')) $event->setMinute($request->request->get('minute'));
 
 
         //Basic Event
         if( $type === "1" ) {
 
-            $event = new Events();
-            $event->setMessage($formData = $request->request->get('message'));
+            $event->setMessage($request->request->get('message'));
             $event->setEventType($type);
             $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-            $event->setMinute($minute);
 
             $em->persist($event);
             $em->flush();
@@ -80,11 +79,9 @@ class EventsController extends AbstractController
             return $this->redirectToRoute('game_panel', [ 'id' => $id]);
         } else if( $type === "2" )  {
         //Card event
-                $event = new Events();
                 $event->setMessage($request->request->get('message'));
                 $event->setEventType($type);
                 $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-                $event->setMinute($minute);
                 $event->setOtherData($request->request->get('cardColor'));
 
                 $player = $this->getDoctrine()->getRepository(GameTeamSquad::class)->find($request->request->get('player'));
@@ -106,11 +103,9 @@ class EventsController extends AbstractController
                 return $this->redirectToRoute('game_panel', [ 'id' => $id]);
         } else if( $type === "3" ) {
             //Penalty event
-            $event = new Events();
             $event->setMessage($formData = $request->request->get('message'));
             $event->setEventType($type);
             $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-            $event->setMinute($minute);
             $x = $this->getDoctrine()->getRepository(GameTeam::class)->find($request->request->get('forTeam'));
             $event->setOtherData($x->getId());
             $em->persist($event);
@@ -120,11 +115,9 @@ class EventsController extends AbstractController
             return $this->redirectToRoute('game_panel', [ 'id' => $id]);
         } else if( $type === "4" ) {
             //Goal event
-            $event = new Events();
             $event->setMessage($formData = $request->request->get('message'));
             $event->setEventType($type);
             $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-            $event->setMinute($minute);
 
             $p1 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('scored'));
             if (($request->request->get('assisted') != "-1")) $p2 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('assisted'));
@@ -162,11 +155,9 @@ class EventsController extends AbstractController
         else if( $type === "5" ) {
 
             //Sub event
-            $event = new Events();
             $event->setMessage($formData = $request->request->get('message'));
             $event->setEventType($type);
             $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-            $event->setMinute($minute);
 
             $p1 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('off'));
             $p2 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('in'));
@@ -190,11 +181,9 @@ class EventsController extends AbstractController
 
         } else if( $type === "6" ) {
             //Penalty Shootout
-            $event = new Events();
             $event->setMessage($formData = $request->request->get('message'));
             $event->setEventType($type);
             $event->setGame($this->getDoctrine()->getRepository(Game::class)->find($id));
-            $event->setMinute($minute);
 
             $p1 = $em->getRepository(GameTeamSquad::class)->find($request->request->get('scored'));
             $event->setPlayer1($p1);

@@ -59,6 +59,87 @@ class Game
      */
     private $description;
 
+    /*
+     * Stages of game:
+     *-1 - Not a live game
+     * 0 - Break
+     * 1 - First Half
+     * 2 - Second Half
+     * 3 - ET First Half
+     * 4 - ET Second Half
+     * 5 - Penalties
+     */
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $currentStage;
+
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $currentStageStart;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $currentStageAdditionalTime;
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentStage()
+    {
+        return $this->currentStage;
+    }
+
+    /**
+     * @param mixed $currentStage
+     * @return Game
+     */
+    public function setCurrentStage($currentStage)
+    {
+        $this->currentStage = $currentStage;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentStageStart()
+    {
+        return $this->currentStageStart;
+    }
+
+    /**
+     * @param mixed $currentStageStart
+     * @return Game
+     */
+    public function setCurrentStageStart($currentStageStart)
+    {
+        $this->currentStageStart = $currentStageStart;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentStageAdditionalTime()
+    {
+        return $this->currentStageAdditionalTime;
+    }
+
+    /**
+     * @param mixed $currentStageAdditionalTime
+     * @return Game
+     */
+    public function setCurrentStageAdditionalTime($currentStageAdditionalTime)
+    {
+        $this->currentStageAdditionalTime = $currentStageAdditionalTime;
+        return $this;
+    }
+
+
     /**
      * @ORM\Column(type="smallint")
      */
@@ -175,7 +256,7 @@ class Game
 
     public function __toString()
     {
-        return $this->result;
+        return $this->id;
     }
 
 

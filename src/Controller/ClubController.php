@@ -41,6 +41,7 @@ class ClubController extends AbstractController
         $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $club->setLeague($league);
             $entityManager->persist($club);
