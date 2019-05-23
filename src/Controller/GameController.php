@@ -46,13 +46,12 @@ class GameController extends AbstractController
     public function new(Request $request): Response
     {
         $game = new Game();
-        $game->setCurrentStage(-1);
+        $entityManager = $this->getDoctrine()->getManager();
+        $round = $entityManager->getRepository(Round::class)->find($request->get('roundId'));
         $form = $this->createForm(GameType::class, $game, array('leagueId' => $request->get('leagueId')));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $round = $entityManager->getRepository(Round::class)->find($request->get('roundId'));
             $game->setRound($round);
             $entityManager->persist($game);
             $entityManager->flush();
@@ -63,6 +62,9 @@ class GameController extends AbstractController
         return $this->render('game/new.html.twig', [
             'game' => $game,
             'form' => $form->createView(),
+            'roundId' => $request->get('roundId'),
+            'round' => $round,
+
         ]);
     }
 
@@ -297,7 +299,7 @@ class GameController extends AbstractController
             $entityManager->persist($game);
             $entityManager->flush();
 
-            return $this->redirectToRoute('game_index');
+            return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
         }
 
         return $this->render('game/manage_squads.html.twig', [
@@ -306,6 +308,127 @@ class GameController extends AbstractController
             'home' => $homeTeam,
             'away' => $awayTeam,
         ]);
+    }
+
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/start/first/half/{id}" , name="game_start_first_half" , methods={"GET","POST"})
+     */
+    public function startFirstHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setFirstHalfStart(new \DateTime());
+        $game->setStatus(2);
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/end/first/half/{id}" , name="game_end_first_half" , methods={"GET","POST"})
+     */
+    public function endFirstHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setFirstHalfEnd(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/start/second/half/{id}" , name="game_start_second_half" , methods={"GET","POST"})
+     */
+    public function startSecondHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setSecondHalfStart(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/end/second/half/{id}" , name="game_end_second_half" , methods={"GET","POST"})
+     */
+    public function endSecondHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setSecondHalfEnd(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/start/ext/first/half/{id}" , name="game_start_ext_first_half" , methods={"GET","POST"})
+     */
+    public function startExtFirstHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setExtentedFirstHalfStart(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/end/ext/first/half/{id}" , name="game_end_ext_first_half" , methods={"GET","POST"})
+     */
+    public function endExtFirstHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setExtentedFirstHalfEnd(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/start/ext/second/half/{id}" , name="game_start_ext_second_half" , methods={"GET","POST"})
+     */
+    public function startExtSecondHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setExtentedSecondHalfStart(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/end/ext/second/half/{id}" , name="game_end_ext_second_half" , methods={"GET","POST"})
+     */
+    public function endExtSecondHalf(Game $game)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $game->setExtentedSecondHalfEnd(new \DateTime());
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/end/game/{id}" , name="game_end_game" , methods={"GET","POST"})
+     */
+    public function endGame(Game $game , Request $request)
+    {
+        $round = $request->get('round');
+        $roundId = $request->get('roundId');
+        $em = $this->getDoctrine()->getManager();
+        $game->setStatus(1);
+        $em->persist($game);
+        $em->flush();
+        return $this->redirectToRoute('round_show' , array('round' => $round, 'id' => $roundId));
     }
 
 }

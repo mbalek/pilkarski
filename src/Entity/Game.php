@@ -70,80 +70,51 @@ class Game
      * 5 - Penalties
      */
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="smallint")
      */
-    private $currentStage;
-
+    private $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $currentStageStart;
+    private $firstHalfStart;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $currentStageAdditionalTime;
+    private $firstHalfEnd;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    public function getCurrentStage()
-    {
-        return $this->currentStage;
-    }
+    private $secondHalfStart;
 
     /**
-     * @param mixed $currentStage
-     * @return Game
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    public function setCurrentStage($currentStage)
-    {
-        $this->currentStage = $currentStage;
-        return $this;
-    }
+    private $secondHalfEnd;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="datetime" , nullable=true)
      */
-    public function getCurrentStageStart()
-    {
-        return $this->currentStageStart;
-    }
+    private $extentedFirstHalfStart;
 
     /**
-     * @param mixed $currentStageStart
-     * @return Game
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    public function setCurrentStageStart($currentStageStart)
-    {
-        $this->currentStageStart = $currentStageStart;
-        return $this;
-    }
+    private $extentedFirstHalfEnd;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    public function getCurrentStageAdditionalTime()
-    {
-        return $this->currentStageAdditionalTime;
-    }
+    private $extentedSecondHalfStart;
 
     /**
-     * @param mixed $currentStageAdditionalTime
-     * @return Game
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    public function setCurrentStageAdditionalTime($currentStageAdditionalTime)
-    {
-        $this->currentStageAdditionalTime = $currentStageAdditionalTime;
-        return $this;
-    }
+    private $extentedSecondHalfEnd;
 
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $status;
+    
 
     public function __construct()
     {
@@ -317,6 +288,102 @@ class Game
     public function setAwayTeam($awayTeam)
     {
         $this->awayTeam = $awayTeam;
+        return $this;
+    }
+
+    public function getFirstHalfStart(): ?\DateTimeInterface
+    {
+        return $this->firstHalfStart;
+    }
+
+    public function setFirstHalfStart(?\DateTimeInterface $firstHalfStart): self
+    {
+        $this->firstHalfStart = $firstHalfStart;
+
+        return $this;
+    }
+
+    public function getFirstHalfEnd(): ?\DateTimeInterface
+    {
+        return $this->firstHalfEnd;
+    }
+
+    public function setFirstHalfEnd(?\DateTimeInterface $firstHalfEnd): self
+    {
+        $this->firstHalfEnd = $firstHalfEnd;
+
+        return $this;
+    }
+
+    public function getSecondHalfStart(): ?\DateTimeInterface
+    {
+        return $this->secondHalfStart;
+    }
+
+    public function setSecondHalfStart(?\DateTimeInterface $secondHalfStart): self
+    {
+        $this->secondHalfStart = $secondHalfStart;
+
+        return $this;
+    }
+
+    public function getSecondHalfEnd(): ?\DateTimeInterface
+    {
+        return $this->secondHalfEnd;
+    }
+
+    public function setSecondHalfEnd(?\DateTimeInterface $secondHalfEnd): self
+    {
+        $this->secondHalfEnd = $secondHalfEnd;
+
+        return $this;
+    }
+
+    public function getExtentedFirstHalfStart(): ?\DateTimeInterface
+    {
+        return $this->extentedFirstHalfStart;
+    }
+
+    public function setExtentedFirstHalfStart(\DateTimeInterface $extentedFirstHalfStart): self
+    {
+        $this->extentedFirstHalfStart = $extentedFirstHalfStart;
+
+        return $this;
+    }
+
+    public function getExtentedFirstHalfEnd(): ?\DateTimeInterface
+    {
+        return $this->extentedFirstHalfEnd;
+    }
+
+    public function setExtentedFirstHalfEnd(?\DateTimeInterface $extentedFirstHalfEnd): self
+    {
+        $this->extentedFirstHalfEnd = $extentedFirstHalfEnd;
+
+        return $this;
+    }
+
+    public function getExtentedSecondHalfStart(): ?\DateTimeInterface
+    {
+        return $this->extentedSecondHalfStart;
+    }
+
+    public function setExtentedSecondHalfStart(?\DateTimeInterface $extentedSecondHalfStart): self
+    {
+        $this->extentedSecondHalfStart = $extentedSecondHalfStart;
+
+        return $this;
+    }
+
+    public function getExtentedSecondHalfEnd(): ?\DateTimeInterface
+    {
+        return $this->extentedSecondHalfEnd;
+    }
+
+    public function setExtentedSecondHalfEnd(?\DateTimeInterface $extentedSecondHalfEnd): self
+    {
+        $this->extentedSecondHalfEnd = $extentedSecondHalfEnd;
+
         return $this;
     }
 

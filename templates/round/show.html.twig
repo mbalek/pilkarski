@@ -49,7 +49,7 @@
                             <td>{{ game.awayTeam.club.name }}</td>
                             <td>{{ game.round }}</td>
                             <td>{{ game.gameDateTime|date }}</td>
-                            <td></td>
+                            <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
                             </tr>
                         {% else %}
                             <tr>
@@ -79,7 +79,7 @@
                         <td>{{ game.awayTeam.club.name }}</td>
                         <td>{{ game.round }}</td>
                         <td>{{ game.gameDateTime|date }}</td>
-                        <td></td>
+                        <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
                         </tr>
                     {% else %}
                         <tr>
@@ -137,7 +137,7 @@
                         <td>{{ game.awayTeam.club.name }}</td>
                         <td>{{ game.round }}</td>
                         <td>{{ game.gameDateTime|date }}</td>
-                        <td></td>
+                        <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
                         </tr>
                     {% else %}
                         <tr>

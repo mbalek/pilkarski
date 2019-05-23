@@ -14,6 +14,41 @@
         <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
         </div>
 
+        {% if game.status == 3 or game.status == 2 %}
+        <div class="row m-1 p-2 border-top">
+            {% if game.firstHalfStart is null %}
+                <a href="{{ path('game_start_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.startFirstHalf' |trans }}</a>
+            {% endif %}
+            {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
+                <a href="{{ path('game_end_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.endFirstHalf' |trans }}</a>
+            {% endif %}
+            {% if game.secondHalfStart is null and game.firstHalfEnd is not null %}
+                <a href="{{ path('game_start_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.startSecondHalf' |trans }}</a>
+            {% endif %}
+            {% if game.secondHalfEnd is null and game.secondHalfStart is not null %}
+                <a href="{{ path('game_end_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.endSecondHalf' |trans }}</a>
+            {% endif %}
+            {% if game.extentedFirstHalfStart is null and game.secondHalfEnd is not null %}
+                <a href="{{ path('game_start_ext_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extFirstHalfStart' |trans }}</a>
+            {% endif %}
+            {% if game.extentedFirstHalfEnd is null and game.extentedFirstHalfStart is not null%}
+                <a href="{{ path('game_end_ext_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extFirstHalfEnd' |trans }}</a>
+            {% endif %}
+            {% if game.extentedSecondHalfStart is null and game.extentedFirstHalfEnd is not null %}
+                <a href="{{ path('game_start_ext_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extSecondHalfStart' |trans }}</a>
+            {% endif %}
+            {% if game.extentedSecondHalfEnd is null and game.extentedSecondHalfStart is not null %}
+                <a href="{{ path('game_end_ext_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extSecondHalfEnd' |trans }}</a>
+            {% endif %}
+
+            {% if game.firstHalfStart is not null %}
+                <a href="{{ path('game_end_game' , {'game':game , 'id':game.id , 'round':game.round ,
+                'roundId': game.round.id}) }}" class="btn btn-danger m-1">
+                {{ 'game.display.endGame' |trans }}</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
         <div class="row m-1 p-2 border-top">
 
             <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj składami</a>
