@@ -13,7 +13,10 @@
             </span></h3>
         <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
         </div>
-
+        {# Tutaj beidze timer#}
+        <div>
+            <span id="minutes"></span>:<span id="seconds"></span>
+        </div>
         {% if game.status == 3 or game.status == 2 %}
         <div class="row m-1 p-2 border-top">
             {% if game.firstHalfStart is null %}
@@ -481,4 +484,59 @@
 
     {% endblock %}
 
+{% endblock %}
+{% block customJavaScript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+        {% if game.status == 3 or game.status == 2 %}
+            {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
+                let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+                let now = Date.parse(Date());
+                let sec = (now - fromBase) / 1000;
+                function pad ( val ) { return val > 9 ? val : "0" + val; }
+                let looper = setInterval( function(){
+                    $("#seconds").html(pad(++sec%60));
+                    $("#minutes").html(pad(parseInt(sec/60,10)));
+                }, 1000);
+            console.log();
+            {% endif %}
+
+            {% if game.secondHalfStart is not null and game.secondHalfEnd is null %}
+                let fromBase = Date.parse('{{ game.secondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+                let now = Date.parse(Date());
+                let sec = (now - fromBase) / 1000;
+                function pad ( val ) { return val > 9 ? val : "0" + val; }
+                let looper = setInterval( function(){
+                    $("#seconds").html(pad(++sec%60));
+                    $("#minutes").html(pad(parseInt(sec/60,10)));
+                }, 1000);
+                console.log();
+            {% endif %}
+
+            {% if game.extentedFirstHalfStart is not null and game.extentedFirstHalfEnd is null %}
+            let fromBase = Date.parse('{{ game.extentedFirstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+            function pad ( val ) { return val > 9 ? val : "0" + val; }
+            let looper = setInterval( function(){
+                $("#seconds").html(pad(++sec%60));
+                $("#minutes").html(pad(parseInt(sec/60,10)));
+            }, 1000);
+            console.log();
+            {% endif %}
+
+            {% if game.extentedSecondHalfStart is not null and game.extentedSecondHalfEnd is null %}
+            let fromBase = Date.parse('{{ game.extentedSecondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+            function pad ( val ) { return val > 9 ? val : "0" + val; }
+            let looper = setInterval( function(){
+                $("#seconds").html(pad(++sec%60));
+                $("#minutes").html(pad(parseInt(sec/60,10)));
+            }, 1000);
+            console.log();
+            {% endif %}
+        {% endif %}
+        });
+    </script>
 {% endblock %}
