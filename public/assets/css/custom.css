@@ -9,3 +9,16 @@
 .red-card {
     background-color: #ffcec1;
 }
+
+
+label, legend {
+    font-weight: bold !important;
+}
+
+label::after, legend::after {
+    content: ':';
+}
+
+.pills-small > .card-header-pills > li.active {
+    background-color: #5969ff;
+} 

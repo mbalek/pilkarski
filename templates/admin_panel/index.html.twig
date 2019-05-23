@@ -1,45 +1,37 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}{{ 'global.actions.adminDash' |trans }}{% endblock %}
+{% block title %}
+    {{ 'global.actions.adminDash' |trans }}
+{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'task.display.taskToDo' |trans }}</h2>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="data-table-basic" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>{{ 'task.fields.title' |trans }}</th>
-                                    <th>{{ 'task.fields.finishDate' |trans }}</th>
-                                    <th>{{ 'task.fields.assigmentDate' |trans }}</th>
-                                    <th>{{ 'task.fields.description' |trans }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for task in tasks %}
-                                    <tr>
-                                        <td>{{ task.title }}</td>
-                                        <td>{{ task.finishDate ? task.finishDate|date('Y-m-d H:i:s') : '' }}</td>
-                                        <td>{{ task.assigmentDate ? task.assigmentDate|date('Y-m-d H:i:s') : '' }}</td>
-                                        <td>{{ task.description }}</td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="6">{{ 'global.noRecords' |trans }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-header">
+        <h2>{{ 'task.display.taskToDo' |trans }}</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>{{ 'task.fields.title' |trans }}</th>
+                    <th>{{ 'task.fields.finishDate' |trans }}</th>
+                    <th>{{ 'task.fields.assigmentDate' |trans }}</th>
+                    <th>{{ 'task.fields.description' |trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.finishDate ? task.finishDate|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ task.assigmentDate ? task.assigmentDate|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ task.description }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">{{ 'global.noRecords' |trans }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

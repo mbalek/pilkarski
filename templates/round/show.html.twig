@@ -1,19 +1,22 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}Round{% endblock %}
+{% block title %}Round
+{% endblock %}
 
 {% block body %}
 
-    <div class="card-header">
-        <h3 class="font-light"><span class="text-primary">{{ round.league.name }}</span> / <span class="font-bold text-secondary">{{ round.name }}</span></h3>
-        <div class="row ">
-            <a href="{{ path('game_new' , {'leagueId':round.league.id , 'roundId':round.id}) }}" class="btn btn-primary">Dodaj mecz</a>
+    <div class="card-header pills-small">
+        <h3 class="font-light">
+            <span class="text-primary">{{ round.league.name }}</span>
+            /
+            <span class="font-bold text-secondary">{{ round.name }}</span>
+        </h3>
+
+        <div class="m-2">
+            <a href="{{ path('game_new' , {'leagueId':round.league.id , 'roundId':round.id}) }}" class="btn btn-success">Dodaj mecz</a>
         </div>
-    </div>
 
-
-    <div class="card-body">
-        <ul class="nav nav-tabs md-tabs" role="tablist">
+        <ul class="nav nav-pills card-header-pills" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#upcomingmatches" role="tab">{{ 'game.display.upcomingGames'|trans }}</a>
             </li>
@@ -27,35 +30,40 @@
                 <a class="nav-link" data-toggle="tab" href="#deactivatedmatches" role="tab">{{ 'game.display.deactivatedGames'|trans }}</a>
             </li>
         </ul>
+    </div>
 
+
+    <div class="card-body">
         <div class="tab-content">
 
             <div class="tab-pane active" id="upcomingmatches" role="tabpanel">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
-                        <tr>
-                            <th>{{ 'game.fields.homeTeam' |trans }}</th>
-                            <th>{{ 'game.fields.awayTeam' |trans }}</th>
-                            <th>{{ 'game.fields.round' |trans }}</th>
-                            <th>{{ 'game.fields.date' |trans }}</th>
-                            <th>{{ 'global.actions.global' |trans }}</th>
-                        </tr>
+                            <tr>
+                                <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                                <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                                <th>{{ 'game.fields.round' |trans }}</th>
+                                <th>{{ 'game.fields.date' |trans }}</th>
+                                <th>{{ 'global.actions.global' |trans }}</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for game in round.games if game.status == 3 %}
-                            <tr>
-                            <td>{{ game.homeTeam.club.name }}</td>
-                            <td>{{ game.awayTeam.club.name }}</td>
-                            <td>{{ game.round }}</td>
-                            <td>{{ game.gameDateTime|date }}</td>
-                            <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="5">{{ 'global.noRecords'|trans }}</td>
-                            </tr>
-                        {% endfor %}
+                            {% for game in round.games if game.status == 3 %}
+                                <tr>
+                                    <td>{{ game.homeTeam.club.name }}</td>
+                                    <td>{{ game.awayTeam.club.name }}</td>
+                                    <td>{{ game.round }}</td>
+                                    <td>{{ game.gameDateTime|date }}</td>
+                                    <td>
+                                        <a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -64,28 +72,30 @@
             <div class="tab-pane" id="livematches" role="tabpanel">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
-                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
-                        <th>{{ 'game.fields.round' |trans }}</th>
-                        <th>{{ 'game.fields.date' |trans }}</th>
-                        <th>{{ 'global.actions.global' |trans }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                            <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                            <th>{{ 'game.fields.round' |trans }}</th>
+                            <th>{{ 'game.fields.date' |trans }}</th>
+                            <th>{{ 'global.actions.global' |trans }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for game in round.games if game.status == 2 %}
-                        <tr>
-                        <td>{{ game.homeTeam.club.name }}</td>
-                        <td>{{ game.awayTeam.club.name }}</td>
-                        <td>{{ game.round }}</td>
-                        <td>{{ game.gameDateTime|date }}</td>
-                        <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
-                        </tr>
-                    {% endfor %}
+                        {% for game in round.games if game.status == 2 %}
+                            <tr>
+                                <td>{{ game.homeTeam.club.name }}</td>
+                                <td>{{ game.awayTeam.club.name }}</td>
+                                <td>{{ game.round }}</td>
+                                <td>{{ game.gameDateTime|date }}</td>
+                                <td>
+                                    <a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -93,28 +103,30 @@
             <div class="tab-pane" id="finishedmatches" role="tabpanel">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
-                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
-                        <th>{{ 'game.fields.round' |trans }}</th>
-                        <th>{{ 'game.fields.date' |trans }}</th>
-                        <th>{{ 'global.actions.global' |trans }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                            <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                            <th>{{ 'game.fields.round' |trans }}</th>
+                            <th>{{ 'game.fields.date' |trans }}</th>
+                            <th>{{ 'global.actions.global' |trans }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for game in round.games if game.status == 1 %}
-                        <tr>
-                        <td>{{ game.homeTeam.club.name }}</td>
-                        <td>{{ game.awayTeam.club.name }}</td>
-                        <td>{{ game.round }}</td>
-                        <td>{{ game.gameDateTime|date }}</td>
-                        <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
-                        </tr>
-                    {% endfor %}
+                        {% for game in round.games if game.status == 1 %}
+                            <tr>
+                                <td>{{ game.homeTeam.club.name }}</td>
+                                <td>{{ game.awayTeam.club.name }}</td>
+                                <td>{{ game.round }}</td>
+                                <td>{{ game.gameDateTime|date }}</td>
+                                <td>
+                                    <a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -122,28 +134,30 @@
             <div class="tab-pane" id="deactivatedmatches" role="tabpanel">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>{{ 'game.fields.homeTeam' |trans }}</th>
-                        <th>{{ 'game.fields.awayTeam' |trans }}</th>
-                        <th>{{ 'game.fields.round' |trans }}</th>
-                        <th>{{ 'game.fields.date' |trans }}</th>
-                        <th>{{ 'global.actions.global' |trans }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ 'game.fields.homeTeam' |trans }}</th>
+                            <th>{{ 'game.fields.awayTeam' |trans }}</th>
+                            <th>{{ 'game.fields.round' |trans }}</th>
+                            <th>{{ 'game.fields.date' |trans }}</th>
+                            <th>{{ 'global.actions.global' |trans }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for game in round.games if game.status == 0 %}
-                        <tr>
-                        <td>{{ game.homeTeam.club.name }}</td>
-                        <td>{{ game.awayTeam.club.name }}</td>
-                        <td>{{ game.round }}</td>
-                        <td>{{ game.gameDateTime|date }}</td>
-                        <td><a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a></td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'global.noRecords'|trans }}</td>
-                        </tr>
-                    {% endfor %}
+                        {% for game in round.games if game.status == 0 %}
+                            <tr>
+                                <td>{{ game.homeTeam.club.name }}</td>
+                                <td>{{ game.awayTeam.club.name }}</td>
+                                <td>{{ game.round }}</td>
+                                <td>{{ game.gameDateTime|date }}</td>
+                                <td>
+                                    <a href='{{ path("game_panel", { "id": game.id}) }}' class="text-primary">Panel</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">{{ 'global.noRecords'|trans }}</td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

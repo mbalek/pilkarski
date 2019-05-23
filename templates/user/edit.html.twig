@@ -1,24 +1,18 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}{{ 'user.display.editUser' |trans }}{% endblock %}
+{% block title %}
+    {{ 'user.display.editUser' |trans }}
+{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'user.display.editUser' |trans }}</h2>
-                        </div>
-                        {{ include('user/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
-                        <p>
-                            <a href="{{ path('user_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-header">
+        <h2>{{ 'user.display.editUser' |trans }}</h2>
+    </div>
+    <div class="card-body">{{ include('user/_form.html.twig', {'button_label': 'global.actions.edit'}) }}</div>
+    <div class="card-footer">
+        <a href="{{ path('user_index') }}">
+            <button class="btn btn-primary">{{ 'global.backToList'|trans }}</button>
+        </a>
     </div>
 
 {% endblock %}
@@ -29,14 +23,13 @@
             let select = document.getElementById('edit_user_permissions');
             let opts = document.getElementById('edit_user_permissions').getElementsByTagName('option');
             console.log(opts);
-            for (let i=0; opts.length; i++){
-                if(opts[i].value == role){
+            for (let i = 0; opts.length; i++) {
+                if (opts[i].value == role) {
                     select.selectedIndex = i;
-                    console.log(i,'tutaj');
+                    console.log(i, 'tutaj');
                 }
             }
             console.log(role);
         });
     </script>
 {% endblock %}
-

@@ -1,23 +1,17 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}{{ 'formation.display.newPosition'|trans }}{% endblock %}
+{% block title %}
+    {{ 'formation.display.newPosition'|trans }}
+{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'formation.display.newPosition'|trans }}</h2>
-                        </div>
-                        {{ include('dictionary/formation/_form.html.twig') }}
-                        <p>
-                            <a href="{{ path('admin_dictionary')}}"><button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-header">
+        <h2>{{ 'formation.display.newPosition'|trans }}</h2>
+    </div>
+    <div class="card-body">{{ include('dictionary/formation/_form.html.twig') }}</div>
+    <div class="card-footer">
+        <a href="{{ path('admin_dictionary')}}">
+            <button class="btn btn-primary">{{ 'global.actions.backToList'|trans }}</button>
+        </a>
     </div>
 {% endblock %}
