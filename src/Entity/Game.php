@@ -114,6 +114,11 @@ class Game
      */
     private $extentedSecondHalfEnd;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $state;
+
     
 
     public function __construct()
@@ -383,6 +388,18 @@ class Game
     public function setExtentedSecondHalfEnd(?\DateTimeInterface $extentedSecondHalfEnd): self
     {
         $this->extentedSecondHalfEnd = $extentedSecondHalfEnd;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(?int $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

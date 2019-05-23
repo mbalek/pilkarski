@@ -6,10 +6,12 @@ use App\Entity\Club;
 use App\Entity\Footballer;
 use App\Entity\Game;
 use App\Entity\League;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class IndexController extends AbstractController
 {
@@ -102,6 +104,20 @@ class IndexController extends AbstractController
            'club'=>$club,
            'footballer'=>$footballer,
            'leagues'=>$leagues
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_MODERATOR" , message="Error 404, no permissions")
+     * @Route("/matches/user", name="user_matches", methods={"GET"})
+     */
+    public function getUserMatches(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $league = $this->getUser()->getModeratingLeague();
+
+        return $this->render('user/user_matches.html.twig' , [
+            'league' => $league,
         ]);
     }
 }
