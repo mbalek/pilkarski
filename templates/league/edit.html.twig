@@ -3,21 +3,15 @@
 {% block title %}{{ 'league.display.editLeague' |trans }}{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'league.display.editLeague' |trans }}</h2>
-                        </div>
-                        {{ include('league/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
-                        <p>
-                            <a href="{{ path('league_index') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-header">
+        <h3 class="card-title">{{ 'league.display.editLeague'|trans }}</h3>
+    </div>
+    <div class="card-body">
+        {{ include('league/_form.html.twig') }}
+    </div>
+    <div class="card-footer">
+        <a href="{{ path('league_index') }}">
+            <button class="btn btn-primary">{{ 'global.actions.backToList'|trans }}</button>
+        </a>
     </div>
 {% endblock %}

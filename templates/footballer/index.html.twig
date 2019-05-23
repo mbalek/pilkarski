@@ -1,73 +1,63 @@
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'footballer.display.footballer' |trans }}</h2>
-                            <div class="p-2">
-                                <a href="{{ path('footballer_new' , {'club': club , 'league':league.id}) }}">
-                                    <button class="btn btn-success"><i class="icofont icofont-user-alt-3"></i>{{ 'global.add'|trans }}</button></a>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="data-table-basic" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>{{ 'footballer.fields.image' |trans }}</th>
-                                    <th>{{ 'footballer.fields.name' |trans }}</th>
-                                    <th>{{ 'footballer.fields.surname' |trans }}</th>
-                                    <th>{{ 'footballer.fields.birthdate' |trans }}</th>
-                                    <th>{{ 'footballer.fields.country' |trans }}</th>
-                                    <th>{{ 'footballer.fields.goal' |trans }}</th>
-                                    <th>{{ 'footballer.fields.assists' |trans }}</th>
-                                    <th>{{ 'footballer.fields.yellowCards' |trans }}</th>
-                                    <th>{{ 'footballer.fields.redCards' |trans }}</th>
-                                    <th>{{ 'global.actions.global' |trans }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for footballer in footballers %}
-                                    <tr>
-                                        <td>
-                                            <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
-                                        </td>
-                                        <td>{{ footballer.name }}</td>
-                                        <td>{{ footballer.surname }}</td>
-                                        <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d H:i:s') : ''}}</td>
-                                        <td>{{ footballer.country }}</td>
-                                        <td>{{ footballer.goals }}</td>
-                                        <td>{{ footballer.assists }}</td>
-                                        <td>{{ footballer.yellowCards }}</td>
-                                        <td>{{ footballer.redCards }}</td>
-                                        <td>
-                                            <div class="btn-group dropdown-split-inverse">
-                                                <button type="button" class="btn btn-inverse dropdown-toggle dropdown-toggle-split waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="sr-only">{{ 'global.actions.actions'|trans }}</span>
-                                                    {{ 'global.action' |trans}}
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect waves-light" href="{{ path('footballer_edit', {'id': footballer.id,'club': club , 'league':league}) }}">
-                                                        <button class="btn btn-primary">{{ 'global.actions.edit'|trans }}</button>
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect waves-light">{{ include('footballer/_delete_form.html.twig') }}</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="8">{{ 'global.noRecords'|trans }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+    <div class="bordered">
+        <h3>{{ 'footballer.display.footballer' |trans }}</h3>
+        <div class="p-2">
+            <a href="{{ path('footballer_new' , {'club': club , 'league':league.id}) }}">
+                <button class="btn btn-success">
+                    <i class="icofont icofont-user-alt-3"></i>
+                    {{ 'global.add'|trans }}</button>
+            </a>
         </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-borderless">
+            <thead>
+                <tr>
+                    <th>{{ 'footballer.fields.image' |trans }}</th>
+                    <th>{{ 'footballer.fields.name' |trans }}</th>
+                    <th>{{ 'footballer.fields.surname' |trans }}</th>
+                    <th>{{ 'footballer.fields.birthdate' |trans }}</th>
+                    <th>{{ 'footballer.fields.country' |trans }}</th>
+                    <th>{{ 'footballer.fields.goal' |trans }}</th>
+                    <th>{{ 'footballer.fields.assists' |trans }}</th>
+                    <th>{{ 'footballer.fields.yellowCards' |trans }}</th>
+                    <th>{{ 'footballer.fields.redCards' |trans }}</th>
+                    <th>{{ 'global.actions.global' |trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for footballer in footballers %}
+                    <tr>
+                        <td>
+                            <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
+                        </td>
+                        <td>{{ footballer.name }}</td>
+                        <td>{{ footballer.surname }}</td>
+                        <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d H:i:s') : ''}}</td>
+                        <td>{{ footballer.country }}</td>
+                        <td>{{ footballer.goals }}</td>
+                        <td>{{ footballer.assists }}</td>
+                        <td>{{ footballer.yellowCards }}</td>
+                        <td>{{ footballer.redCards }}</td>
+                        <td>
+                            <div class="btn-group dropdown-split-inverse">
+                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+                                    {{ 'global.action' |trans}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ path('footballer_edit', {'id': footballer.id, 'club': club , 'league':league}) }}">{{ 'global.actions.edit'|trans }}</a>
+                                    <a class="dropdown-item">{{ include('footballer/_delete_form.html.twig') }}</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">{{ 'global.noRecords'|trans }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

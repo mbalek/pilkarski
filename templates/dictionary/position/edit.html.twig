@@ -1,23 +1,19 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}{{ 'position.display.edit' |trans}}{% endblock %}
+{% block title %}
+    {{ 'position.display.edit' |trans}}
+{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'position.display.edit' |trans}}</h2>
-                        </div>
-                        {{ include('dictionary/position/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
-                        <p>
-                            <a href="{{ path('admin_dictionary') }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-header">
+        <h2>{{ 'position.display.edit' |trans}}</h2>
+    </div>
+    <div class="card-body">
+        {{ include('dictionary/position/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+    </div>
+    <div class="card-footer">
+        <a href="{{ path('admin_dictionary') }}">
+            <button class="btn btn-primary">{{ 'global.backToList'|trans }}</button>
+        </a>
     </div>
 {% endblock %}
