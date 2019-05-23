@@ -158,6 +158,16 @@ game:
     upcomingGames: 'Nadchodzące mecze'
     deactivatedGames: "Mecze niekatywne"
     addGame: 'Dodaj mecz'
+    startFirstHalf: 'Rozpocznij pierwszą połowę'
+    endFirstHalf: 'Zakończ pierwszą połowę'
+    startSecondHalf: 'Rozpocznij drugą połowę'
+    endSecondHalf: 'Zakończ drugą połowę'
+    extFirstHalfStart: 'Rozpocznij pierwszą połowę dogrywki'
+    extFirstHalfEnd: 'Zakończ pierwszą połowę dogrywki'
+    extSecondHalfStart: 'Rozpocznij drugą połowę dogrywki'
+    extSecondHalfEnd: 'Zakończ drugą połowę dogrywki'
+    endGame: 'Zakończ mecz'
+    newGame: 'Dodawanie nowego meczu'
   status:
     deactivated: "Nieaktywny"
     live: "Trwający"

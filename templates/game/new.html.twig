@@ -1,11 +1,11 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}New Game{% endblock %}
+{% block title %}{{ 'game.display.newGame' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>Create new Game</h1>
+    <h1>{{ 'game.display.newGame' |trans }}</h1>
 
     {{ include('game/_form.html.twig') }}
 
-    <a href="{{ path('game_index') }}">back to list</a>
+    <a href="{{ path('round_show' , {'id' : roundId , 'round' : round}) }}" class="btn btn-danger m-1">{{ 'global.backToList' |trans }}</a>
 {% endblock %}
