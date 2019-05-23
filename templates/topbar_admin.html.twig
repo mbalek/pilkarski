@@ -17,8 +17,8 @@
                             <h5 class="mb-0 text-white nav-user-name">{{ app.user.username }}</h5>
                         </div>
                         <!-- w tym linku będą mecze nadchodzące które może komentować dany mod -->
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>{{ 'topbar.user.myMatches' |trans }}</a>
-                        <a class="dropdown-item" href="./logout"><i class="fas fa-user mr-2"></i>{{ 'global.actions.logout' |trans }}</a>
+                        <a class="dropdown-item" href="{{ path('user_matches' , {'username' : app.user.username}) }}"><i class="fas fa-cog mr-2"></i>{{ 'topbar.user.myMatches' |trans }}</a>
+                        <a class="dropdown-item" href="/logout"><i class="fas fa-user mr-2"></i>{{ 'global.actions.logout' |trans }}</a>
                     </div>
                 </li>
             </ul>

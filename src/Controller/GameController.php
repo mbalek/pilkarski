@@ -320,6 +320,7 @@ class GameController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $game->setFirstHalfStart(new \DateTime());
         $game->setStatus(2);
+        $game->setState(1);
         $em->persist($game);
         $em->flush();
         return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
@@ -346,6 +347,7 @@ class GameController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $game->setSecondHalfStart(new \DateTime());
+        $game->setState(2);
         $em->persist($game);
         $em->flush();
         return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
@@ -372,6 +374,7 @@ class GameController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $game->setExtentedFirstHalfStart(new \DateTime());
+        $game->setState(3);
         $em->persist($game);
         $em->flush();
         return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
@@ -398,6 +401,7 @@ class GameController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $game->setExtentedSecondHalfStart(new \DateTime());
+        $game->setState(4);
         $em->persist($game);
         $em->flush();
         return $this->redirectToRoute('game_panel' , array('game' => $game, 'id' => $game->getId()));
@@ -426,6 +430,7 @@ class GameController extends AbstractController
         $roundId = $request->get('roundId');
         $em = $this->getDoctrine()->getManager();
         $game->setStatus(1);
+        $game->setState(0);
         $em->persist($game);
         $em->flush();
         return $this->redirectToRoute('round_show' , array('round' => $round, 'id' => $roundId));
