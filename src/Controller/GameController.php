@@ -157,7 +157,8 @@ class GameController extends AbstractController
                 new JsonEncoder(),
             ];
             $normalizers = [
-                (new ObjectNormalizer())->setIgnoredAttributes([ 'updatedBy' , 'changedBy', 'game' ,'updatedAt' , 'changedAt'] )
+                (new ObjectNormalizer())->setIgnoredAttributes(['updatedBy' , 'changedBy',
+                    'game'  ,'updatedAt' , 'changedAt' , 'moderatingLeague'] )
             ];
             $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
             $data = $serializer->serialize($comment , 'json');
@@ -222,7 +223,7 @@ class GameController extends AbstractController
                 new JsonEncoder(),
             ];
             $normalizers = [
-                (new ObjectNormalizer())->setIgnoredAttributes(['game']),
+                (new ObjectNormalizer())->setIgnoredAttributes(['game' , 'moderatingLeague']),
             ];
             $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
             $data = $serializer->serialize($comment , 'json');

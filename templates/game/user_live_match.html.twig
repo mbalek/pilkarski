@@ -1,0 +1,251 @@
+{% extends 'base_user.html.twig' %}
+{% block body %}
+    <div class="container">
+        {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
+        {{ 'index.display.round'|trans }}: {{ game.round.name }}
+        {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
+        {{ game.description }}
+        <input type="hidden" value="{{ game.id }}" id="game-id"/>
+
+        <!-- Budowanie pierwszej drużyny -->
+        {% if game.homeTeam %}
+            {{ game.homeTeam.club.name }}
+            {% if game.homeTeam.formation %}
+                {{ game.homeTeam.formation.name }}
+            {% endif %}
+            <img height="50" width="50" src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
+            {% for gamesquad in game.homeTeam.gameTeamSquads %}
+                {{ gamesquad.number }}
+                {{ gamesquad.footballer.name }}
+                {{ gamesquad.footballer.surname }}
+                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+            {% else %}
+                {{ 'index.display.noFootballers' |trans }}
+            {% endfor %}
+        {% else %}
+            {{ 'index.display.noHomeTeam' |trans }}
+        {% endif %}
+
+        <!-- Budowanie drugiej drużyny -->
+        {% if game.awayTeam %}
+            {{ game.awayTeam.club.name }}
+            {% if game.awayTeam.formation %}
+                {{ game.awayTeam.formation.name }}
+            {% endif %}
+            <img height="50" width="50" src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
+            {% for gamesquad in game.awayTeam.gameTeamSquads %}
+                {{ gamesquad.number }}
+                {{ gamesquad.footballer.name }}
+                {{ gamesquad.footballer.surname }}
+                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
+            {% else %}
+                {{ 'index.display.noFootballers' |trans }}
+            {% endfor %}
+        {% else %}
+            {{ 'index.display.noAwayTeam' |trans }}
+        {% endif %}
+
+        <!-- eventy w danym zakonczonym meczu -->
+        <div id="events-container">
+        {% for event in game.events|reverse %}
+                <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
+                    {{ event.minute }}
+                    {{ event.message }}
+                    {{ event.eventType }}
+                    {{ event.otherData }}
+                    {% if event.player1 is not null %}
+                        {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
+                    {% endif %}
+                    {% if event.player2 is not null %}
+                        {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
+                    {% endif %}
+                </div>
+        {% else %}
+            {{ 'index.display.noEvents' |trans }}
+        {% endfor %}
+        </div>
+
+        {% if app.user %}
+            <div>
+                <form id="comment" action="javascript:void('');" method="post">
+                    <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
+                        <div class="form-group">
+                            <label for="comment_description"></label>
+                            <textarea class="form-control" id="comment-description" required="required"></textarea>
+                        </div>
+                        <input type="submit" value=""/>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            {{ 'index.display.ableToAddComments' |trans }}
+        {% endif %}
+
+        <!-- komentarze -->
+        {{ 'index.display.comments'|trans }}
+        <div id="comments">
+            {% for comment in game.comments|reverse %}
+                <div id="comment-{{ comment.id }}">
+                    {% if comment.createdBy == app.user.username %}
+                        <button class="button-edit-comment" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
+                        <button class="button-delete-comment" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}" >X</button>
+                    {% endif %}
+                    <p>{{ comment.createdBy }}</p>
+                    <p class="comment-description">{{ comment.description }}</p>
+                    <p>{{ comment.createdAt|date('j.m.Y, H:i:s') }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJavaScript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#comment").submit(function (e) {
+                $.ajax({
+                    url:$("#comment-div").data('url'),
+                    dataType: "JSON",
+                    data: {
+                        username: '{{ app.user.id }}',
+                        description: $("#comment-description").val(),
+                        game: $("#game-id").val(),
+                    },
+                    success: function (response) {
+                        let div = document.createElement('div');
+                        div.setAttribute("id" , "comment-"+response.id);
+                        let user = document.createElement("p");
+                        user.innerHTML=response.createdBy.username;
+                        let description = document.createElement("p");
+                        description.innerHTML = response.description;
+                        let date = new Date(response.createdAt.timestamp * 1000).toLocaleString();
+                        let dateText = document.createElement("p");
+                        dateText.innerHTML = date;
+                        document.getElementById("comment-description").value="";
+                        let buttonD = document.createElement("button");
+                        let buttonE = document.createElement("button");
+                        buttonE.setAttribute("class" , "button-edit-comment");
+                        buttonE.setAttribute("data-commentid" , response.id );
+                        buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
+                        buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
+                        buttonD.setAttribute("class" , "button-delete-comment");
+                        buttonD.setAttribute("data-commentid" , response.id);
+                        buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
+                        buttonD.innerHTML = "X";
+                        div.appendChild(buttonE);
+                        div.appendChild(buttonD);
+                        div.appendChild(user);
+                        div.appendChild(description);
+                        div.appendChild(dateText);
+                        $("#comments").prepend(div);
+                    },
+                    error:function () {
+                        console.log('error');
+                    }
+                });
+            });
+
+            setInterval(refreshEvents ,1000 );
+        });
+
+        $(document).on("click" , ".button-delete-comment" , function () {
+            $.ajax({
+                url:$(this).data('deleteurl'),
+                dataType: "JSON",
+                data: {
+                    commentId: $(this).data('commentid'),
+                },
+                success: function (response) {
+                    let id = response;
+                    let search = "#comment-"+id;
+                    $(search).remove();
+                },
+                error:function () {
+                    console.log('error');
+                }
+            });
+        });
+
+        $(document).on("click" , ".button-edit-comment" , function () {
+            let textarea = document.createElement("textarea");
+            let divid = $(this).parent().attr('id');
+            let div = document.getElementById(divid);
+            let desc = div.querySelector('.comment-description');
+            //hide edit button
+            let edit = div.querySelector('.button-edit-comment');
+            edit.style.display = "none";
+            desc.style.display = "none";
+            let finishEdit = document.createElement('button');
+            finishEdit.setAttribute("class" , "button-finish-edit");
+            finishEdit.setAttribute("data-edit-url" , edit.getAttribute("data-editurl"));
+            finishEdit.setAttribute("data-comment-id" , edit.getAttribute("data-commentid"));
+            finishEdit.innerHTML = "{{ 'index.display.confirm' |trans }}";
+            textarea.setAttribute("class" , "comment-edit");
+            textarea.innerHTML = desc.innerHTML;
+            div.insertBefore(textarea, div.children[3]);
+            div.appendChild(finishEdit);
+
+            $(document).on("click" , ".button-finish-edit" , function () {
+                let divid = $(this).parent().attr('id');
+                let div = document.getElementById(divid);
+                let description = div.querySelector('.comment-edit');
+                $.ajax({
+                    url:$(this).data('edit-url'),
+                    dataType: "JSON",
+                    data: {
+                        commentId: $(this).data('comment-id'),
+                        description: description.value,
+                    },
+                    success: function (response) {
+                        edit.style.display = "inline";
+                        desc.style.display = "inline";
+                        div.removeChild(div.children[3]);
+                        div.removeChild(div.lastChild);
+                        div.querySelector('.comment-description').innerHTML = response.description;
+                    },
+                    error:function () {
+                        console.log('error');
+                    }
+                });
+            })
+
+        });
+
+        function refreshEvents(){
+
+            $.ajax({
+                url:"{{ path('ajax_events') }}",
+                dataType: "JSON",
+                data: {
+                    gameId: "{{ game.id }}",
+                },
+                success: function (response) {
+                    $("#events-container").empty();
+                    console.log(response);
+                    for(let i = 0; i < response.length; i++ ){
+                        let div = document.createElement('div');
+                        div.setAttribute('data-id' , response.id);
+                        let p = document.createElement('p');
+                        if(response[i].name1 == null){
+                                p.innerText= response[i].minute + " " + response[i].message;
+                        }else if(response[i].name2 == null){
+                                p.innerText= response[i].minute + " " + response[i].message + " " +
+                                + response[i].number1 + " " + response[i].surnamename1 + " "  + response[i].name1;
+                        }else{
+                                p.innerText= response[i].minute + " " + response[i].message + " " +
+                                    + response[i].number1 + " " + response[i].surnamename1 + " "  + response[i].name1
+                                    + " " +response[i].number2 + " " + response[i].surnamename2 + " "  + response[i].name2 ;
+                        }
+                        div.appendChild(p);
+
+                        $("#events-container").prepend(div);
+                        }
+
+                },
+                error:function () {
+                    console.log('error');
+                }
+            });
+        }
+    </script>
+{% endblock %}
