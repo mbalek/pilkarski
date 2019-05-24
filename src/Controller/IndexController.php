@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Club;
+use App\Entity\Events;
 use App\Entity\Footballer;
 use App\Entity\Game;
 use App\Entity\League;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class IndexController extends AbstractController
 {
@@ -37,12 +41,11 @@ class IndexController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $games = $em->getRepository(Game::class)->findAll();
+        $games = $em->getRepository(Game::class)->findBy(array('status' => 2));
         $leagues = $em->getRepository(League::class)->findAll();
-        $liveGames=[];
 
         return $this->render('index/live_matches.html.twig', [
-            'liveGames' => $liveGames,
+            'liveGames' => $games,
             'leagues' => $leagues,
         ]);
     }
@@ -53,13 +56,26 @@ class IndexController extends AbstractController
     public function showIndex(Game $game): Response
     {
         $em = $this->getDoctrine()->getManager();
-
         $leagues = $em->getRepository(League::class)->findAll();
         return $this->render('game/user_index_show.html.twig',[
             'game' => $game,
             'leagues' => $leagues,
         ]);
     }
+
+    /**
+     * @route("/display/live/match/{id}" , name="index_live_game_show" , methods={"GET"})
+     */
+    public function showLiveIndex(Game $game): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $leagues = $em->getRepository(League::class)->findAll();
+        return $this->render('game/user_live_match.html.twig',[
+            'game' => $game,
+            'leagues' => $leagues,
+        ]);
+    }
+
 
     /**
      * @route("/display/league/{id}" , name="index_league_show" , methods={"GET"})
@@ -118,6 +134,67 @@ class IndexController extends AbstractController
 
         return $this->render('user/user_matches.html.twig' , [
             'league' => $league,
+        ]);
+    }
+
+    /**
+     * @Route("/ajax/events", name="ajax_events", methods={"GET"})
+     */
+    public function getEventsAjax(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $gameId = $request->get('gameId');
+            $em = $this->getDoctrine()->getManager();
+            $game = $em->getRepository(Game::class)->find($gameId);
+            $events = $em->getRepository(Events::class)->findBy(array('game' => $game));
+
+                $responseArray = [];
+                for($i = 0; $i<count($events); $i++) {
+                    $name1 = null;
+                    $name2 = null;
+                    $surname1 = null;
+                    $surname2 = null;
+                    $number1 = null;
+                    $number2 = null;
+                    $player1 = $events[$i]->getPlayer1();
+                    $player2 = $events[$i]->getPlayer2();
+                    if ($player1 != null) {
+                        $footballer1 = $player1->getFootballer();
+                        $name1 = $footballer1->getName();
+                        $surname1 = $footballer1->getSurname();
+                        $number1 = $player1->getNumber();
+                    }
+                    if ($player2 != null) {
+                        $footballer2 = $player2->getFootballer();
+                        $name2 = $footballer2->getName();
+                        $surname2 = $footballer2->getSurname();
+                        $number2 = $player2->getNumber();
+                    }
+
+                    array_push($responseArray, ["name1" => $name1,
+                        "surname1" => $surname1, "number1" => $number1
+                        , "name2" => $name2, "surname2" => $surname2, "number2" => $number2
+                        , "eventType" => $events[$i]->getEventType(),
+                        "message" => $events[$i]->getMessage(),
+                        'minute' => $events[$i]->getMinute(),
+                        'otherData' => $events[$i]->getOtherData(), "id" => $events[$i]->getId()]);
+                }
+                $encoders = [
+                    new JsonEncoder(),
+                ];
+                $normalizers = [
+                    (new ObjectNormalizer())->setIgnoredAttributes(['player1' , 'player2' , 'game']),
+                ];
+                $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+                $data = $serializer->serialize($responseArray , 'json');
+
+                return new JsonResponse($data, 200, [],true);
+
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
         ]);
     }
 }
