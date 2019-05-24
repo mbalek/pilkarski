@@ -97,7 +97,7 @@ class GameController extends AbstractController
      */
     public function edit(Request $request, Game $game): Response
     {
-        $form = $this->createForm(GameType::class, $game);
+        $form = $this->createForm(GameType::class, $game , array('leagueId' => $request->get('leagueId')));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

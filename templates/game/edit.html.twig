@@ -1,13 +1,11 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}Edit Game{% endblock %}
+{% block title %}{{ 'game.display.editGame' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Game</h1>
+    <h1>{{ 'game.display.editGame' |trans }}</h1>
 
     {{ include('game/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('game_index') }}">back to list</a>
-
-    {{ include('game/_delete_form.html.twig') }}
+    <a href="{{ path('game_panel' , {'id' : game.id , 'game' : game}) }}" class="btn btn-danger m-1">{{ 'global.backToList' |trans }}</a>
 {% endblock %}
