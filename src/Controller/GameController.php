@@ -103,8 +103,9 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('game_index', [
+            return $this->redirectToRoute('game_panel', [
                 'id' => $game->getId(),
+                'game' => $game,
             ]);
         }
 
