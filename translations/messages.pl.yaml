@@ -168,6 +168,7 @@ game:
     extSecondHalfEnd: 'Zakończ drugą połowę dogrywki'
     endGame: 'Zakończ mecz'
     newGame: 'Dodawanie nowego meczu'
+    editGame: 'Edytuj mecz'
   status:
     deactivated: "Nieaktywny"
     live: "Trwający"

@@ -4,9 +4,8 @@
         <!-- zrobic miniaturki i krotki opisy spotkan do listowania -->
         <br/>
      {{ game.gameDateTime|date('Y-m-d H:i:s') }}
-        {% if game.isActive == true %}
+        {{ game.homeTeam }} vs {{ game.awayTeam }}
             <!-- przycisk od przejscia do szcegolow moderowanego meczu -->
-            <button class="btn">{{ 'index.display.details' |trans }} </button>
-        {% endif %}
+            <a href="{{ path('index_live_game_show' , {'id':game.id, 'game':game}) }}">szczegoly</a>
     {% endfor %}
 {% endblock %}

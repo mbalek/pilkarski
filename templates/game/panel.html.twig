@@ -5,6 +5,7 @@
 
 {% block body %}
     <div class="card-header">
+        <a href="{{ path('round_show' , {'id':game.round.id , 'round': game.round}) }}" class="btn-warning">{{ 'global.backToList' |trans }}</a>
         <h3><span class="text-primary">Zarządzanie meczem</span> /
             <span class="text-secondary">
             {{ game.homeTeam.club.name }} ({% if game.homeTeam.score %}{{ game.homeTeam.score }}{% else %} 0 {% endif %})
@@ -60,7 +61,7 @@
 
             <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
 
-            <a href="{{ path("game_edit", { 'id': game.id}) }}" class="btn btn-primary m-1" >Edytuj informacje o meczu</a>
+            <a href="{{ path("game_edit", { 'id': game.id , 'leagueId':game.round.league.id}) }}" class="btn btn-primary m-1" >Edytuj informacje o meczu</a>
 
         </div>
 

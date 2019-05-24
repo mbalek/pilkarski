@@ -144,18 +144,6 @@ class Game
         return $this;
     }
 
-    public function getResult(): ?string
-    {
-        return $this->result;
-    }
-
-    public function setResult(?string $result): self
-    {
-        $this->result = $result;
-
-        return $this;
-    }
-
     public function getRound(): ?Round
     {
         return $this->round;
