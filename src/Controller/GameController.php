@@ -97,14 +97,15 @@ class GameController extends AbstractController
      */
     public function edit(Request $request, Game $game): Response
     {
-        $form = $this->createForm(GameType::class, $game);
+        $form = $this->createForm(GameType::class, $game , array('leagueId' => $request->get('leagueId')));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('game_index', [
+            return $this->redirectToRoute('game_panel', [
                 'id' => $game->getId(),
+                'game' => $game,
             ]);
         }
 
