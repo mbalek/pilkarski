@@ -1,9 +1,7 @@
 {% extends 'base_admin.html.twig' %}
 
 {% block title %}Game{% endblock %}{% block body %}
-    <div class="card-header">
-
-
+    <div class="card-header ">
         <div>
             <h3>
                 <span class="text-primary">Zarządzanie meczem</span>
@@ -27,55 +25,53 @@
         </span>
             </h3>
 
-            <div class="font-italic">{{ game.gameDateTime|date() }},
+            <h5 class="">{{ game.gameDateTime|date() }},
                 {{ game.round.league.name }}
                 ({{ game.round.name }})
-            </div>
+            </h5>
             {# Tutaj beidze timer#}
-            <div class="">
-                <div>
-                    <span id="minutes"></span>:<span id="seconds"></span>'
-                </div>
+            <div id="timer" class="game-minute-timer text-center">
+                Przerwa
             </div>
         </div>
         {% if game.status == 3 or game.status == 2 %}
             <div class="row m-1 p-2 border-top">
                 {% if game.firstHalfStart is null %}
                     <a href="{{ path('game_start_first_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.startFirstHalf' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.startFirstHalf' |trans }}</a>
                 {% endif %}
                 {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
                     <a href="{{ path('game_end_first_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.endFirstHalf' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.endFirstHalf' |trans }}</a>
                 {% endif %}
                 {% if game.secondHalfStart is null and game.firstHalfEnd is not null %}
                     <a href="{{ path('game_start_second_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.startSecondHalf' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.startSecondHalf' |trans }}</a>
                 {% endif %}
                 {% if game.secondHalfEnd is null and game.secondHalfStart is not null %}
                     <a href="{{ path('game_end_second_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.endSecondHalf' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.endSecondHalf' |trans }}</a>
                 {% endif %}
                 {% if game.extentedFirstHalfStart is null and game.secondHalfEnd is not null %}
                     <a href="{{ path('game_start_ext_first_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.extFirstHalfStart' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.extFirstHalfStart' |trans }}</a>
                 {% endif %}
                 {% if game.extentedFirstHalfEnd is null and game.extentedFirstHalfStart is not null %}
                     <a href="{{ path('game_end_ext_first_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.extFirstHalfEnd' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.extFirstHalfEnd' |trans }}</a>
                 {% endif %}
                 {% if game.extentedSecondHalfStart is null and game.extentedFirstHalfEnd is not null %}
                     <a href="{{ path('game_start_ext_second_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.extSecondHalfStart' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.extSecondHalfStart' |trans }}</a>
                 {% endif %}
                 {% if game.extentedSecondHalfEnd is null and game.extentedSecondHalfStart is not null %}
                     <a href="{{ path('game_end_ext_second_half' , {'id':game.id , 'game':game}) }}"
-                       class="btn btn-warning m-1">{{ 'game.display.extSecondHalfEnd' |trans }}</a>
+                       class="btn btn-secondary m-1 col-sm-12 col-md">{{ 'game.display.extSecondHalfEnd' |trans }}</a>
                 {% endif %}
 
                 {% if game.firstHalfStart is not null %}
                     <a href="{{ path('game_end_game' , {'game':game , 'id':game.id , 'round':game.round , 'roundId': game.round.id}) }}"
-                       class="btn btn-danger m-1">
+                       class="btn btn-danger m-1 col-sm-12 col-md">
                         {{ 'game.display.endGame' |trans }}</a>
                 {% endif %}
             </div>
@@ -83,18 +79,19 @@
 
         <div class="row m-1 p-2 border-top">
 
-            <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj
+            <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1 col-sm-12 col-md">Zarządzaj
                 składami</a>
 
-            <a class="btn btn-primary m-1" data-target="#commentsModal" data-toggle="modal" href="">Zarządzaj
+            <a class="btn btn-primary m-1 col-sm-12 col-md" data-target="#commentsModal" data-toggle="modal" href="">Zarządzaj
                 komentarzami</a>
 
-            <button class="btn btn-primary m-1" data-target="#addEventModal" data-toggle="modal" type="button">Dodaj
+            <button class="btn btn-primary m-1 col-sm-12 col-md" data-target="#addEventModal" data-toggle="modal"
+                    type="button">Dodaj
                 wydarzenie
             </button>
 
-            <a href="{{ path("game_edit", { 'id': game.id , 'leagueId':game.round.league.id}) }}"
-               class="btn btn-primary m-1">Edytuj informacje o meczu</a>
+            <a href="{{ path("game_edit", { 'id': game.id , 'leagueId': game.round.league.id }) }}"
+               class="btn btn-primary m-1 col-sm-12 col-md">Edytuj informacje o meczu</a>
 
         </div>
 
@@ -102,7 +99,7 @@
             <h5></h5>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body m-0 p-0">
         {% if game.events|length < 1 %}
             <div>
                 <h2 class="text-gray text-center">Brak wydarzeń meczu</h2>
@@ -581,8 +578,17 @@
                 {# / #}
 
 
-            {% endblock %}</div>{% endblock %}{% endblock %}{% block customJavaScript %}
-    <script type="text/javascript">$(document).ready(function () {
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block customJavaScript %}
+    <script type="text/javascript">
+
+
+
+        $(document).ready(function () {
             {% if game.status == 3 or game.status == 2 %}
             {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
             let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
@@ -592,10 +598,11 @@
             function pad(val) {
                 return val > 9 ? val : "0" + val;
             }
-
+            
             let looper = setInterval(function () {
                 $("#seconds").html(pad(++sec % 60));
-                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
             }, 1000);
             console.log();
                     {% endif %}{% if game.secondHalfStart is not null and game.secondHalfEnd is null %}let fromBase = Date.parse('{{ game.secondHalfStart|date("Y-m-d\\TH:i:sP") }}');
@@ -608,7 +615,8 @@
 
             let looper = setInterval(function () {
                 $("#seconds").html(pad(++sec % 60));
-                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
             }, 1000);
             console.log();
                     {% endif %}{% if game.extentedFirstHalfStart is not null and game.extentedFirstHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedFirstHalfStart|date("Y-m-d\\TH:i:sP") }}');
@@ -621,7 +629,8 @@
 
             let looper = setInterval(function () {
                 $("#seconds").html(pad(++sec % 60));
-                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
             }, 1000);
             console.log();
                     {% endif %}{% if game.extentedSecondHalfStart is not null and game.extentedSecondHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedSecondHalfStart|date("Y-m-d\\TH:i:sP") }}');
@@ -634,7 +643,9 @@
 
             let looper = setInterval(function () {
                 $("#seconds").html(pad(++sec % 60));
-                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
             }, 1000);
             console.log();{% endif %}{% endif %}
-        });</script>{% endblock %}
+        });
+    </script>
+{% endblock %}

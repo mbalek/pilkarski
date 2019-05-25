@@ -26,3 +26,18 @@ label::after, legend::after {
 ul.list-group > li {
     list-style-type: none;
 }
+
+.game-minute-timer::after {
+    content: "'";
+}
+
+.game-minute-timer::before {
+  
+
+
+}
+
+.game-minute-timer {
+    font-weight: bold;
+    font-size: 17px;
+}
