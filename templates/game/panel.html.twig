@@ -1,113 +1,165 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block title %}Game{% endblock %}
-
-
-{% block body %}
+{% block title %}Game{% endblock %}{% block body %}
     <div class="card-header">
-        <a href="{{ path('round_show' , {'id':game.round.id , 'round': game.round}) }}" class="btn-warning">{{ 'global.backToList' |trans }}</a>
-        <h3><span class="text-primary">Zarządzanie meczem</span> /
-            <span class="text-secondary">
-            {{ game.homeTeam.club.name }} ({% if game.homeTeam.score %}{{ game.homeTeam.score }}{% else %} 0 {% endif %})
-                -
-             {{ game.awayTeam.club.name }} ({% if game.awayTeam.score %}{{ game.awayTeam.score }}{% else %} 0 {% endif %})
-            </span></h3>
-        <div class="font-italic">{{ game.gameDateTime|date() }}, {{ game.round.league.name }} ({{ game.round.name }})
-        </div>
-        {# Tutaj beidze timer#}
+
+
         <div>
-            <span id="minutes"></span>:<span id="seconds"></span>
+            <h3>
+                <span class="text-primary">Zarządzanie meczem</span>
+                /
+                <span class="text-secondary">
+        {{ game.homeTeam.club.name }}
+        (
+        {% if game.homeTeam.score %}
+                    {{ game.homeTeam.score }}
+                {% else %}
+                    0
+                    {% endif %})
+                                                                                                                                -
+        {{ game.awayTeam.club.name }}
+        (
+        {% if game.awayTeam.score %}
+                    {{ game.awayTeam.score }}
+                {% else %}
+                    0
+                    {% endif %})
+        </span>
+            </h3>
+
+            <div class="font-italic">{{ game.gameDateTime|date() }},
+                {{ game.round.league.name }}
+                ({{ game.round.name }})
+            </div>
+            {# Tutaj beidze timer#}
+            <div class="">
+                <div>
+                    <span id="minutes"></span>:<span id="seconds"></span>'
+                </div>
+            </div>
         </div>
         {% if game.status == 3 or game.status == 2 %}
-        <div class="row m-1 p-2 border-top">
-            {% if game.firstHalfStart is null %}
-                <a href="{{ path('game_start_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.startFirstHalf' |trans }}</a>
-            {% endif %}
-            {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
-                <a href="{{ path('game_end_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.endFirstHalf' |trans }}</a>
-            {% endif %}
-            {% if game.secondHalfStart is null and game.firstHalfEnd is not null %}
-                <a href="{{ path('game_start_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.startSecondHalf' |trans }}</a>
-            {% endif %}
-            {% if game.secondHalfEnd is null and game.secondHalfStart is not null %}
-                <a href="{{ path('game_end_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.endSecondHalf' |trans }}</a>
-            {% endif %}
-            {% if game.extentedFirstHalfStart is null and game.secondHalfEnd is not null %}
-                <a href="{{ path('game_start_ext_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extFirstHalfStart' |trans }}</a>
-            {% endif %}
-            {% if game.extentedFirstHalfEnd is null and game.extentedFirstHalfStart is not null%}
-                <a href="{{ path('game_end_ext_first_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extFirstHalfEnd' |trans }}</a>
-            {% endif %}
-            {% if game.extentedSecondHalfStart is null and game.extentedFirstHalfEnd is not null %}
-                <a href="{{ path('game_start_ext_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extSecondHalfStart' |trans }}</a>
-            {% endif %}
-            {% if game.extentedSecondHalfEnd is null and game.extentedSecondHalfStart is not null %}
-                <a href="{{ path('game_end_ext_second_half' , {'id':game.id , 'game':game}) }}" class="btn btn-warning m-1">{{ 'game.display.extSecondHalfEnd' |trans }}</a>
-            {% endif %}
+            <div class="row m-1 p-2 border-top">
+                {% if game.firstHalfStart is null %}
+                    <a href="{{ path('game_start_first_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.startFirstHalf' |trans }}</a>
+                {% endif %}
+                {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
+                    <a href="{{ path('game_end_first_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.endFirstHalf' |trans }}</a>
+                {% endif %}
+                {% if game.secondHalfStart is null and game.firstHalfEnd is not null %}
+                    <a href="{{ path('game_start_second_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.startSecondHalf' |trans }}</a>
+                {% endif %}
+                {% if game.secondHalfEnd is null and game.secondHalfStart is not null %}
+                    <a href="{{ path('game_end_second_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.endSecondHalf' |trans }}</a>
+                {% endif %}
+                {% if game.extentedFirstHalfStart is null and game.secondHalfEnd is not null %}
+                    <a href="{{ path('game_start_ext_first_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.extFirstHalfStart' |trans }}</a>
+                {% endif %}
+                {% if game.extentedFirstHalfEnd is null and game.extentedFirstHalfStart is not null %}
+                    <a href="{{ path('game_end_ext_first_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.extFirstHalfEnd' |trans }}</a>
+                {% endif %}
+                {% if game.extentedSecondHalfStart is null and game.extentedFirstHalfEnd is not null %}
+                    <a href="{{ path('game_start_ext_second_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.extSecondHalfStart' |trans }}</a>
+                {% endif %}
+                {% if game.extentedSecondHalfEnd is null and game.extentedSecondHalfStart is not null %}
+                    <a href="{{ path('game_end_ext_second_half' , {'id':game.id , 'game':game}) }}"
+                       class="btn btn-warning m-1">{{ 'game.display.extSecondHalfEnd' |trans }}</a>
+                {% endif %}
 
-            {% if game.firstHalfStart is not null %}
-                <a href="{{ path('game_end_game' , {'game':game , 'id':game.id , 'round':game.round ,
-                'roundId': game.round.id}) }}" class="btn btn-danger m-1">
-                {{ 'game.display.endGame' |trans }}</a>
-            {% endif %}
-        </div>
+                {% if game.firstHalfStart is not null %}
+                    <a href="{{ path('game_end_game' , {'game':game , 'id':game.id , 'round':game.round , 'roundId': game.round.id}) }}"
+                       class="btn btn-danger m-1">
+                        {{ 'game.display.endGame' |trans }}</a>
+                {% endif %}
+            </div>
         {% endif %}
 
         <div class="row m-1 p-2 border-top">
 
-            <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj składami</a>
+            <a href="{{ path('game_manage_squads', { 'id': game.id }) }}" class="btn btn-primary m-1">Zarządzaj
+                składami</a>
 
-            <a href="" class="btn btn-primary m-1" data-toggle="modal" data-target="#commentsModal">Zarządzaj komentarzami</a>
+            <a class="btn btn-primary m-1" data-target="#commentsModal" data-toggle="modal" href="">Zarządzaj
+                komentarzami</a>
 
-            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#addEventModal">Dodaj wydarzenie</button>
+            <button class="btn btn-primary m-1" data-target="#addEventModal" data-toggle="modal" type="button">Dodaj
+                wydarzenie
+            </button>
 
-            <a href="{{ path("game_edit", { 'id': game.id , 'leagueId':game.round.league.id}) }}" class="btn btn-primary m-1" >Edytuj informacje o meczu</a>
+            <a href="{{ path("game_edit", { 'id': game.id , 'leagueId':game.round.league.id}) }}"
+               class="btn btn-primary m-1">Edytuj informacje o meczu</a>
 
         </div>
 
         <div class="row m-1 p-2 border-top">
-            <h5>
-            </h5>
+            <h5></h5>
         </div>
     </div>
     <div class="card-body">
         {% if game.events|length < 1 %}
-            <div><h2 class="text-gray text-center">Brak wydarzeń meczu</h2></div>
+            <div>
+                <h2 class="text-gray text-center">Brak wydarzeń meczu</h2>
+            </div>
         {% else %}
             <div class="pre-scrollable p-2">
-                {% for e in game.events|reverse %} {# Events listing #}
+                {% for e in game.events|reverse %}
+                    {# Events listing #}
 
                     {# Basic message #}
                     {% if e.eventType == 1 %}
-                     <div class="border p-2 m-2 rounded shadow-sm">
-                        <h5 class="m-2 border-bottom">{{ e.minute }}'</h5>
-                        <div class="m-2">{{ e.message }}</div>
-                         <div><a href='{{ path('events_undo', { 'id': e.id, 'type': 1 }) }}' class="btn-xs btn-outline-danger" onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a></div>
-                     </div>
+                        <div class="border p-2 m-2 rounded shadow-sm"><h5 class="m-2 border-bottom">{{ e.minute }}'</h5>
+                            <div class="m-2">{{ e.message }}</div>
+                            <div>
+                                <a href='{{ path('events_undo', { 'id': e.id, 'type': 1 }) }}'
+                                   class="btn-xs btn-outline-danger"
+                                   onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                            </div>
+                        </div>
                     {% endif %}
 
                     {# Card message #}
                     {% if e.eventType == 2 %}
-                        <div class="border p-2 m-2 rounded shadow-sm {{ e.otherData == "yellow" ? 'yellow-card' : 'red-card' }}">
+                        <div class="border p-2 m-2 rounded shadow-sm {{ e.otherData == " yellow" ? 'yellow-card' : 'red-card' }}">
                             <h4 class="p-2 border-bottom">
-                                {{ e.minute }}' {{ e.otherData == "yellow" ? 'Żółta kartka: ' : 'Czerwona kartka:' }}
+                                {{ e.minute }}'
+                                {{ e.otherData == "yellow" ? 'Żółta kartka: ' : 'Czerwona kartka:' }}
                                 <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
                             </h4>
                             <div class="m-2">{{ e.message }}</div>
-                            <div><a href='{{ path('events_undo', { 'id': e.id, 'type': 2 }) }}' class="btn-xs btn-outline-danger" onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a></div>
+                            <div>
+                                <a href='{{ path('events_undo', { 'id': e.id, 'type': 2 }) }}'
+                                   class="btn-xs btn-outline-danger"
+                                   onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                            </div>
                         </div>
                     {% endif %}
 
                     {# Goal message #}
                     {% if e.eventType == 4 %}
                         <div class="border p-2 m-2 rounded shadow-sm">
-                            <h4 class="p-2 border-bottom {{ e.otherData == "on" ? 'text-secondary' : 'text-primary' }}">
-                                {{ e.minute }}' {{ e.otherData == "on" ? 'Bramka samobójcza. ' : 'GOL! ' }}<u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
-                                {% if e.player2 %}<div class="text-gray" >Asystował: {{ e.player2.footballer.name ~ " " ~ e.player2.footballer.surname }}</div>{% endif %}
+                            <h4 class="p-2 border-bottom {{ e.otherData == " on" ? 'text-secondary' : 'text-primary' }}">
+                                {{ e.minute }}'
+                                {{ e.otherData == "on" ? 'Bramka samobójcza. ' : 'GOL! ' }}
+                                <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
+                                {% if e.player2 %}
+                                    <div class="text-gray">Asystował:
+                                        {{ e.player2.footballer.name ~ " " ~ e.player2.footballer.surname }}</div>
+                                {% endif %}
                             </h4>
 
                             <div class="m-2">{{ e.message }}</div>
-                            <div><a href='{{ path('events_undo', { 'id': e.id, 'type': 4 }) }}' class="btn-xs btn-outline-danger" onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a></div>
+                            <div>
+                                <a href='{{ path('events_undo', { 'id': e.id, 'type': 4 }) }}'
+                                   class="btn-xs btn-outline-danger"
+                                   onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                            </div>
                         </div>
                     {% endif %}
 
@@ -115,10 +167,19 @@
                     {% if e.eventType == 5 %}
                         <div class="border p-2 m-2 rounded shadow-sm">
                             <h4 class="p-2 border-bottom">
-                                {{ e.minute }}' Zmiana: Schodzi: {{ e.player1.footballer.name }} {{ e.player1.footballer.surname }} , Wchodzi: {{ e.player2.footballer.name }} {{ e.player2.footballer.surname }}
+                                {{ e.minute }}' Zmiana: Schodzi:
+                                {{ e.player1.footballer.name }}
+                                {{ e.player1.footballer.surname }}
+                                , Wchodzi:
+                                {{ e.player2.footballer.name }}
+                                {{ e.player2.footballer.surname }}
                             </h4>
                             <div class="m-2">{{ e.message }}</div>
-                            <div><a href='{{ path('events_undo', { 'id': e.id, 'type': 5 }) }}' class="btn-xs btn-outline-danger" onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a></div>
+                            <div>
+                                <a href='{{ path('events_undo', { 'id': e.id, 'type': 5 }) }}'
+                                   class="btn-xs btn-outline-danger"
+                                   onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                            </div>
                         </div>
                     {% endif %}
 
@@ -126,10 +187,15 @@
                     {% if e.eventType == 6 %}
                         <div class="border p-2 m-2 rounded shadow-sm">
                             <h4 class="p-2 border-bottom">
-                                {{ e.minute }}' <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
+                                {{ e.minute }}'
+                                <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
                             </h4>
                             <div class="m-2">{{ e.message }}</div>
-                            <div><a href='{{ path('events_undo', { 'id': e.id, 'type': 6 }) }}' class="btn-xs btn-outline-danger" onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a></div>
+                            <div>
+                                <a href='{{ path('events_undo', { 'id': e.id, 'type': 6 }) }}'
+                                   class="btn-xs btn-outline-danger"
+                                   onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                            </div>
                         </div>
                     {% endif %}
 
@@ -137,21 +203,23 @@
             </div>
         {% endif %}
     </div>
+
     <div class="card-footer">
-        <div class="row m-1 p-2">
-        </div>
+        <a href="{{ path('round_show' , {'id':game.round.id , 'round': game.round}) }}"
+           class="btn btn-primary">{{ 'global.backToList' |trans }}</a>
     </div>
 
     {# Modals section #}
 
     {% block commentsModal %}
 
-        <div class="modal fade" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsLabel" aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="commentsLabel" class="modal fade" id="commentsModal" role="dialog"
+             tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addEventModalLabel">Komentarze</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -164,7 +232,8 @@
                                     <div class="border p-2 m-2 rounded shadow-sm">
                                         <div class="border-bottom">
                                             <div class="row m-1">
-                                                <a href="{{ path('comment_remove', { 'id': c.id , 'gameId': game.id}) }}" class="btn-sm btn-outline-danger">Usuń</a>
+                                                <a href="{{ path('comment_remove', { 'id': c.id , 'gameId': game.id}) }}"
+                                                   class="btn-sm btn-outline-danger">Usuń</a>
                                             </div>
                                         </div>
                                         <div class="m-2">{{ c.description }}</div>
@@ -174,7 +243,7 @@
                         {% endif %}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
                     </div>
                 </div>
             </div>
@@ -184,12 +253,13 @@
 
     {% block addEventModal %}
 
-        <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="addEventModalLabel" class="modal fade" id="addEventModal" role="dialog"
+             tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addEventModalLabel">Dodaj wydarzenie</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -197,18 +267,20 @@
                         <div class="border-bottom">
                             <div class="form-group">
                                 <label for="addEvent-eventType">Typ wydarzenia</label>
-                                <select id="addEvent-eventType" class="form-control">
-                                        <option value="1">Zwykła wiadomość</option>
-                                        <option value="2">Kartka</option>
-                                        <option value="4">Gol</option>
-                                        <option value="5">Zmiana</option>
-                                        <option value="6">Wykorzystany rzut karny w konkursie</option>
+                                <select class="form-control" id="addEvent-eventType">
+                                    <option value="1">Zwykła wiadomość</option>
+                                    <option value="2">Kartka</option>
+                                    <option value="4">Gol</option>
+                                    <option value="5">Zmiana</option>
+                                    <option value="6">Wykorzystany rzut karny w konkursie</option>
                                 </select>
                             </div>
                         </div>
-                        <div id="addEvent-eventForm" class="p-1 m-1">
+                        <div class="p-1 m-1" id="addEvent-eventForm">
                             <div id="basicEventForm">
-                                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 1, "minute": 1 }) }}" method="post">
+                                <form name="addEventForm"
+                                      action="{{ path("events_new_from_panel", { "id": game.id, "type": 1, "minute": 1 }) }}"
+                                      method="post">
 
                                     <div class="form-group">
                                         <label>Treść</label>
@@ -217,38 +289,38 @@
 
                                     <div class="form-group">
                                         <label>Minuta</label>
-                                        <input type="text" class="form-control" name="minute">
+                                        <input class="form-control" name="minute" type="text">
                                     </div>
 
-                                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+                                    <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
 
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
-            etSelect =  document.getElementById('addEvent-eventType');
-            etSelect.addEventListener('change', function() {
+            etSelect = document.getElementById('addEvent-eventType');
+            etSelect.addEventListener('change', function () {
                 let eventValue = etSelect.options[etSelect.selectedIndex].value;
 
-                if(eventValue === "1") {
+                if (eventValue === "1") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("basicEventForm").innerHTML;
-                } else if(eventValue === "2") {
+                } else if (eventValue === "2") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("cardEventForm").innerHTML;
-                } else if(eventValue === "3") {
+                } else if (eventValue === "3") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("penaltyEventForm").innerHTML;
-                } else if(eventValue === "4") {
+                } else if (eventValue === "4") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("goalEventForm").innerHTML;
-                } else if(eventValue === "5") {
+                } else if (eventValue === "5") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("subEventForm").innerHTML;
-                } else if(eventValue === "6") {
+                } else if (eventValue === "6") {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("shootoutGoalEventForm").innerHTML;
                 } else {
                     document.getElementById("addEvent-eventForm").innerHTML = document.getElementById("notFoundTypeForm").innerHTML;
@@ -258,286 +330,311 @@
         </script>
 
         <div style="display: none;">
-        {% block addEventModalForms %}
+            {% block addEventModalForms %}
 
-            {# Not found Form #}
-            <div id="notFoundTypeForm">
-                <div class="text-danger text-center">Nieobsługiwany typ zdarzenia</div>
-            </div>
-            {# / #}
+                {# Not found Form #}
+                <div id="notFoundTypeForm">
+                    <div class="text-danger text-center">Nieobsługiwany typ zdarzenia</div>
+                </div>
+                {# / #}
 
-            {# Basic Event #}
-            <div id="basicEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 1}) }}" method="post">
+                {# Basic Event #}
+                <div id="basicEventForm">
+                    <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 1}) }}"
+                          method="post">
 
-                    <div class="form-group">
-                        <label>Treść</label>
-                        <textarea class="form-control" name="message"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label>Treść</label>
+                            <textarea class="form-control" name="message"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Minuta</label>
-                        <input type="text" class="form-control" name="minute">
-                    </div>
+                        <div class="form-group">
+                            <label>Minuta</label>
+                            <input class="form-control" name="minute" type="text">
+                        </div>
 
-                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+                        <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
 
-                </form>
-            </div>
-            {# / #}
+                    </form>
+                </div>
+                {# / #}
 
-            {# Card Event #}
-            <div id="cardEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 2}) }}" method="post">
+                {# Card Event #}
+                <div id="cardEventForm">
+                    <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 2}) }}"
+                          method="post">
 
-                    <div class="form-group">
-                        <label>Treść</label>
-                        <textarea class="form-control" name="message"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label>Treść</label>
+                            <textarea class="form-control" name="message"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Kolor Kartki</label>
-                        <select class="form-control" name="cardColor">
-                            <option value="yellow">Żółta</option>
-                            <option value="red">Czerwona</option>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Kolor Kartki</label>
+                            <select class="form-control" name="cardColor">
+                                <option value="yellow">Żółta</option>
+                                <option value="red">Czerwona</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Zawodnik</label>
-                        <select class="form-control" name="player">
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                            {% for sm in game.homeTeam.gameTeamSquads  %}
-                                <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                            {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                            {% for sm in game.awayTeam.gameTeamSquads  %}
-                                <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                            {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Zawodnik</label>
+                            <select class="form-control" name="player">
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Minuta</label>
-                        <input type="text" class="form-control" name="minute">
-                    </div>
+                        <div class="form-group">
+                            <label>Minuta</label>
+                            <input class="form-control" name="minute" type="text">
+                        </div>
 
-                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+                        <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
 
-                </form>
-            </div>
-            {# / #}
-
-
-            {# Goal Event #}
-            <div id="goalEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 4}) }}" method="post">
-
-                    <div class="form-group">
-                        <label>Treść</label>
-                        <textarea class="form-control" name="message">Gol!</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Strzelec</label>
-                        <select class="form-control" name="scored">
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                                {% for sm in game.homeTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                                {% for sm in game.awayTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                    </form>
+                </div>
+                {# / #}
 
 
-                    <div class="form-group">
-                        <label>Asysta</label>
-                        <select class="form-control" name="assisted">
-                            <option value="-1">-</option>
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                                {% for sm in game.homeTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                                {% for sm in game.awayTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                {# Goal Event #}
+                <div id="goalEventForm">
+                    <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 4}) }}"
+                          method="post">
 
-                    <div class="form-group">
-                        <label for="owngoal">Samobój:</label>
-                        <input type="checkbox" name="owngoal" id="owngoal">
-                    </div>
+                        <div class="form-group">
+                            <label>Treść</label>
+                            <textarea class="form-control" name="message">Gol!</textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Minuta</label>
-                        <input type="text" class="form-control" name="minute">
-                    </div>
-
-                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
-
-                </form>
-            </div>
-            {# / #}
-
-            {# Substituttion Event #}
-            <div id="subEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id,  "type": 5}) }}" method="post">
-
-                    <div class="form-group">
-                        <label>Treść</label>
-                        <textarea class="form-control" name="message">Zmiana...</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Schodzi:</label>
-                        <select class="form-control" name="off">
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                                {% for sm in game.homeTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                                {% for sm in game.awayTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Strzelec</label>
+                            <select class="form-control" name="scored">
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
 
 
-                    <div class="form-group">
-                        <label>Wchodzi:</label>
-                        <select class="form-control" name="in">
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                                {% for sm in game.homeTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                                {% for sm in game.awayTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Asysta</label>
+                            <select class="form-control" name="assisted">
+                                <option value="-1">-</option>
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Minuta</label>
-                        <input type="text" class="form-control" name="minute">
-                    </div>
+                        <div class="form-group">
+                            <label for="owngoal">Samobój:</label>
+                            <input id="owngoal" name="owngoal" type="checkbox">
+                        </div>
 
-                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
+                        <div class="form-group">
+                            <label>Minuta</label>
+                            <input class="form-control" name="minute" type="text">
+                        </div>
 
-                </form>
-            </div>
-            {# / #}
+                        <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
 
-            {# P. Shootout Goal Event #}
-            <div id="shootoutGoalEventForm">
-                <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 6}) }}" method="post">
+                    </form>
+                </div>
+                {# / #}
 
-                    <div class="form-group">
-                        <label>Treść</label>
-                        <textarea class="form-control" name="message">Gol!</textarea>
-                    </div>
+                {# Substituttion Event #}
+                <div id="subEventForm">
+                    <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 5}) }}"
+                          method="post">
 
-                    <div class="form-group">
-                        <label>Strzelec</label>
-                        <select class="form-control" name="scored">
-                            <optgroup label="{{ game.homeTeam.club.name }}">
-                                {% for sm in game.homeTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                            <optgroup label="{{ game.awayTeam.club.name }}">
-                                {% for sm in game.awayTeam.gameTeamSquads  %}
-                                    <option value="{{ sm.id }}">{{ sm.number }} - {{ sm.footballer.surname }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Treść</label>
+                            <textarea class="form-control" name="message">Zmiana...</textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Minuta</label>
-                        <input type="text" class="form-control" name="minute">
-                    </div>
-
-                    <input type="submit" class="btn btn-success  col-sm-12" value="Dodaj">
-
-                </form>
-            </div>
-            {# / #}
+                        <div class="form-group">
+                            <label>Schodzi:</label>
+                            <select class="form-control" name="off">
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
 
 
-        {% endblock %}
-        </div>
+                        <div class="form-group">
+                            <label>Wchodzi:</label>
+                            <select class="form-control" name="in">
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
 
-    {% endblock %}
+                        <div class="form-group">
+                            <label>Minuta</label>
+                            <input class="form-control" name="minute" type="text">
+                        </div>
 
-{% endblock %}
-{% block customJavaScript %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-        {% if game.status == 3 or game.status == 2 %}
+                        <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
+
+                    </form>
+                </div>
+                {# / #}
+
+                {# P. Shootout Goal Event #}
+                <div id="shootoutGoalEventForm">
+                    <form name="addEventForm" action="{{ path("events_new_from_panel", { "id": game.id, "type": 6}) }}"
+                          method="post">
+
+                        <div class="form-group">
+                            <label>Treść</label>
+                            <textarea class="form-control" name="message">Gol!</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Strzelec</label>
+                            <select class="form-control" name="scored">
+                                <optgroup label="{{ game.homeTeam.club.name }}">
+                                    {% for sm in game.homeTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="{{ game.awayTeam.club.name }}">
+                                    {% for sm in game.awayTeam.gameTeamSquads %}
+                                        <option value="{{ sm.id }}">{{ sm.number }}
+                                            -
+                                            {{ sm.footballer.surname }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Minuta</label>
+                            <input class="form-control" name="minute" type="text">
+                        </div>
+
+                        <input class="btn btn-success  col-sm-12" type="submit" value="Dodaj">
+
+                    </form>
+                </div>
+                {# / #}
+
+
+            {% endblock %}</div>{% endblock %}{% endblock %}{% block customJavaScript %}
+    <script type="text/javascript">$(document).ready(function () {
+            {% if game.status == 3 or game.status == 2 %}
             {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
-                let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
-                let now = Date.parse(Date());
-                let sec = (now - fromBase) / 1000;
-                function pad ( val ) { return val > 9 ? val : "0" + val; }
-                let looper = setInterval( function(){
-                    $("#seconds").html(pad(++sec%60));
-                    $("#minutes").html(pad(parseInt(sec/60,10)));
-                }, 1000);
-            console.log();
-            {% endif %}
-
-            {% if game.secondHalfStart is not null and game.secondHalfEnd is null %}
-                let fromBase = Date.parse('{{ game.secondHalfStart|date("Y-m-d\\TH:i:sP") }}');
-                let now = Date.parse(Date());
-                let sec = (now - fromBase) / 1000;
-                function pad ( val ) { return val > 9 ? val : "0" + val; }
-                let looper = setInterval( function(){
-                    $("#seconds").html(pad(++sec%60));
-                    $("#minutes").html(pad(parseInt(sec/60,10)));
-                }, 1000);
-                console.log();
-            {% endif %}
-
-            {% if game.extentedFirstHalfStart is not null and game.extentedFirstHalfEnd is null %}
-            let fromBase = Date.parse('{{ game.extentedFirstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
             let now = Date.parse(Date());
             let sec = (now - fromBase) / 1000;
-            function pad ( val ) { return val > 9 ? val : "0" + val; }
-            let looper = setInterval( function(){
-                $("#seconds").html(pad(++sec%60));
-                $("#minutes").html(pad(parseInt(sec/60,10)));
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#minutes").html(pad(parseInt(sec / 60, 10)));
             }, 1000);
             console.log();
-            {% endif %}
-
-            {% if game.extentedSecondHalfStart is not null and game.extentedSecondHalfEnd is null %}
-            let fromBase = Date.parse('{{ game.extentedSecondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+                    {% endif %}{% if game.secondHalfStart is not null and game.secondHalfEnd is null %}let fromBase = Date.parse('{{ game.secondHalfStart|date("Y-m-d\\TH:i:sP") }}');
             let now = Date.parse(Date());
             let sec = (now - fromBase) / 1000;
-            function pad ( val ) { return val > 9 ? val : "0" + val; }
-            let looper = setInterval( function(){
-                $("#seconds").html(pad(++sec%60));
-                $("#minutes").html(pad(parseInt(sec/60,10)));
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#minutes").html(pad(parseInt(sec / 60, 10)));
             }, 1000);
             console.log();
-            {% endif %}
-        {% endif %}
-        });
-    </script>
-{% endblock %}
+                    {% endif %}{% if game.extentedFirstHalfStart is not null and game.extentedFirstHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedFirstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
+            console.log();
+                    {% endif %}{% if game.extentedSecondHalfStart is not null and game.extentedSecondHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedSecondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#minutes").html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
+            console.log();{% endif %}{% endif %}
+        });</script>{% endblock %}

@@ -3,9 +3,15 @@
 {% block title %}{{ 'game.display.newGame' |trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'game.display.newGame' |trans }}</h1>
+    <div class="card-header">
+        <h1>{{ 'game.display.newGame' |trans }}</h1>
+    </div>
 
-    {{ include('game/_form.html.twig') }}
+    <div class="card-body">
+        {{ include('game/_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('round_show' , {'id' : roundId , 'round' : round}) }}" class="btn btn-danger m-1">{{ 'global.backToList' |trans }}</a>
+    <div class="card-footer">
+        <a href="{{ path('round_show' , {'id' : roundId , 'round' : round}) }}" class="btn btn-danger m-1">{{ 'global.backToList' |trans }}</a>
+    </div>
 {% endblock %}

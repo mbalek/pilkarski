@@ -3,21 +3,15 @@
 {% block title %}{{ 'club.display.newClub'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="data-table-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="data-table-list">
-                        <div class="basic-tb-hd">
-                            <h2>{{ 'club.display.newClub'|trans }}</h2>
-                        </div>
-                        {{ include('club/_form.html.twig') }}
-                        <p>
-                            <a href="{{ path('league_show' , {'id':league.id}) }}"><button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button></a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="card-header">
+    <h2>{{ 'club.display.newClub'|trans }}</h2>
+</div>
+<div class="card-body">
+{{ include('club/_form.html.twig') }}
+</div>
+<div class="card-footer">
+    <a href="{{ path('league_show' , {'id':league.id}) }}">
+        <button class="btn btn-primary btn-block">{{ 'global.actions.backToList'|trans }}</button>
+    </a>
+</div>
 {% endblock %}

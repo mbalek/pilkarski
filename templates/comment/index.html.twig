@@ -3,8 +3,9 @@
 {% block title %}Comment index{% endblock %}
 
 {% block body %}
-    <h1>Comment index</h1>
+<div class="card-header">Wszystkie komentarze</div>
 
+<div class="card-body">
     <table class="table">
         <thead>
             <tr>
@@ -14,22 +15,26 @@
             </tr>
         </thead>
         <tbody>
-        {% for comment in comments %}
-            <tr>
-                <td>{{ comment.id }}</td>
-                <td>{{ comment.description }}</td>
-                <td>
-                    <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
-                    <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.description }}</td>
+                    <td>
+                        <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
+                        <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+</div>
 
+<div class="card-footer">
     <a href="{{ path('comment_new') }}">Create new</a>
+</div>
+
 {% endblock %}
