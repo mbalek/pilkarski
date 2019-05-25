@@ -1,11 +1,48 @@
-{% for round in league.rounds %}
-    {% for game in round.games if game.status == 3 or game.status == 2 %}
-        {{ game.homeTeam }}
-        {{ game.awayTeam }}
-        <a href="{{ path('game_panel' , {'id':game.id , 'game':game}) }}" class="">Panel</a>
-    {% else %}
-        {{ 'global.noRecords' |trans }}
-    {% endfor %}
-{% else %}
-    {{ 'global.noRecords' |trans }}
-{% endfor %}
+{% extends "base_admin.html.twig" %}
+
+{% block body %}
+    <div class="card-header">
+        <h3>
+            <span class="">Mecze użytkownika</span>
+            <span class="text-primary">{{ user.username }}</span>
+        </h3>
+    </div>
+    <div class="card-body p-0">
+        {% if league %}
+            {% for round in league.rounds %}
+                <ul class="list-group">
+                {% for game in round.games if game.status == 3 or game.status == 2 %}
+                    <li class="list-group-item text-center">
+                        <span class="text-gray">{{ game.gameDateTime|date("d/m/Y h:m") }}</span>
+
+                        &nbsp;&nbsp;&nbsp;
+
+                        <span class="text-secondary">{{game.round.league.name}} ({{ game.round.name }})</span>
+
+                        &nbsp;&nbsp;&nbsp;
+
+                        <span class="text-primary text-uppercase">
+                        {{ game.homeTeam.club.name }}
+                         - 
+                        {{ game.awayTeam.club.name }}
+                        </span>
+
+                        &nbsp;&nbsp;&nbsp;
+
+                        <a href="{{ path('game_panel' , {'id':game.id , 'game':game}) }}" class="btn-xs btn-primary">Panel</a>
+                    <li>
+                {% else %}
+                    {{ 'global.noRecords' |trans }}
+                {% endfor %}
+                </ul>
+            {% else %}
+                {{ 'global.noRecords' |trans }}
+            {% endfor %}
+        {% else %}
+            <h5 class="text-gray text-center m-4 p-4">Brak przypisanej ligi</h5>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-primary" href="{{path('admin_panel')}}">Powrót</a>
+    </div>
+{% endblock %}

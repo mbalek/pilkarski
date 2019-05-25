@@ -3,8 +3,12 @@
 {% block title %}Events index{% endblock %}
 
 {% block body %}
-    <h1>Events index</h1>
+<div class="card-header">
+    <h1>Wszystkie wydarzenia</h1>
+</div>
 
+
+<div class="card-body">
     <table class="table">
         <thead>
             <tr>
@@ -14,22 +18,26 @@
             </tr>
         </thead>
         <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.eventTime ? event.eventTime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('events_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('events_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.eventTime ? event.eventTime|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('events_show', {'id': event.id}) }}">show</a>
+                        <a href="{{ path('events_edit', {'id': event.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+</div>
 
+<div class="card-footer">
     <a href="{{ path('events_new') }}">Create new</a>
+</div>
+
 {% endblock %}

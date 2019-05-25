@@ -21,4 +21,8 @@ label::after, legend::after {
 
 .pills-small > .card-header-pills > li.active {
     background-color: #5969ff;
-} 
+}
+
+ul.list-group > li {
+    list-style-type: none;
+}

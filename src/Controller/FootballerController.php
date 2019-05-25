@@ -26,10 +26,11 @@ class FootballerController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $league = $em->getRepository(League::class)->findOneBy(array('id'=>$request->get('league')));
+        
         return $this->render('footballer/index.html.twig', [
             'footballers' => $footballerRepository->findBy(array('club' => $request->get('id'))),
-            'club' => $request->get('id'),
-            'league' => $league,
+            'club' => $em->getRepository(Club::class)->find($request->get('id')),
+            'league' => $em->getRepository(Club::class)->find($request->get('id'))->getLeague()
         ]);
     }
 

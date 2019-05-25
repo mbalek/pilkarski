@@ -1,8 +1,10 @@
+{% extends 'base_admin.html.twig' %}
+
 {% block body %}
-    <div class="bordered">
-        <h3>{{ 'footballer.display.footballer' |trans }}</h3>
-        <div class="p-2">
-            <a href="{{ path('footballer_new' , {'club': club , 'league':league.id}) }}">
+    <div class="card-header">
+        <h3><span class="text-primary">{{club.name}}</span> - {{ 'footballer.display.footballer' |trans }}</h3>
+        <div>
+            <a href="{{ path('footballer_new' , {'club': club , 'league': club.league.id}) }}">
                 <button class="btn btn-success">
                     <i class="icofont icofont-user-alt-3"></i>
                     {{ 'global.add'|trans }}</button>
@@ -10,7 +12,7 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="card-body">
         <table class="table table-hover table-borderless">
             <thead>
                 <tr>
@@ -46,7 +48,7 @@
                                     {{ 'global.action' |trans}}
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ path('footballer_edit', {'id': footballer.id, 'club': club , 'league':league}) }}">{{ 'global.actions.edit'|trans }}</a>
+                                    <a class="dropdown-item" href="{{ path('footballer_edit', {'id': footballer.id, 'club': club , 'league': club.league.id }) }}">{{ 'global.actions.edit'|trans }}</a>
                                     <a class="dropdown-item">{{ include('footballer/_delete_form.html.twig') }}</a>
                                 </div>
                             </div>
