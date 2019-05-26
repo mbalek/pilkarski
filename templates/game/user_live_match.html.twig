@@ -145,7 +145,8 @@
                 });
             });
 
-            setInterval(refreshEvents ,1000 );
+            setInterval(refreshEvents ,60000 );
+            setInterval(refreshComments, 300000)
         });
 
         $(document).on("click" , ".button-delete-comment" , function () {
@@ -240,6 +241,55 @@
 
                         $("#events-container").prepend(div);
                         }
+
+                },
+                error:function () {
+                    console.log('error');
+                }
+            });
+        }
+
+        function refreshComments() {
+            $.ajax({
+                url:"{{ path('ajax_comments') }}",
+                dataType: "JSON",
+                data: {
+                    gameId: "{{ game.id }}",
+                },
+                success: function (response) {
+                    $("#comments").empty();
+                    console.log(response);
+                    for(let i = 0; i < response.length; i++ ){
+
+                        let div = document.createElement('div');
+                        div.setAttribute("id" , "comment-"+response[i].id);
+                        let user = document.createElement("p");
+                        user.innerHTML=response[i].createdBy.username;
+                        let description = document.createElement("p");
+                        description.innerHTML = response[i].description;
+                        let date = new Date(response[i].createdAt.timestamp * 1000).toLocaleString();
+                        let dateText = document.createElement("p");
+                        dateText.innerHTML = date;
+                        document.getElementById("comment-description").value="";
+                        if ( response[i].createdBy.username == "{{ app.user.username }}"){
+                            let buttonD = document.createElement("button");
+                            let buttonE = document.createElement("button");
+                            buttonE.setAttribute("class" , "button-edit-comment");
+                            buttonE.setAttribute("data-commentid" , response[i].id );
+                            buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
+                            buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
+                            buttonD.setAttribute("class" , "button-delete-comment");
+                            buttonD.setAttribute("data-commentid" , response[i].id);
+                            buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
+                            buttonD.innerHTML = "X";
+                            div.appendChild(buttonE);
+                            div.appendChild(buttonD);
+                        }
+                        div.appendChild(user);
+                        div.appendChild(description);
+                        div.appendChild(dateText);
+                        $("#comments").prepend(div);
+                    }
 
                 },
                 error:function () {

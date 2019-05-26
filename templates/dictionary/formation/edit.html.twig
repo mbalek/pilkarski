@@ -4,9 +4,9 @@
 
 {% block body %}
     <div class="card-header">
-        <h2>{{ 'formation.display.newPosition'|trans }}</h2>
+        <h2>{{ 'formation.display.edit'|trans }}</h2>
     </div>
-    <div class="card-body">{{ include('dictionary/formation/_form.html.twig') }}</div>
+    <div class="card-body">{{ include('dictionary/formation/_form.html.twig' , {'button_label': 'global.actions.edit' |trans}) }}</div>
     <div class="card-footer">
         <a href="{{ path('admin_dictionary')}}">
             <button class="btn btn-primary">{{ 'global.actions.backToList'|trans }}</button>

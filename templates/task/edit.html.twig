@@ -9,7 +9,7 @@
         <h2>{{ 'task.display.editTask' |trans }}</h2>
     </div>
     <div class="card-body">
-        {{ include('task/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+        {{ include('task/_form.html.twig', {'button_label': 'global.actions.edit'|trans}) }}
     </div>
     <div class="card-footer">
         <a href="{{ path('task_index') }}">

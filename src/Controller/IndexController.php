@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Club;
+use App\Entity\Comment;
 use App\Entity\Events;
 use App\Entity\Footballer;
 use App\Entity\Game;
@@ -191,6 +192,37 @@ class IndexController extends AbstractController
             $data = $serializer->serialize($responseArray, 'json');
 
             return new JsonResponse($data, 200, [], true);
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'AJAX only'
+        ]);
+    }
+
+    /**
+     * @Route("/ajax/comments", name="ajax_comments", methods={"GET"})
+     */
+    public function getCommentsAjax(Request $request)
+    {
+        if ($request->isXmlHttpRequest())
+        {
+            $gameId = $request->get('gameId');
+            $em = $this->getDoctrine()->getManager();
+            $game = $em->getRepository(Game::class)->find($gameId);
+            $comments = $em->getRepository(Comment::class)->findBy(array('game' => $game));
+
+            $encoders = [
+                new JsonEncoder(),
+            ];
+            $normalizers = [
+                (new ObjectNormalizer())->setIgnoredAttributes(['updatedBy' , 'changedBy',
+                    'game'  ,'updatedAt' , 'changedAt' , 'moderatingLeague'] ),
+            ];
+            $serializer = new \Symfony\Component\Serializer\Serializer($normalizers,$encoders);
+            $data = $serializer->serialize($comments , 'json');
+
+            return new JsonResponse($data, 200, [],true);
+
         }
         return new JsonResponse([
             'type' => 'error',

@@ -9,7 +9,7 @@
         <h2>{{ 'position.display.edit' |trans}}</h2>
     </div>
     <div class="card-body">
-        {{ include('dictionary/position/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+        {{ include('dictionary/position/_form.html.twig', {'button_label': 'global.actions.edit' |trans}) }}
     </div>
     <div class="card-footer">
         <a href="{{ path('admin_dictionary') }}">
