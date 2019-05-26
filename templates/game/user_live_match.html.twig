@@ -271,18 +271,20 @@
                         let dateText = document.createElement("p");
                         dateText.innerHTML = date;
                         document.getElementById("comment-description").value="";
-                        let buttonD = document.createElement("button");
-                        let buttonE = document.createElement("button");
-                        buttonE.setAttribute("class" , "button-edit-comment");
-                        buttonE.setAttribute("data-commentid" , response[i].id );
-                        buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
-                        buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
-                        buttonD.setAttribute("class" , "button-delete-comment");
-                        buttonD.setAttribute("data-commentid" , response[i].id);
-                        buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
-                        buttonD.innerHTML = "X";
-                        div.appendChild(buttonE);
-                        div.appendChild(buttonD);
+                        if ( response[i].createdBy.username == "{{ app.user.username }}"){
+                            let buttonD = document.createElement("button");
+                            let buttonE = document.createElement("button");
+                            buttonE.setAttribute("class" , "button-edit-comment");
+                            buttonE.setAttribute("data-commentid" , response[i].id );
+                            buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
+                            buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
+                            buttonD.setAttribute("class" , "button-delete-comment");
+                            buttonD.setAttribute("data-commentid" , response[i].id);
+                            buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
+                            buttonD.innerHTML = "X";
+                            div.appendChild(buttonE);
+                            div.appendChild(buttonD);
+                        }
                         div.appendChild(user);
                         div.appendChild(description);
                         div.appendChild(dateText);
