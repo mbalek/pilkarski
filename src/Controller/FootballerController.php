@@ -44,6 +44,7 @@ class FootballerController extends AbstractController
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
+        //$club = $request->get('club');
         $club = $em->getRepository(Club::class)->findOneBy(array('id'=>$request->get('club')));
 
         $em = $this->getDoctrine()->getManager();

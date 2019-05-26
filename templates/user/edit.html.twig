@@ -8,7 +8,7 @@
     <div class="card-header">
         <h2>{{ 'user.display.editUser' |trans }}</h2>
     </div>
-    <div class="card-body">{{ include('user/_form.html.twig', {'button_label': 'global.actions.edit'}) }}</div>
+    <div class="card-body">{{ include('user/_form.html.twig', {'button_label': 'global.actions.edit' |trans}) }}</div>
     <div class="card-footer">
         <a href="{{ path('user_index') }}">
             <button class="btn btn-primary">{{ 'global.backToList'|trans }}</button>

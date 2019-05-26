@@ -11,7 +11,7 @@
                         <div class="basic-tb-hd">
                             <h2>{{ 'round.display.edit' |trans}}</h2>
                         </div>
-                        {{ include('round/_form.html.twig', {'button_label': 'global.actions.edit'}) }}
+                        {{ include('round/_form.html.twig', {'button_label': 'global.actions.edit' |trans}) }}
                         <p>
                             <a href="{{ path('league_show' , {'id':league.id}) }}"><button class="btn btn-primary btn-block">{{ 'global.backToList'|trans }}</button></a>
                         </p>
