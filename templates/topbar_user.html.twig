@@ -1,22 +1,13 @@
 <div class="dashboard-header">
     <nav class="navbar navbar-expand-lg bg-white fixed-top">
-        <a href=" {{  path('index') }}">{{ 'index.display.homepage' |trans }}</a>
-        <div class="btn-group">
-            <button type="button" data-toggle="dropdown"
-                    class="">{{ 'index.display.league' |trans }}</button>
-            <div class="dropdown-menu">
-                {% for league in leagues %}
-                    <a href="{{ path('index_league_show' , {'id':league.id}) }}"
-                       class="dropdown-item">{{ league.name }}</a>
-                {% else %}
-                {% endfor %}
-            </div>
-        </div>
 
-        <a href="{{ path('liveGames') }}">{{ 'index.display.liveMatches' |trans }}</a>
-
+        {# Navbar brand logo #}
+        <a href="{{ path('admin_panel') }}" class="navbar-brand text-primary">Pilkarski</a>
+        
+        {# User name etc. #}
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
             {% if app.user %}
+            
             <ul class="navbar-nav ml-auto navbar-right-top">
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,9 +23,19 @@
                     </div>
                 </li>
             </ul>
+
             {% else %}
-                <a class="" href="./login">{{ 'global.actions.login' |trans }}</a>
+
+            <ul class="navbar-nav ml-auto navbar-right-top">
+                <li class="nav-item dropdown nav-user">
+                    <a class="btn btn-sm btn-outline-primary m-1" href="./login">{{ 'global.actions.login' |trans }}</a>
+                    <a class="btn btn-sm btn-outline-secondary m-1" href="./register">{{ 'global.actions.register' |trans }}</a>
+                </li>
+            </ul>
+
             {% endif %}
         </div>
+
+
     </nav>
 </div>
