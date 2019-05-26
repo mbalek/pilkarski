@@ -1,16 +1,61 @@
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    {% if csrf_token %}
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    {% endif %}
+{% extends "base.html.twig" %}
 
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+{% block title %}Logowanie{% endblock %}
 
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
+{% block templateCss %}
+    <style>
+        body 
+        {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
 
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+        label::after {
+            content: "";
+        }
+    </style>
+{% endblock %}
 
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-</form>
+{% block body %}
+<div class="splash-container">
+<div class="card">
+    <div class="card-header text-center">
+        <a href="{{path("index")}}">
+            <h1 class="text-primary">PILKARSKI</h1>
+        </a>
+        <span class="splash-description">Zaloguj się aby korzystać z pełni możliwości portalu</span>
+    </div>
+    <div class="card-body">
+        <form action="{{ path("fos_user_security_check") }}" method="post">
+
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+            {% endif %}
+
+            <div class="form-group">
+                <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" class="form-control form-control-lg" placeholder="{{ 'security.login.username'|trans }}"/>
+            </div>
+
+            <div class="form-group">
+                <input autocomplete="current-password" id="password" name="_password" required="required" type="password" class="form-control form-control-lg" placeholder="{{ 'security.login.password'|trans }}"/>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-control custom-checkbox">
+                    <input class="custom-control-input" id="remember_me" name="_remember_me" type="checkbox" value="on" ><span class="custom-control-label">{{ 'security.login.remember_me'|trans }}</span>
+                </label>
+            </div>
+
+            <input type="submit" class="btn btn-primary btn-lg btn-block" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"/>
+        </form>
+    </div>
+    <div class="card-footer bg-white p-2">
+        <a class="btn-block text-center col-xs-12" href="./register">Nie posiadasz konta? Zarejestruj się!</a>
+    </div>
+</div>
+</div>
+{% endblock %}

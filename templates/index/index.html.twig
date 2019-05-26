@@ -1,14 +1,42 @@
 {% extends 'base_user.html.twig' %}
+
+{% block templateCss %}
+    <style>
+    .main-section {
+        margin-top: 5vh !important;
+    }
+
+    .scrollable {
+        
+        max-width: 60px !important;
+        overflow: scroll !important;
+    }
+    </style>
+{% endblock %}
+
 {% block body %}
 
+    <section class="main-section m-3">
+    <div class="card col-xs-12 col-md-4">
+    
+    <div class="card-header m-0">
+        <h3 class="text-center">Aktualne mecze - {{ 'now'|date('d-m-y') }}</h1>
+    </div>
+
+    <div class="card-body scrollable">
     <!-- tutaj bedzie zrobienie prostokatow z meczami wszelkimi(nadchodzace, live, zakonczone)-->
     {% for game in games %}
-        <div class="container"><!-- kontener dla pojedynczego meczu -->
+        {% for x in 1..50 %}
+        <li class="list"><!-- kontener dla pojedynczego meczu -->
             {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
             {{ 'index.display.round'|trans }}: {{ game.round.name }}
             {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
-            {{ game.description }}
             <a href="{{ path('index_game_show' , {'id': game.id, 'game': game}) }}">{{ 'index.display.details' |trans }}</a>
-        </div>
+        </li>
+        {% endfor %}
     {% endfor %}
+    </div>
+    </section>
+
+
 {% endblock %}

@@ -1,10 +1,49 @@
+{% extends "base.html.twig" %}
 
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-{#{{ form_widget(form) }}#}
-{{ form_row(form.username) }}
-{{ form_row(form.plainPassword) }}
-{{ form_row(form.email) }}
-<div>
-    <input type="submit" value="{{ 'registration.submit'|trans }}" />
+{% block title %}Logowanie{% endblock %}
+
+{% block templateCss %}
+    <style>
+        body 
+        {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        label::after {
+            content: "";
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="splash-container">
+<div class="card">
+    <div class="card-header text-center">
+        <a href="{{path("index")}}">
+            <h1 class="text-primary">PILKARSKI</h1>
+        </a>
+        <span class="splash-description">Zarejestruj się aby korzystać z pełni możliwości portalu</span>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.email) }}
+        <input type="submit" class="btn btn-primary btn-lg btn-block" value="{{ 'registration.submit'|trans }}" />
+        {{ form_end(form) }}
+    </div>
+    <div class="card-footer bg-white p-2">
+        <a class="btn-block text-center col-xs-12" href="../login">Posiadasz już konto? Zaloguj się!</a>
+    </div>
 </div>
-{{ form_end(form) }}
+</div>
+
+<div>
+</div>
+
+{% endblock %}
