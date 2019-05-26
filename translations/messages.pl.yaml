@@ -82,6 +82,9 @@ user:
     newModerator: 'Dodaj moderatora'
     newAdministrator: 'Dodaj administratora'
     newAdmin: 'Dodaj administratora'
+    permissions: 'Uprawnienia'
+    admin: 'Administrator'
+    moderator: 'Moderator'
   fields:
     moderatingLeague: 'Liga, którą będzie obsługiwał'
     firstName: 'Imię'

@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('footballer_delete', {'id': footballer.id, 'club': club , 'league':league}) }}" onsubmit="return confirm('{{ 'global.actions.deleteMessage'|trans }}');">
+<form method="post" action="{{ path('footballer_delete', {'id': footballer.id, 'club': club.id , 'league':league.id}) }}" onsubmit="return confirm('{{ 'global.actions.deleteMessage'|trans }}');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ footballer.id) }}">
     <button class="dropdown-item text-danger">{{ 'global.delete' |trans }}</button>

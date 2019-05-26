@@ -1,10 +1,9 @@
-{% extends 'base_admin.html.twig' %}
 
 {% block body %}
     <div class="card-header">
         <h3><span class="text-primary">{{club.name}}</span> - {{ 'footballer.display.footballer' |trans }}</h3>
         <div>
-            <a href="{{ path('footballer_new' , {'club': club , 'league': club.league.id}) }}">
+            <a href="{{ path('footballer_new' , {'club': club.id , 'league': club.league.id}) }}">
                 <button class="btn btn-success">
                     <i class="icofont icofont-user-alt-3"></i>
                     {{ 'global.add'|trans }}</button>
@@ -36,7 +35,7 @@
                         </td>
                         <td>{{ footballer.name }}</td>
                         <td>{{ footballer.surname }}</td>
-                        <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d H:i:s') : ''}}</td>
+                        <td>{{ footballer.birthdate ? footballer.birthdate|date('Y-m-d') : ''}}</td>
                         <td>{{ footballer.country }}</td>
                         <td>{{ footballer.goals }}</td>
                         <td>{{ footballer.assists }}</td>

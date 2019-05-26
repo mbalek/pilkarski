@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\ModeratorType;
@@ -136,6 +137,14 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $comments = $entityManager->getRepository(Comment::class)->findBy(array('createdBy' => $user));
+            if ($comments != null)
+            {
+                foreach ($comments as $comment)
+                {
+                    $entityManager->remove($comment);
+                }
+            }
             $entityManager->remove($user);
             $entityManager->flush();
         }

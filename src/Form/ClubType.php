@@ -24,7 +24,7 @@ class ClubType extends AbstractType
             ])
             ->add('imageFile',VichImageType::class, [
                 'attr' => ['class' => 'btn btn-default pull-right'],
-                'label' => 'club.fields.logo',
+                'label' => 'Logo',
                 'required' => false,
                 'allow_delete' => true,
             ])
