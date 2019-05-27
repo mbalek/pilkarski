@@ -1,3 +1,5 @@
+{# Wyświetlanie informacji o zakończonym lub nadchodzącym meczu #}
+
 {% extends 'base_user.html.twig' %}
 {% block body %}
     <div class="container">
@@ -45,16 +47,24 @@
             {{ 'index.display.noAwayTeam' |trans }}
         {% endif %}
 
-        <!-- eventy w danym zakonczonym meczu -->
-        {% for event in game.events|reverse %}
-            {{ event.eventTime|date('Y-m-d H:i:s') }}
-            {{ event.eventType.name }}
-            {{ event.teamSquad.footballer.name }}
-            {{ event.teamSquad.footballer.surname }}
-            {{ event.teamSquad.number }}
-        {% else %}
-            {{ 'index.display.noEvents' |trans }}
-        {% endfor %}
+        <div id="events-container">
+            {% for event in game.events|reverse %}
+                <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
+                    {{ event.minute }}
+                    {{ event.message }}
+                    {{ event.eventType }}
+                    {{ event.otherData }}
+                    {% if event.player1 is not null %}
+                        {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
+                    {% endif %}
+                    {% if event.player2 is not null %}
+                        {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
+                    {% endif %}
+                </div>
+            {% else %}
+                {{ 'index.display.noEvents' |trans }}
+            {% endfor %}
+        </div>
 
         {% if app.user %}
         <div>

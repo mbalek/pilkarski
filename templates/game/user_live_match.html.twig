@@ -1,3 +1,5 @@
+{# Wyświetlanie informacji o trwającym meczu #}
+
 {% extends 'base_user.html.twig' %}
 {% block body %}
     <div class="container">
@@ -6,6 +8,8 @@
         {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
         {{ game.description }}
         <input type="hidden" value="{{ game.id }}" id="game-id"/>
+
+
 
         <!-- Budowanie pierwszej drużyny -->
         {% if game.homeTeam %}
@@ -44,6 +48,12 @@
         {% else %}
             {{ 'index.display.noAwayTeam' |trans }}
         {% endif %}
+
+
+        {# Tutaj beidze timer#}
+        <div id="timer" class="game-minute-timer text-center">
+            Przerwa
+        </div>
 
         <!-- eventy w danym zakonczonym meczu -->
         <div id="events-container">
@@ -144,6 +154,64 @@
                     }
                 });
             });
+
+            {% if game.status == 3 or game.status == 2 %}
+            {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
+            let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
+            }, 1000);
+            console.log();
+                    {% endif %}{% if game.secondHalfStart is not null and game.secondHalfEnd is null %}let fromBase = Date.parse('{{ game.secondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
+            }, 1000);
+            console.log();
+                    {% endif %}{% if game.extentedFirstHalfStart is not null and game.extentedFirstHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedFirstHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+
+            }, 1000);
+            console.log();
+                    {% endif %}{% if game.extentedSecondHalfStart is not null and game.extentedSecondHalfEnd is null %}let fromBase = Date.parse('{{ game.extentedSecondHalfStart|date("Y-m-d\\TH:i:sP") }}');
+            let now = Date.parse(Date());
+            let sec = (now - fromBase) / 1000;
+
+            function pad(val) {
+                return val > 9 ? val : "0" + val;
+            }
+
+            let looper = setInterval(function () {
+                $("#seconds").html(pad(++sec % 60));
+                $("#timer").html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
+            console.log();{% endif %}{% endif %}
 
             setInterval(refreshEvents ,60000 );
             setInterval(refreshComments, 300000)
@@ -297,5 +365,7 @@
                 }
             });
         }
+
+
     </script>
 {% endblock %}

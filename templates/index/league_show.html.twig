@@ -1,3 +1,5 @@
+{# lista klubow w danej lidze , mecze nadchodzace, live, zakonczone danej ligii#}
+
 {% extends 'base_user.html.twig' %}
 {% block body %}
     <div class="card-body">
@@ -23,7 +25,7 @@
                 {{ club.name }}
                 {{ club.city }}
                 {{ club.stadium }}
-                <a href="{{ path('index_footballers_show' , {'club':club.id}) }}">{{ 'club.display.footballers' |trans }}</a>
+                <a href="{{ path('display_club_show' , {'id':club.id}) }}">{{ 'index.display.details' |trans }}</a>
                 <br/>
             {% else %}
                 {{ 'global.noRecords' |trans }}

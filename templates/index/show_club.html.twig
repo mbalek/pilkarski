@@ -1,8 +1,16 @@
+{# informacje o klubie, pilkarze i statystyki z konkrenych round w league#}
 {% extends 'base_user.html.twig' %}
+
 {% block body %}
-    <a href="{{ path('index_league_show' , {'id':club.league.id}) }}">powrot</a>
-    naglowek pilakrze z danego klub<br/>
-    {% for footballer in footballers %}
+
+    {# informacje o klubie #}
+    <img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
+    {{ club.name }}
+    {{ club.city }}
+    {{ club.stadium }}
+
+    {# piłkarze #}
+    {% for footballer in club.footballers %}
         <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
         {{ footballer.surname }}
         {{ footballer.name }}
@@ -10,5 +18,9 @@
         {{ footballer.country }}
         <a href="{{ path('index_footballer_show' , {'id':footballer.id , 'club':club.id}) }}">szczegoly</a>
         <br/>
+    {% else %}
+        {{ 'global.noRecords' |trans }}
     {% endfor %}
+
+    {# statystyki z konkretnych runnd nie mam pomyslu za nic#}
 {% endblock %}
