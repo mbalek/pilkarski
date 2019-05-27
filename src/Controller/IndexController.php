@@ -54,7 +54,7 @@ class IndexController extends AbstractController
     /**
      * @route("/display/match/{id}" , name="index_game_show" , methods={"GET"})
      */
-    public function showIndex(Game $game): Response
+    public function showIndex(Game $game):Response
     {
         $em = $this->getDoctrine()->getManager();
         $leagues = $em->getRepository(League::class)->findAll();

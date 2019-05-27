@@ -3,6 +3,7 @@
 {% extends 'base_user.html.twig' %}
 {% block body %}
     <div class="container">
+        aqqqq
         {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
         {{ 'index.display.round'|trans }}: {{ game.round.name }}
         {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
@@ -94,6 +95,7 @@
         <!-- komentarze -->
         {{ 'index.display.comments'|trans }}
         <div id="comments">
+            asdfdfsd
             {% for comment in game.comments|reverse %}
                 <div id="comment-{{ comment.id }}">
                     {% if comment.createdBy == app.user.username %}
