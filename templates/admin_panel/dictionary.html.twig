@@ -5,23 +5,25 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="card-header pills-small">
-        <ul class="nav nav-pills card-header-pills" id="myTab5" role="tablist">
-            <li class="nav-item primary">
-                <a aria-controls="positions" aria-selected="true" class="nav-link active border-left-0" data-toggle="tab" href="#positions" id="positions-tab" role="tab">{{ 'position.display.position'|trans }}</a>
-            </li>
-            <li class="nav-item">
-                <a aria-controls="formations" aria-selected="false" class="nav-link border-left-0" data-toggle="tab" href="#formations" id="formations-tab" role="tab">{{ 'formation.display.formation'|trans }}</a>
-            </li>
-        </ul>
+    <ul class="nav nav-pills card-header-pills" id="myTab5" role="tablist">
+        <li class="nav-item primary">
+            <a aria-controls="positions" aria-selected="true" class="nav-link active border-left-0" data-toggle="tab"
+               href="#positions" id="positions-tab" role="tab">{{ 'position.display.position'|trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a aria-controls="formations" aria-selected="false" class="nav-link border-left-0" data-toggle="tab"
+               href="#formations" id="formations-tab" role="tab">{{ 'formation.display.formation'|trans }}</a>
+        </li>
+    </ul>
     </div>
 
     <div class="card-body">
         {# ========= Tabs ========= #}
         {# ========= Contents ========= #}
 
-            <div class="tab-content" id="myTabContent5"> <div aria-labelledby="positions-tab" class="tab-pane fade show active" id="positions" role="tabpanel">
+        <div class="tab-content" id="myTabContent5">
+            <div aria-labelledby="positions-tab" class="tab-pane fade show active" id="positions" role="tabpanel">
                 {{ render(controller('App\\Controller\\Dictionary\\PositionController::index')) }}
             </div>
             <div aria-labelledby="formations-tab" class="tab-pane fade show" id="formations" role="tabpanel">

@@ -1,8 +1,114 @@
 {# Wyświetlanie informacji o zakończonym lub nadchodzącym meczu #}
 
 {% extends 'base_user.html.twig' %}
+
+{% block templateCss %}
+    <style>
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="container">
+
+    <div class="row m-3 p-0">
+
+    <div class="card m-3 p-0 col-md-3">
+        <!-- komentarze -->
+        {{ 'index.display.comments'|trans }}
+        <div id="comments">
+            {% for comment in game.comments|reverse %}
+                <div id="comment-{{ comment.id }}">
+                    {% if app.user and comment.createdBy == app.user.username %}
+                        <button class="button-edit-comment" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
+                        <button class="button-delete-comment" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}" >X</button>
+                    {% endif %}
+                    <p>{{ comment.createdBy }}</p>
+                    <p class="comment-description">{{ comment.description }}</p>
+                    <p>{{ comment.createdAt|date('j.m.Y, H:i:s') }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card m-3 p-0 col-md">
+
+        <div class="card-header m-0 bg-light">
+            <div class="row">
+                <div class="col-md m-1 p-2 text-center">
+                    <img class="m-2" height="50" width="50" src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
+                    <h2 class="text-center text-primary">{{ game.homeTeam.club.name }}</h2>
+                    {% if game.homeTeam.score is not null %}<h1>{{ game.homeTeam.score }}</h1>{% endif %}
+                    {% if game.homeTeam.penaltyShootoutScore is not null %}<h6>({{ game.homeTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
+                    <div>
+                        <div>
+
+                            {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.homeTeam.club.id and (g.otherData == "off" or g.otherData == null) %}
+                                <div>{{ g.minute }}'&nbsp;  {{ g.player1.footballer.name }} &nbsp; {{ g.player1.footballer.surname }}</div>
+                            {% endfor  %}
+
+                            {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.awayTeam.club.id and g.otherData == "on" %}
+                                <div class="text-danger">{{ g.minute }}'&nbsp;  {{ g.player1.footballer.name }} &nbsp; {{ g.player1.footballer.surname }} (Gol samobójczy) </div>
+                            {% endfor  %}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md m-1 p-2 text-center">
+                    <img class="m-2" height="50" width="50" src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
+                    <h2 class="text-center text-primary">{{ game.awayTeam.club.name }}</h2>
+                    {% if game.awayTeam.score is not null %}<h1>{{ game.awayTeam.score }}</h1>{% endif %}
+                    {% if game.awayTeam.penaltyShootoutScore is not null %}<h6>({{ game.awayTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
+                    <div>
+                        <div>
+
+                            {% for g in game.events if g.eventType == 4 and g.player1.gameTeam.club.id == game.awayTeam.club.id and (g.otherData == "off" or g.otherData == null)  %}
+                                <div>{{ g.minute }}'&nbsp;  {{ g.player1.footballer.name }} &nbsp; {{ g.player1.footballer.surname }}</div>
+                            {% endfor  %}
+
+                            {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.homeTeam.club.id and g.otherData == "on" %}
+                                <div class="text-danger">{{ g.minute }}'&nbsp;  {{ g.player1.footballer.name }} &nbsp; {{ g.player1.footballer.surname }} (Gol samobójczy) </div>
+                            {% endfor  %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-body">
+            <h5>{{ game.round.league.name }} / {{ game.round.name }} </h5>
+            <h6>{{ game.gameDateTime|date("d-m-Y h:m") }}</h6>
+            <p>
+                {{ game.description }}
+            </p>
+        </div>
+
+        <div class="card-body border-top">
+            Składy
+        </div>
+
+        <div class="card-body border-top">
+            <div id="events-container">
+                {% for event in game.events|reverse %}
+                    <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
+                        {{ event.minute }}
+                        {{ event.message }}
+                        {{ event.eventType }}
+                        {{ event.otherData }}
+                        {% if event.player1 is not null %}
+                            {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
+                        {% endif %}
+                        {% if event.player2 is not null %}
+                            {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
+                        {% endif %}
+                    </div>
+                {% else %}
+                    {{ 'index.display.noEvents' |trans }}
+                {% endfor %}
+            </div>
+        </div>
+
+
         {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
         {{ 'index.display.round'|trans }}: {{ game.round.name }}
         {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
@@ -47,62 +153,35 @@
             {{ 'index.display.noAwayTeam' |trans }}
         {% endif %}
 
-        <div id="events-container">
-            {% for event in game.events|reverse %}
-                <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
-                    {{ event.minute }}
-                    {{ event.message }}
-                    {{ event.eventType }}
-                    {{ event.otherData }}
-                    {% if event.player1 is not null %}
-                        {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
-                    {% endif %}
-                    {% if event.player2 is not null %}
-                        {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
-                    {% endif %}
-                </div>
-            {% else %}
-                {{ 'index.display.noEvents' |trans }}
-            {% endfor %}
-        </div>
+
 
         {% if app.user %}
-        <div>
-            <form id="comment" action="javascript:void('');" method="post">
-                <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
-                    <div class="form-group">
-                        <label for="comment_description"></label>
-                        <textarea class="form-control" id="comment-description" required="required"></textarea>
+            <div>
+                <form id="comment" action="javascript:void('');" method="post">
+                    <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
+                        <div class="form-group">
+                            <label for="comment_description"></label>
+                            <textarea class="form-control" id="comment-description" required="required"></textarea>
+                        </div>
+                        <input type="submit" value=""/>
                     </div>
-                    <input type="submit" value=""/>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
         {% else %}
             {{ 'index.display.ableToAddComments' |trans }}
         {% endif %}
 
-        <!-- komentarze -->
-        {{ 'index.display.comments'|trans }}
-        <div id="comments">
-        {% for comment in game.comments|reverse %}
-            <div id="comment-{{ comment.id }}">
-                {% if comment.createdBy == app.user.username %}
-                    <button class="button-edit-comment" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
-                    <button class="button-delete-comment" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}" >X</button>
-                {% endif %}
-                <p>{{ comment.createdBy }}</p>
-                <p class="comment-description">{{ comment.description }}</p>
-                <p>{{ comment.createdAt|date('j.m.Y, H:i:s') }}</p>
-            </div>
-        {% endfor %}
-        </div>
+
+    </div>
+
     </div>
 {% endblock %}
 
 {% block customJavaScript %}
     <script type="text/javascript">
     $(document).ready(function () {
+
+        {% if app.user %}
         $("#comment").submit(function (e) {
                 $.ajax({
                     url:$("#comment-div").data('url'),
@@ -145,6 +224,7 @@
                     }
                 });
         })
+        {% endif %}
     });
 
     $(document).on("click" , ".button-delete-comment" , function () {
