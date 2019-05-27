@@ -1,12 +1,17 @@
 {% extends 'base_user.html.twig' %}
 {% block body %}
-    <a href="{{ path('index_footballers_show' , {'club':club}) }}">powrot button</a>
+    <a href="{{ path('display_club_show' , {'id':club}) }}">powrot button</a>
     <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
     {{ footballer.surname }}
     {{ footballer.name }}
     {{ footballer.birthdate |date('Y-m-d') }}
     {{ footballer.country }}
+    {{ footballer.position.name }}
     <br/>
-    jakies statystyki dorobic chuj wie jak
+    Statystyki we wszystkich meczach:
+    {{ footballer.goals }}
+    {{ footballer.assists }}
+    {{ footballer.yellowCards }}
+    {{ footballer.redCards }}
     <br/>
 {% endblock %}

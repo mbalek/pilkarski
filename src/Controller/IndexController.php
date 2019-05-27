@@ -229,4 +229,17 @@ class IndexController extends AbstractController
             'message' => 'AJAX only'
         ]);
     }
+
+    /**
+     * @Route("/display/show/club/{id}", name="display_club_show", methods={"GET"})
+     */
+    public function showClub(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $club = $em->getRepository(Club::class)->find($request->get('id'));
+
+        return $this->render('index/show_club.html.twig', [
+            'club' => $club,
+        ]);
+    }
 }
