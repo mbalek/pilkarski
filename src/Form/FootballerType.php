@@ -42,7 +42,7 @@ class FootballerType extends AbstractType
             ])
             ->add('imageFile',VichImageType::class, [
                 'attr' => ['class' => 'btn btn-default pull-right'],
-                'label' => 'footballer.fields.image',
+                'label' => 'Zdjęcie',
                 'required' => false,
                 'allow_delete' => true,
             ])

@@ -173,11 +173,13 @@
                                 <div class="border p-2 m-2 rounded shadow-sm"><h5
                                             class="m-2 border-bottom">{{ e.minute }}'</h5>
                                     <div class="m-2">{{ e.message }}</div>
+                            {% if is_granted('ROLE_MODERATOR') %}
                                     <div>
                                         <a href='{{ path('events_undo', { 'id': e.id, 'type': 1 }) }}'
                                            class="btn-xs btn-outline-danger"
                                            onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
                                     </div>
+                            {% endif %}
                                 </div>
                             {% endif %}
 
@@ -190,11 +192,13 @@
                                         <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
                                     <div>
                                         <a href='{{ path('events_undo', { 'id': e.id, 'type': 2 }) }}'
                                            class="btn-xs btn-outline-danger"
                                            onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
                                     </div>
+                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -212,11 +216,13 @@
                                     </h4>
 
                                     <div class="m-2">{{ e.message }}</div>
+                            {% if is_granted('ROLE_MODERATOR') %}
                                     <div>
                                         <a href='{{ path('events_undo', { 'id': e.id, 'type': 4 }) }}'
                                            class="btn-xs btn-outline-danger"
                                            onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
                                     </div>
+                                {% endif %}
                                 </div>
                             {% endif %}
 
@@ -232,11 +238,13 @@
                                         {{ e.player2.footballer.surname }}
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
+                            {% if is_granted('ROLE_MODERATOR') %}
                                     <div>
                                         <a href='{{ path('events_undo', { 'id': e.id, 'type': 5 }) }}'
                                            class="btn-xs btn-outline-danger"
                                            onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
                                     </div>
+                                {% endif %}
                                 </div>
                             {% endif %}
 
@@ -249,10 +257,12 @@
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
                                     <div>
+                            {% if is_granted('ROLE_MODERATOR') %}
                                         <a href='{{ path('events_undo', { 'id': e.id, 'type': 6 }) }}'
                                            class="btn-xs btn-outline-danger"
                                            onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
                                     </div>
+                                {% endif %}
                                 </div>
                             {% endif %}
 
@@ -288,7 +298,7 @@
                 {% endif %}
             </div>
 
-            <div class="card-body border-top p-0 m-0">
+            <div class="card-body border-top p-0 m-0" >
                 <div id="comments p-0">
                     {% for comment in game.comments|reverse %}
                         <div id="comment-{{ comment.id }}" class="border m-1 p-2 shadow-sm">
@@ -431,46 +441,57 @@
             {% if app.user %}
             $("#comment").submit(function (e) {
                 $.ajax({
-                    url: $("#comment-div").data('url'),
+                    url: "{{ path('user_comment_new_ajax') }}",
                     dataType: "JSON",
                     data: {
                         username: '{{ app.user.id }}',
                         description: $("#comment-description").val(),
-                        game: $("#game-id").val(),
+                        game: "{{ game.id }}",
                     },
                     success: function (response) {
+                        let container = document.getElementById("comments p-0");
                         let div = document.createElement('div');
                         div.setAttribute("id", "comment-" + response.id);
+                        div.setAttribute("class" , "border m-1 p-2 shadow-sm")
+
                         let user = document.createElement("p");
-                        user.innerHTML = response.createdBy.username;
-                        let description = document.createElement("p");
-                        description.innerHTML = response.description;
+                        let span = document.createElement("span");
+                        span.setAttribute("class" , "text-primary font-bold");
+                        span.innerHTML = response.createdBy.username;
                         let date = new Date(response.createdAt.timestamp * 1000).toLocaleString();
-                        let dateText = document.createElement("p");
-                        dateText.innerHTML = date;
+                        user.innerHTML = "Napisany " + date +", przez ";
+                        user.appendChild(span);
+
+                        let description = document.createElement("p");
+                        description.setAttribute("class" , "comment-description");
+                        description.innerHTML = response.description;
+
+                        let brake = document.createElement("p");
                         document.getElementById("comment-description").value = "";
+
                         let buttonD = document.createElement("button");
                         let buttonE = document.createElement("button");
-                        buttonE.setAttribute("class", "button-edit-comment");
+                        buttonE.setAttribute("class", "button-edit-comment btn btn-xs btn-outline-primary");
                         buttonE.setAttribute("data-commentid", response.id);
                         buttonE.setAttribute("data-editurl", "{{ path('user_comment_edit_ajax') }}");
                         buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
-                        buttonD.setAttribute("class", "button-delete-comment");
+                        buttonD.setAttribute("class", "button-delete-comment btn btn-xs btn-outline-danger");
                         buttonD.setAttribute("data-commentid", response.id);
                         buttonD.setAttribute("data-deleteurl", "{{ path('user_comment_delete_ajax') }}");
-                        buttonD.innerHTML = "X";
-                        div.appendChild(buttonE);
-                        div.appendChild(buttonD);
+                        buttonD.innerHTML = "Usuń";
                         div.appendChild(user);
                         div.appendChild(description);
-                        div.appendChild(dateText);
-                        $("#comments").prepend(div);
+                        div.appendChild(brake);
+                        div.appendChild(buttonE);
+                        div.appendChild(buttonD);
+                        container.prepend(div);
+
                     },
                     error: function () {
                         console.log('error');
                     }
                 });
-            })
+            });
             {% endif %}
         });
 
@@ -497,18 +518,19 @@
             let divid = $(this).parent().attr('id');
             let div = document.getElementById(divid);
             let desc = div.querySelector('.comment-description');
+            let brake = document.createElement("p");
             //hide edit button
             let edit = div.querySelector('.button-edit-comment');
             edit.style.display = "none";
             desc.style.display = "none";
             let finishEdit = document.createElement('button');
-            finishEdit.setAttribute("class", "button-finish-edit");
+            finishEdit.setAttribute("class", "button-finish-edit btn btn-xs btn-outline-primary");
             finishEdit.setAttribute("data-edit-url", edit.getAttribute("data-editurl"));
             finishEdit.setAttribute("data-comment-id", edit.getAttribute("data-commentid"));
             finishEdit.innerHTML = "{{ 'index.display.confirm' |trans }}";
-            textarea.setAttribute("class", "comment-edit");
+            textarea.setAttribute("class", "comment-edit form-control");
             textarea.innerHTML = desc.innerHTML;
-            div.insertBefore(textarea, div.children[3]);
+            div.insertBefore(textarea, div.children[2]);
             div.appendChild(finishEdit);
 
             $(document).on("click", ".button-finish-edit", function () {
@@ -525,7 +547,7 @@
                     success: function (response) {
                         edit.style.display = "inline";
                         desc.style.display = "inline";
-                        div.removeChild(div.children[3]);
+                        div.removeChild(div.children[2]);
                         div.removeChild(div.lastChild);
                         div.querySelector('.comment-description').innerHTML = response.description;
                         console.log(div);
