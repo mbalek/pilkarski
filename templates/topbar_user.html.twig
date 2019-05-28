@@ -2,10 +2,11 @@
     <nav class="navbar navbar-expand-lg bg-white fixed-top">
 
         {# Navbar brand logo #}
-        <a href="{{ path('admin_panel') }}" class="navbar-brand text-primary">Pilkarski</a>
+        <a href="{{ path('index') }}" class="navbar-brand text-primary">Pilkarski</a>
         
         {# User name etc. #}
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
+
             {% if app.user %}
             
             <ul class="navbar-nav ml-auto navbar-right-top">

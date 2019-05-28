@@ -2,69 +2,280 @@
 
 {% extends 'base_user.html.twig' %}
 {% block body %}
-    <div class="card-body">
-        <ul class="nav nav-tabs md-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#clubs" role="tab">{{ 'league.display.clubs'|trans }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#upcomingmatches" role="tab">{{ 'game.display.upcomingGames'|trans }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#livematches" role="tab">{{ 'game.display.liveGames'|trans }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#finishedmatches" role="tab">{{ 'game.display.finishedGames'|trans }}</a>
-            </li>
-        </ul>
+    <div class="my-3 mx-1 row">
 
-    <div class="tab-content">
-        <div class="tab-pane active" id="clubs" role="tabpanel">
+    <div class="card col-xs-12 col-md-3 mx-1 p-0">
+        <div class="card-header">
+            <h5 class="p-1 m-0">{{ league.name }} - Kluby</h5>
+        </div>
+        <div class="card-body p-0">
             {% for club in league.clubs %}
-                <img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
-                {{ club.name }}
-                {{ club.city }}
-                {{ club.stadium }}
-                <a href="{{ path('display_club_show' , {'id':club.id}) }}">{{ 'index.display.details' |trans }}</a>
-                <br/>
-            {% else %}
-                {{ 'global.noRecords' |trans }}
-            {% endfor %}
-        </div>
-        <div class="tab-pane" id="upcomingmatches" role="tabpanel">
-            {% for round in league.rounds %}
-                {% for game in round.games if game.status == 3 %}
-                    Kolejka: {{ game.round.name }}
-                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
-                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
-                {% else %}
-                    {{ 'global.noRecords' |trans }}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <div class="tab-pane" id="livematches" role="tabpanel">
-            {% for round in league.rounds %}
-                {% for game in round.games if game.status == 2 %}
-                    Kolejka: {{ game.round.name }}
-                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
-                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
-                {% else %}
-                    {{ 'global.noRecords' |trans }}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <div class="tab-pane" id="finishedmatches" role="tabpanel">
-            {% for round in league.rounds %}
-                {% for game in round.games if game.status == 1 %}
-                    Kolejka: {{ game.round.name }}
-                    {{ game.homeTeam.club.name }}  -  {{ game.awayTeam.club.name }}
-                    {{ game.gameDateTime ? game.gameDateTime|date('d-m-Y H:i:s') : '' }}
-                    <a href="{{ path('index_game_show' , {'id':game.id}) }}">Szczegoly</a>
-                {% else %}
-                    {{ 'global.noRecords' |trans }}
-                {% endfor %}
+                <div class="border-top text-center p-1"><a href="{{ path("display_club_show", { "id": club.id }) }}">{{ club.name }}</a></div>
             {% endfor %}
         </div>
     </div>
+
+    <div class="card col-xs-12 col-md mx-1 p-0">
+
+
+    <div class="card-header m-0">
+        <h4 class="m-0 p-0">{{ league.name }} - Mecze</h4>
+        <div class="card-header pills-small">
+            <ul class="nav nav-pills card-header-pills" id="myTab5" role="tablist">
+
+                <li class="nav-item primary">
+                    <a aria-controls="all-games" aria-selected="true" class="nav-link active border-left-0"
+                       data-toggle="tab"
+                       href="#all-games" id="all-games-tab"
+                       role="tab">Wszystkie</a>
+                </li>
+
+
+                <li class="nav-item primary">
+                    <a aria-controls="live-games" aria-selected="false" class="nav-link border-left-0"
+                       data-toggle="tab"
+                       href="#live-games" id="live-games-tab"
+                       role="tab">Na żywo</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a aria-controls="upcoming-games" aria-selected="false" class="nav-link border-left-0"
+                       data-toggle="tab"
+                       href="#upcoming-games" id="upcoming-games-tab"
+                       role="tab">Nadchodzące</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-controls="finished-games" aria-selected="false" class="nav-link border-left-0"
+                       data-toggle="tab"
+                       href="#finished-games" id="finished-games-tab"
+                       role="tab">Zakończone</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card-body pre-scrollable p-0">
+        <div class="tab-content" id="myTabContent5">
+            <div aria-labelledby="all-games-tab" class="tab-pane fade show active" id="all-games" role="tabpanel">
+                {% for r in league.rounds if r.games|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead class="bg-light">
+                            <tr>
+                                <th colspan="3">
+                                    <span style="font-weight: normal">{{ r.name }}</span>
+                                </th>
+                            </tr>
+                            <tr></tr>
+                            </thead>
+                            <tbody class="text-center">
+                            {% for game in r.games if game.status != 0 %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path("display_club_show", { "id":game.homeTeam.club.id }) }}">{{ game.homeTeam.club.name }}</a>
+                                        -
+                                        <a href="{{ path("display_club_show", { "id":game.awayTeam.club.id }) }}">{{ game.awayTeam.club.name }}</a>
+
+                                        {% if game.status < 3 and game.homeTeam.score is not null and game.awayTeam.score is not null %}
+                                            <span class="badge badge-primary">
+                                                    {{ game.homeTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.homeTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                    -
+                                                    {{ game.awayTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.awayTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                </span>
+                                        {% endif %}
+                                        {% if game.status == 2 %}
+                                            &nbsp;&nbsp;<span
+                                                class="badge badge-danger text-uppercase">Na Żywo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ game.gameDateTime|date("d-m-Y h:m") }}
+                                    </td>
+                                    <td>
+                                        {% if game.status == 2 %}
+                                            <a href="{{ path('index_live_game_show', { "id": game.id }) }}"
+                                               class="btn btn-xs btn-primary">Strona meczu</a>
+                                        {% else %}
+                                            <a href="{{ path('index_game_show', { "id": game.id }) }}"
+                                               class="btn btn-xs btn-primary">Strona meczu</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <div aria-labelledby="live-games-tab" class="tab-pane fade show" id="live-games" role="tabpanel">
+                {% for r in league.rounds if r.games|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead class="bg-light">
+                            <tr>
+                                <th colspan="3">
+                                    <a href="{{ path("index_league_show", { "id": league.id }) }}">{{ league.name }}</a>
+                                    -
+                                    <span style="font-weight: normal">{{ r.name }}</span>
+                                </th>
+                            </tr>
+                            <tr></tr>
+                            </thead>
+                            <tbody class="text-center">
+                            {% for game in r.games if game.status == 2 %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path("display_club_show", { "id":game.homeTeam.club.id }) }}">{{ game.homeTeam.club.name }}</a>
+                                        -
+                                        <a href="{{ path("display_club_show", { "id":game.awayTeam.club.id }) }}">{{ game.awayTeam.club.name }}</a>
+
+                                        {% if game.status < 3 and game.homeTeam.score is not null and game.awayTeam.score is not null %}
+                                            <span class="badge badge-primary">
+                                                    {{ game.homeTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.homeTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                    -
+                                                    {{ game.awayTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.awayTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                </span>
+                                        {% endif %}
+                                        {% if game.status == 2 %}
+                                            &nbsp;&nbsp;<span
+                                                class="badge badge-danger text-uppercase">Na Żywo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ game.gameDateTime|date("d-m-Y h:m") }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('index_live_game_show', { "id": game.id }) }}"
+                                           class="btn btn-xs btn-primary">Strona meczu</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div aria-labelledby="upcoming-games-tab" class="tab-pane fade show" id="upcoming-games" role="tabpanel">
+                {% for r in league.rounds if r.games|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead class="bg-light">
+                            <tr>
+                                <th colspan="3">
+                                    <a href="{{ path("index_league_show", { "id": league.id }) }}">{{ league.name }}</a>
+                                    -
+                                    <span style="font-weight: normal">{{ r.name }}</span>
+                                </th>
+                            </tr>
+                            <tr></tr>
+                            </thead>
+                            <tbody class="text-center">
+                            {% for game in r.games if game.status == 3 %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path("display_club_show", { "id":game.homeTeam.club.id }) }}">{{ game.homeTeam.club.name }}</a>
+                                        -
+                                        <a href="{{ path("display_club_show", { "id":game.awayTeam.club.id }) }}">{{ game.awayTeam.club.name }}</a>
+
+                                        {% if game.status < 3 and game.homeTeam.score is not null and game.awayTeam.score is not null %}
+                                            <span class="badge badge-primary">
+                                                    {{ game.homeTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.homeTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                    -
+                                                    {{ game.awayTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.awayTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                </span>
+                                        {% endif %}
+                                        {% if game.status == 2 %}
+                                            &nbsp;&nbsp;<span
+                                                class="badge badge-danger text-uppercase">Na Żywo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ game.gameDateTime|date("d-m-Y h:m") }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('index_game_show', { "id": game.id }) }}"
+                                           class="btn btn-xs btn-primary">Strona meczu</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <td>Brak meczów</td>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div aria-labelledby="finished-games-tab" class="tab-pane fade show" id="finished-games" role="tabpanel">
+                {% for r in league.rounds if r.games|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead class="bg-light">
+                            <tr>
+                                <th colspan="3">
+                                    <a href="{{ path("index_league_show", { "id": league.id }) }}">{{ league.name }}</a>
+                                    -
+                                    <span style="font-weight: normal">{{ r.name }}</span>
+                                </th>
+                            </tr>
+                            <tr></tr>
+                            </thead>
+                            <tbody class="text-center">
+                            {% for game in r.games if game.status == 1 %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path("display_club_show", { "id":game.homeTeam.club.id }) }}">{{ game.homeTeam.club.name }}</a>
+                                        -
+                                        <a href="{{ path("display_club_show", { "id":game.awayTeam.club.id }) }}">{{ game.awayTeam.club.name }}</a>
+
+                                        {% if game.status < 3 and game.homeTeam.score is not null and game.awayTeam.score is not null %}
+                                            <span class="badge badge-primary">
+                                                    {{ game.homeTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.homeTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                    -
+                                                    {{ game.awayTeam.score }}
+                                                {% if game.homeTeam.penaltyShootoutScore and game.awayTeam.penaltyShootoutScore %}({{ game.awayTeam.penaltyShootoutScore }})
+                                                {% endif %}
+                                                </span>
+                                        {% endif %}
+                                        {% if game.status == 2 %}
+                                            &nbsp;&nbsp;<span
+                                                class="badge badge-danger text-uppercase">Na Żywo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ game.gameDateTime|date("d-m-Y h:m") }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('index_game_show', { "id": game.id }) }}"
+                                           class="btn btn-xs btn-primary">Strona meczu</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <td>Brak meczów</td>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
