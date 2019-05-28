@@ -12,6 +12,8 @@
     </style>
 {% endblock %}
 
+
+
 {% block body %}
     <section class="my-3 mx-1 row main-section">
 
@@ -116,8 +118,13 @@
                                                     {{ game.gameDateTime|date("d-m-Y h:m") }}
                                                 </td>
                                                 <td>
+                                                    {% if game.status == 2 %}
+                                                    <a href="{{ path('index_live_game_show', { "id": game.id }) }}"
+                                                       class="btn btn-xs btn-primary">Strona meczu</a>
+                                                    {% else %}
                                                     <a href="{{ path('index_game_show', { "id": game.id }) }}"
                                                        class="btn btn-xs btn-primary">Strona meczu</a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -172,7 +179,7 @@
                                                     {{ game.gameDateTime|date("d-m-Y h:m") }}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ path('index_game_show', { "id": game.id }) }}"
+                                                    <a href="{{ path('index_live_game_show', { "id": game.id }) }}"
                                                        class="btn btn-xs btn-primary">Strona meczu</a>
                                                 </td>
                                             </tr>
