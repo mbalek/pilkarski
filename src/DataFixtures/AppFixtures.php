@@ -10,6 +10,7 @@ use App\Entity\League;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AppFixtures extends Fixture
 {
@@ -18,8 +19,9 @@ class AppFixtures extends Fixture
 
         $faker = Faker\Factory::create();
         $positions = $manager->getRepository(Position::class)->findAll();
+        $clubs = $manager->getRepository(Club::class) -> findAll();
 
-
+/*
         //Country
         $country = new Country();
         $country->setName("Poland");
@@ -71,5 +73,44 @@ class AppFixtures extends Fixture
 
             $manager->flush();
         }
+*/
+/*
+        $country = $manager->getRepository(Country::class)->find(1);
+        foreach ($clubs as $club)
+        {
+            foreach ($positions as $pos) {
+
+                for ($p = 0; $p < 3; $p++) {
+
+                    $fb = new Footballer();
+                    $fb->setName($faker->firstNameMale);
+                    $fb->setSurname(ucfirst($faker->word));
+                    $fb->setBirthdate($faker->dateTime);
+                    $fb->setAssists(0);
+                    $fb->setGoals(0);
+                    $fb->setRedCards(0);
+                    $fb->setYellowCards(0);
+                    $fb->setPosition($pos);
+                    $fb->setClub($club);
+                    $fb->setCountry($country);
+
+                    $src = __DIR__."/public/upload/images/peson.png";
+                    $file = new UploadedFile(
+                        $src,
+                        'peson.png',
+                        'png',
+                        filesize($src),
+                        null,
+                        true
+                    );
+                    $fb->setImageFile($file);
+
+                    $manager->persist($fb);
+
+                }
+
+            }
+        }
+*/
     }
 }

@@ -1,113 +1,319 @@
 {# Wyświetlanie informacji o trwającym meczu #}
 
 {% extends 'base_user.html.twig' %}
+{% block templateCss %}
+    <style>
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="container">
-        aqqqq
-        {{ 'index.display.league'|trans }}: {{ game.round.league.name }}
-        {{ 'index.display.round'|trans }}: {{ game.round.name }}
-        {{ 'index.display.datetime'|trans }}: {{  game.gameDateTime|date('Y-m-d H:i:s') }}
-        {{ game.description }}
-        <input type="hidden" value="{{ game.id }}" id="game-id"/>
+
+    <div class="row m-3 p-0">
 
 
-
-        <!-- Budowanie pierwszej drużyny -->
-        {% if game.homeTeam %}
-            {{ game.homeTeam.club.name }}
-            {% if game.homeTeam.formation %}
-                {{ game.homeTeam.formation.name }}
-            {% endif %}
-            <img height="50" width="50" src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
-            {% for gamesquad in game.homeTeam.gameTeamSquads %}
-                {{ gamesquad.number }}
-                {{ gamesquad.footballer.name }}
-                {{ gamesquad.footballer.surname }}
-                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
-            {% else %}
-                {{ 'index.display.noFootballers' |trans }}
-            {% endfor %}
-        {% else %}
-            {{ 'index.display.noHomeTeam' |trans }}
-        {% endif %}
-
-        <!-- Budowanie drugiej drużyny -->
-        {% if game.awayTeam %}
-            {{ game.awayTeam.club.name }}
-            {% if game.awayTeam.formation %}
-                {{ game.awayTeam.formation.name }}
-            {% endif %}
-            <img height="50" width="50" src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
-            {% for gamesquad in game.awayTeam.gameTeamSquads %}
-                {{ gamesquad.number }}
-                {{ gamesquad.footballer.name }}
-                {{ gamesquad.footballer.surname }}
-                {{ vich_uploader_asset(gamesquad.footballer, 'imageFile') }}
-            {% else %}
-                {{ 'index.display.noFootballers' |trans }}
-            {% endfor %}
-        {% else %}
-            {{ 'index.display.noAwayTeam' |trans }}
-        {% endif %}
-
-
-        {# Tutaj beidze timer#}
-        <div id="timer" class="game-minute-timer text-center">
-            Przerwa
-        </div>
-
-        <!-- eventy w danym zakonczonym meczu -->
-        <div id="events-container">
-        {% for event in game.events|reverse %}
-                <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
-                    {{ event.minute }}
-                    {{ event.message }}
-                    {{ event.eventType }}
-                    {{ event.otherData }}
-                    {% if event.player1 is not null %}
-                        {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
+        <div class="card m-3 p-0 col-md">
+            <div class="card-header m-0 bg-light">
+                <h4 class="text-center">
+                    {#
+                     gameManageSquads.fields.deactivated' => 0,
+                     gameManageSquads.fields.finished' => 1,
+                     gameManageSquads.fields.live' => 2,
+                     gameManageSquads.fields.upcoming' => 3
+                     #}
+                    {% if game.status == 2 %}
+                        <div id="timer" class="text-center"></div>'
+                    {% elseif game.status == 3 %}
+                        Mecz odbędzie się {{ game.gameDateTime|date('d-m-Y h:m') }}
+                    {% elseif game.status == 1 %}
+                        Zakończony - {{ game.gameDateTime|date('d-m-Y h:m') }}
                     {% endif %}
-                    {% if event.player2 is not null %}
-                        {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
-                    {% endif %}
-                </div>
-        {% else %}
-            {{ 'index.display.noEvents' |trans }}
-        {% endfor %}
-        </div>
-
-        {% if app.user %}
-            <div>
-                <form id="comment" action="javascript:void('');" method="post">
-                    <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
-                        <div class="form-group">
-                            <label for="comment_description"></label>
-                            <textarea class="form-control" id="comment-description" required="required"></textarea>
-                        </div>
-                        <input type="submit" value=""/>
-                    </div>
-                </form>
+                </h4>
             </div>
-        {% else %}
-            {{ 'index.display.ableToAddComments' |trans }}
-        {% endif %}
 
-        <!-- komentarze -->
-        {{ 'index.display.comments'|trans }}
-        <div id="comments">
-            asdfdfsd
-            {% for comment in game.comments|reverse %}
-                <div id="comment-{{ comment.id }}">
-                    {% if comment.createdBy == app.user.username %}
-                        <button class="button-edit-comment" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
-                        <button class="button-delete-comment" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}" >X</button>
-                    {% endif %}
-                    <p>{{ comment.createdBy }}</p>
-                    <p class="comment-description">{{ comment.description }}</p>
-                    <p>{{ comment.createdAt|date('j.m.Y, H:i:s') }}</p>
+            <div class="card-header m-0 bg-light">
+                <div class="row">
+                    <div class="col-md m-1 p-2 text-center">
+                        <img class="m-2" height="50" width="50"
+                             src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
+                        <h2 class="text-center text-primary">{{ game.homeTeam.club.name }}</h2>
+                        {% if game.homeTeam.score is not null %}<h1>{{ game.homeTeam.score }}</h1>{% endif %}
+                        {% if game.homeTeam.penaltyShootoutScore is not null %}<h6>
+                            ({{ game.homeTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
+                        <div>
+                            <div>
+
+                                {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.homeTeam.club.id and (g.otherData == "off" or g.otherData == null) %}
+                                    <div>{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
+                                        &nbsp; {{ g.player1.footballer.surname }}</div>
+                                {% endfor %}
+
+                                {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.awayTeam.club.id and g.otherData == "on" %}
+                                    <div class="text-danger">{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
+                                        &nbsp; {{ g.player1.footballer.surname }} (Gol samobójczy)
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md m-1 p-2 text-center">
+                        <img class="m-2" height="50" width="50"
+                             src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
+                        <h2 class="text-center text-primary">{{ game.awayTeam.club.name }}</h2>
+                        {% if game.awayTeam.score is not null %}<h1>{{ game.awayTeam.score }}</h1>{% endif %}
+                        {% if game.awayTeam.penaltyShootoutScore is not null %}<h6>
+                            ({{ game.awayTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
+                        <div>
+                            <div>
+
+                                {% for g in game.events if g.eventType == 4 and g.player1.gameTeam.club.id == game.awayTeam.club.id and (g.otherData == "off" or g.otherData == null) %}
+                                    <div>{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
+                                        &nbsp; {{ g.player1.footballer.surname }}</div>
+                                {% endfor %}
+
+                                {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.homeTeam.club.id and g.otherData == "on" %}
+                                    <div class="text-danger">{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
+                                        &nbsp; {{ g.player1.footballer.surname }} (Gol samobójczy)
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
+
+
+            <div class="card-body">
+                <h5>{{ game.round.league.name }} / {{ game.round.name }} </h5>
+                <h6>{{ game.gameDateTime|date("d-m-Y h:m") }}</h6>
+                <p>
+                    {{ game.description }}
+                </p>
+            </div>
+
+            {% if game.homeTeam.gameTeamSquads|length > 10 and game.awayTeam.gameTeamSquads|length > 10 %}
+                <div class="card-body border-top">
+
+                    <h3 class="text-center">Składy meczowe</h3>
+
+                    <div class="row">
+
+                        {# Home Team Squad #}
+                        <div class="col-xs-12 col-md-6">
+                            <h4 class="text-center m-0">{{ game.homeTeam.club.name }}</h4>
+                            <p class="text-center">{{ game.homeTeam.formation }}</p>
+                            <table id="home-team-table" class="table text-center p-0 m-0 table-bordered">
+                                {% for player in game.homeTeam.gameTeamSquads %}
+                                    <tr>
+                                        <td class="position-name-field"></td>
+                                        <td>{{ player.number }}</td>
+                                        <td>{{ player.footballer.name }} {{ player.footballer.surname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                        {# Away Team Squad #}
+                        <div class="col-xs-12 col-md-6">
+                            <h4 class="text-center m-0">{{ game.awayTeam.club.name }}</h4>
+                            <p class="text-center">{{ game.awayTeam.formation }}</p>
+                            <table id="away-team-table" class="table text-center p-0 m-0 table-bordered">
+                                {% for player in game.awayTeam.gameTeamSquads %}
+                                    <tr>
+                                        <td class="position-name-field"></td>
+                                        <td>{{ player.number }}</td>
+                                        <td>{{ player.footballer.name }} {{ player.footballer.surname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+
+            {#
+            <div class="card-body border-top">
+                <div id="events-container">
+                    {% for event in game.events|reverse %}
+                        <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
+                            {{ event.minute }}
+                            {{ event.message }}
+                            {{ event.eventType }}
+                            {{ event.otherData }}
+                            {% if event.player1 is not null %}
+                                {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
+                            {% endif %}
+                            {% if event.player2 is not null %}
+                                {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        {{ 'index.display.noEvents' |trans }}
+                    {% endfor %}
+                </div>
+            </div>
+            #}
+
+            <div class="card-body m-0 p-0">
+                {% if game.events|length < 1 %}
+                    <div>
+                        <h2 class="text-gray text-center">Brak wydarzeń meczu</h2>
+                    </div>
+                {% else %}
+                    <div class="p-2">
+                        {% for e in game.events|reverse %}
+                            {# Events listing #}
+
+                            {# Basic message #}
+                            {% if e.eventType == 1 %}
+                                <div class="border p-2 m-2 rounded shadow-sm"><h5
+                                            class="m-2 border-bottom">{{ e.minute }}'</h5>
+                                    <div class="m-2">{{ e.message }}</div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <div>
+                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 1 }) }}'
+                                               class="btn-xs btn-outline-danger"
+                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {# Card message #}
+                            {% if e.eventType == 2 %}
+                                <div class="border p-2 m-2 rounded shadow-sm {{ e.otherData == " yellow" ? 'yellow-card' : 'red-card' }}">
+                                    <h4 class="p-2 border-bottom">
+                                        {{ e.minute }}'
+                                        {{ e.otherData == "yellow" ? 'Żółta kartka: ' : 'Czerwona kartka:' }}
+                                        <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
+                                    </h4>
+                                    <div class="m-2">{{ e.message }}</div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <div>
+                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 2 }) }}'
+                                               class="btn-xs btn-outline-danger"
+                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {# Goal message #}
+                            {% if e.eventType == 4 %}
+                                <div class="border p-2 m-2 rounded shadow-sm">
+                                    <h4 class="p-2 border-bottom {{ e.otherData == " on" ? 'text-secondary' : 'text-primary' }}">
+                                        {{ e.minute }}'
+                                        {{ e.otherData == "on" ? 'Bramka samobójcza. ' : 'GOL! ' }}
+                                        <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
+                                        {% if e.player2 %}
+                                            <div class="text-gray">Asystował:
+                                                {{ e.player2.footballer.name ~ " " ~ e.player2.footballer.surname }}</div>
+                                        {% endif %}
+                                    </h4>
+
+                                    <div class="m-2">{{ e.message }}</div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <div>
+                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 4 }) }}'
+                                               class="btn-xs btn-outline-danger"
+                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {# Change message #}
+                            {% if e.eventType == 5 %}
+                                <div class="border p-2 m-2 rounded shadow-sm">
+                                    <h4 class="p-2 border-bottom">
+                                        {{ e.minute }}' Zmiana: Schodzi:
+                                        {{ e.player1.footballer.name }}
+                                        {{ e.player1.footballer.surname }}
+                                        , Wchodzi:
+                                        {{ e.player2.footballer.name }}
+                                        {{ e.player2.footballer.surname }}
+                                    </h4>
+                                    <div class="m-2">{{ e.message }}</div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <div>
+                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 5 }) }}'
+                                               class="btn-xs btn-outline-danger"
+                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {# P. Shootout message #}
+                            {% if e.eventType == 6 %}
+                                <div class="border p-2 m-2 rounded shadow-sm">
+                                    <h4 class="p-2 border-bottom">
+                                        {{ e.minute }}'
+                                        <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
+                                    </h4>
+                                    <div class="m-2">{{ e.message }}</div>
+                                    <div>
+                                        {% if is_granted('ROLE_MODERATOR') %}
+                                        <a href='{{ path('events_undo', { 'id': e.id, 'type': 6 }) }}'
+                                           class="btn-xs btn-outline-danger"
+                                           onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
+
+        {# Komentarze #}
+        <div class="card m-3 p-0 col-md-3">
+
+            <div class="card-header bg-light">
+                <h3 class="text-center">Komentarze</h3>
+            </div>
+
+            <div class="p-2 text-center">
+                {% if app.user %}
+                    <div>
+                        <form id="comment" action="javascript:void('');" method="post">
+                            <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
+                                <div class="form-group">
+                                    <label for="comment_description"></label>
+                                    <textarea class="form-control" id="comment-description"
+                                              required="required" placeholder="Wpisz treść komentarza"></textarea>
+                                </div>
+                                <input type="submit" value="Opublikuj" class="btn btn-block btn-primary"/>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    Aby dodawać komentarze musisz się <a href="http://pilkarski/login" class="text-primary font-bold">zalogować</a>
+                {% endif %}
+            </div>
+
+            <div class="card-body border-top p-0 m-0" >
+                <div id="comments p-0">
+                    {% for comment in game.comments|reverse %}
+                        <div id="comment-{{ comment.id }}" class="border m-1 p-2 shadow-sm">
+                            <p>Napisany {{ comment.createdAt|date('j.m.Y, H:i:s') }}, przez <span class="text-primary font-bold">{{ comment.createdBy }}</span></p>
+                            <p class="comment-description">{{ comment.description }}</p>
+                            <p></p>
+                            {% if app.user and comment.createdBy == app.user.username %}
+                                <button class="button-edit-comment btn btn-xs btn-outline-primary" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
+                                <button class="button-delete-comment btn btn-xs btn-outline-danger" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}">Usuń</button>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -116,7 +322,7 @@
         $(document).ready(function () {
             $("#comment").submit(function (e) {
                 $.ajax({
-                    url:$("#comment-div").data('url'),
+                    url:"{{ path('user_comment_new_ajax') }}",
                     dataType: "JSON",
                     data: {
                         username: '{{ app.user.id }}',
@@ -124,32 +330,42 @@
                         game: $("#game-id").val(),
                     },
                     success: function (response) {
+                        let container = document.getElementById("comments p-0");
                         let div = document.createElement('div');
-                        div.setAttribute("id" , "comment-"+response.id);
+                        div.setAttribute("id", "comment-" + response.id);
+                        div.setAttribute("class" , "border m-1 p-2 shadow-sm")
+
                         let user = document.createElement("p");
-                        user.innerHTML=response.createdBy.username;
-                        let description = document.createElement("p");
-                        description.innerHTML = response.description;
+                        let span = document.createElement("span");
+                        span.setAttribute("class" , "text-primary font-bold");
+                        span.innerHTML = response.createdBy.username;
                         let date = new Date(response.createdAt.timestamp * 1000).toLocaleString();
-                        let dateText = document.createElement("p");
-                        dateText.innerHTML = date;
-                        document.getElementById("comment-description").value="";
+                        user.innerHTML = "Napisany " + date +", przez ";
+                        user.appendChild(span);
+
+                        let description = document.createElement("p");
+                        description.setAttribute("class" , "comment-description");
+                        description.innerHTML = response.description;
+
+                        let brake = document.createElement("p");
+                        document.getElementById("comment-description").value = "";
+
                         let buttonD = document.createElement("button");
                         let buttonE = document.createElement("button");
-                        buttonE.setAttribute("class" , "button-edit-comment");
-                        buttonE.setAttribute("data-commentid" , response.id );
-                        buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
+                        buttonE.setAttribute("class", "button-edit-comment btn btn-xs btn-outline-primary");
+                        buttonE.setAttribute("data-commentid", response.id);
+                        buttonE.setAttribute("data-editurl", "{{ path('user_comment_edit_ajax') }}");
                         buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
-                        buttonD.setAttribute("class" , "button-delete-comment");
-                        buttonD.setAttribute("data-commentid" , response.id);
-                        buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
-                        buttonD.innerHTML = "X";
-                        div.appendChild(buttonE);
-                        div.appendChild(buttonD);
+                        buttonD.setAttribute("class", "button-delete-comment btn btn-xs btn-outline-danger");
+                        buttonD.setAttribute("data-commentid", response.id);
+                        buttonD.setAttribute("data-deleteurl", "{{ path('user_comment_delete_ajax') }}");
+                        buttonD.innerHTML = "Usuń";
                         div.appendChild(user);
                         div.appendChild(description);
-                        div.appendChild(dateText);
-                        $("#comments").prepend(div);
+                        div.appendChild(brake);
+                        div.appendChild(buttonE);
+                        div.appendChild(buttonD);
+                        container.prepend(div);
                     },
                     error:function () {
                         console.log('error');
@@ -242,26 +458,27 @@
             let divid = $(this).parent().attr('id');
             let div = document.getElementById(divid);
             let desc = div.querySelector('.comment-description');
+            let brake = document.createElement("p");
             //hide edit button
             let edit = div.querySelector('.button-edit-comment');
             edit.style.display = "none";
             desc.style.display = "none";
             let finishEdit = document.createElement('button');
-            finishEdit.setAttribute("class" , "button-finish-edit");
-            finishEdit.setAttribute("data-edit-url" , edit.getAttribute("data-editurl"));
-            finishEdit.setAttribute("data-comment-id" , edit.getAttribute("data-commentid"));
+            finishEdit.setAttribute("class", "button-finish-edit btn btn-xs btn-outline-primary");
+            finishEdit.setAttribute("data-edit-url", edit.getAttribute("data-editurl"));
+            finishEdit.setAttribute("data-comment-id", edit.getAttribute("data-commentid"));
             finishEdit.innerHTML = "{{ 'index.display.confirm' |trans }}";
-            textarea.setAttribute("class" , "comment-edit");
+            textarea.setAttribute("class", "comment-edit form-control");
             textarea.innerHTML = desc.innerHTML;
-            div.insertBefore(textarea, div.children[3]);
+            div.insertBefore(textarea, div.children[2]);
             div.appendChild(finishEdit);
 
-            $(document).on("click" , ".button-finish-edit" , function () {
+            $(document).on("click", ".button-finish-edit", function () {
                 let divid = $(this).parent().attr('id');
                 let div = document.getElementById(divid);
                 let description = div.querySelector('.comment-edit');
                 $.ajax({
-                    url:$(this).data('edit-url'),
+                    url: $(this).data('edit-url'),
                     dataType: "JSON",
                     data: {
                         commentId: $(this).data('comment-id'),
@@ -270,11 +487,12 @@
                     success: function (response) {
                         edit.style.display = "inline";
                         desc.style.display = "inline";
-                        div.removeChild(div.children[3]);
+                        div.removeChild(div.children[2]);
                         div.removeChild(div.lastChild);
                         div.querySelector('.comment-description').innerHTML = response.description;
+                        console.log(div);
                     },
-                    error:function () {
+                    error: function () {
                         console.log('error');
                     }
                 });
