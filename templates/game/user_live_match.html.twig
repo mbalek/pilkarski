@@ -327,7 +327,7 @@
                     data: {
                         username: '{{ app.user.id }}',
                         description: $("#comment-description").val(),
-                        game: $("#game-id").val(),
+                        game: "{{ game.id }}",
                     },
                     success: function (response) {
                         let container = document.getElementById("comments p-0");
@@ -373,7 +373,7 @@
                 });
             });
 
-            {% if game.status == 3 or game.status == 2 %}
+            {% if game.status == 2 %}
             {% if game.firstHalfStart is not null and game.firstHalfEnd is null %}
             let fromBase = Date.parse('{{ game.firstHalfStart|date("Y-m-d\\TH:i:sP") }}');
             let now = Date.parse(Date());
@@ -545,38 +545,56 @@
                     gameId: "{{ game.id }}",
                 },
                 success: function (response) {
-                    $("#comments").empty();
+                    let container = document.getElementById("comments p-0");
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
                     console.log(response);
                     for(let i = 0; i < response.length; i++ ){
 
                         let div = document.createElement('div');
                         div.setAttribute("id" , "comment-"+response[i].id);
+                        div.setAttribute("class" , "border m-1 p-2 shadow-sm");
+
                         let user = document.createElement("p");
-                        user.innerHTML=response[i].createdBy.username;
-                        let description = document.createElement("p");
-                        description.innerHTML = response[i].description;
+                        let span = document.createElement("span");
+                        span.setAttribute("class" , "text-primary font-bold");
+                        span.innerHTML = response[i].createdBy.username;
                         let date = new Date(response[i].createdAt.timestamp * 1000).toLocaleString();
-                        let dateText = document.createElement("p");
-                        dateText.innerHTML = date;
+                        user.innerHTML = "Napisany " + date + ", przez ";
+                        user.appendChild(span);
+
+                        let description = document.createElement("p");
+                        description.setAttribute("class" , "comment-description");
+                        description.innerHTML = response[i].description;
+
+                        let brake = document.createElement("p");
                         document.getElementById("comment-description").value="";
+
                         if ( response[i].createdBy.username == "{{ app.user.username }}"){
                             let buttonD = document.createElement("button");
                             let buttonE = document.createElement("button");
-                            buttonE.setAttribute("class" , "button-edit-comment");
+                            buttonE.setAttribute("class" , "button-edit-comment btn btn-xs btn-outline-primary");
                             buttonE.setAttribute("data-commentid" , response[i].id );
                             buttonE.setAttribute("data-editurl" , "{{ path('user_comment_edit_ajax') }}" );
                             buttonE.innerHTML = "{{ 'global.actions.edit'|trans }}";
-                            buttonD.setAttribute("class" , "button-delete-comment");
+                            buttonD.setAttribute("class" , "button-delete-comment btn btn-xs btn-outline-danger");
                             buttonD.setAttribute("data-commentid" , response[i].id);
                             buttonD.setAttribute("data-deleteurl" , "{{ path('user_comment_delete_ajax') }}");
-                            buttonD.innerHTML = "X";
+                            buttonD.innerHTML = "Usuń";
+
+                            div.appendChild(user);
+                            div.appendChild(description);
+                            div.appendChild(brake);
                             div.appendChild(buttonE);
                             div.appendChild(buttonD);
+                        }else{
+                            div.appendChild(user);
+                            div.appendChild(description);
+                            div.appendChild(brake);
                         }
-                        div.appendChild(user);
-                        div.appendChild(description);
-                        div.appendChild(dateText);
-                        $("#comments").prepend(div);
+
+                        container.prepend(div);
                     }
 
                 },
