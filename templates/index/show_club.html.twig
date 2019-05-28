@@ -3,6 +3,25 @@
 
 {% block body %}
 
+    <div class="row my-3 mx-0 p-0 col-xs-12">
+
+        <div class="card col-xs-12 col-md m-1">
+            <div class="card-header p-0">
+                <div class="row p-2 border-bottom">
+                    <img class="img-fluid img-thumbnail" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
+                    <h2 class="py-2 px-1">{{ club.name }}</h2>
+                </div>
+                <div>
+                    <div><b>Liga:</b> {{ club.league }}</div>
+                    <div><b>Stadion:</b> {{ club.stadium }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     {# informacje o klubie #}
     <img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
     {{ club.name }}
