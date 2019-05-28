@@ -131,6 +131,10 @@
                         </div>
                     </div>
                 </div>
+            {% else %}
+                <div class="card-body border-top border-bottom">
+                    <h3 class="text-gray text-center">Brak informacji o składach meczowych</h3>
+                </div>
             {% endif %}
 
 
@@ -271,51 +275,51 @@
                 {% endif %}
             </div>
         </div>
+    </div>
 
-        {# Komentarze #}
-        <div class="card m-3 p-0 col-md-3">
+    {# Komentarze #}
+    <div class="card m-3 p-0 col-md-3">
 
-            <div class="card-header bg-light">
-                <h3 class="text-center">Komentarze</h3>
-            </div>
-
-            <div class="p-2 text-center">
-                {% if app.user %}
-                    <div>
-                        <form id="comment" action="javascript:void('');" method="post">
-                            <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
-                                <div class="form-group">
-                                    <label for="comment_description"></label>
-                                    <textarea class="form-control" id="comment-description"
-                                              required="required" placeholder="Wpisz treść komentarza"></textarea>
-                                </div>
-                                <input type="submit" value="Opublikuj" class="btn btn-block btn-primary"/>
-                            </div>
-                        </form>
-                    </div>
-                {% else %}
-                    Aby dodawać komentarze musisz się <a href="http://pilkarski/login" class="text-primary font-bold">zalogować</a>
-                {% endif %}
-            </div>
-
-            <div class="card-body border-top p-0 m-0" >
-                <div id="comments p-0">
-                    {% for comment in game.comments|reverse %}
-                        <div id="comment-{{ comment.id }}" class="border m-1 p-2 shadow-sm">
-                            <p>Napisany {{ comment.createdAt|date('j.m.Y, H:i:s') }}, przez <span class="text-primary font-bold">{{ comment.createdBy }}</span></p>
-                            <p class="comment-description">{{ comment.description }}</p>
-                            <p></p>
-                            {% if app.user and comment.createdBy == app.user.username %}
-                                <button class="button-edit-comment btn btn-xs btn-outline-primary" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
-                                <button class="button-delete-comment btn btn-xs btn-outline-danger" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}">Usuń</button>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+        <div class="card-header bg-light">
+            <h3 class="text-center">Komentarze</h3>
         </div>
 
+        <div class="p-2 text-center">
+            {% if app.user %}
+                <div>
+                    <form id="comment" action="javascript:void('');" method="post">
+                        <div id="comment-div" data-url="{{ path('user_comment_new_ajax') }}">
+                            <div class="form-group">
+                                <label for="comment_description"></label>
+                                <textarea class="form-control" id="comment-description"
+                                          required="required" placeholder="Wpisz treść komentarza"></textarea>
+                            </div>
+                            <input type="submit" value="Opublikuj" class="btn btn-block btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                Aby dodawać komentarze musisz się <a href="http://pilkarski/login" class="text-primary font-bold">zalogować</a>
+            {% endif %}
+        </div>
+
+        <div class="card-body border-top p-0 m-0" >
+            <div id="comments p-0">
+                {% for comment in game.comments|reverse %}
+                    <div id="comment-{{ comment.id }}" class="border m-1 p-2 shadow-sm">
+                        <p>Napisany {{ comment.createdAt|date('j.m.Y, H:i:s') }}, przez <span class="text-primary font-bold">{{ comment.createdBy }}</span></p>
+                        <p class="comment-description">{{ comment.description }}</p>
+                        <p></p>
+                        {% if app.user and comment.createdBy == app.user.username %}
+                            <button class="button-edit-comment btn btn-xs btn-outline-primary" data-commentid="{{ comment.id }}" data-editurl="{{ path('user_comment_edit_ajax') }}">{{ 'global.actions.edit'|trans }}</button>
+                            <button class="button-delete-comment btn btn-xs btn-outline-danger" data-commentid="{{ comment.id }}" data-deleteurl="{{ path('user_comment_delete_ajax') }}">Usuń</button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 {% endblock %}
 
 {% block customJavaScript %}

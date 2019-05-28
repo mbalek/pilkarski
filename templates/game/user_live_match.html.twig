@@ -21,7 +21,7 @@
                      gameManageSquads.fields.upcoming' => 3
                      #}
                     {% if game.status == 2 %}
-                        <div id="timer" class="text-center"></div>'
+                        <div class="text-center"><span id="timer"></span> '</div>
                     {% elseif game.status == 3 %}
                         Mecz odbędzie się {{ game.gameDateTime|date('d-m-Y h:m') }}
                     {% elseif game.status == 1 %}
@@ -129,6 +129,10 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            {% else %}
+                <div class="card-body border-top border-bottom">
+                    <h3 class="text-gray text-center">Brak informacji o składach meczowych</h3>
                 </div>
             {% endif %}
 
