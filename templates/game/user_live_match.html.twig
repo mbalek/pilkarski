@@ -36,11 +36,11 @@
                         <img class="m-2" height="50" width="50"
                              src="{{ vich_uploader_asset(game.homeTeam.club, 'imageFile') }}">
                         <h2 class="text-center text-primary">{{ game.homeTeam.club.name }}</h2>
-                        {% if game.homeTeam.score is not null %}<h1>{{ game.homeTeam.score }}</h1>{% endif %}
+                        {% if game.homeTeam.score is not null %}<h1 id="home-score">{{ game.homeTeam.score }}</h1>{% endif %}
                         {% if game.homeTeam.penaltyShootoutScore is not null %}<h6>
                             ({{ game.homeTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
                         <div>
-                            <div>
+                            <div id="goals-footballers-home">
 
                                 {% for g in game.events if g.eventType == 4 and  g.player1.gameTeam.club.id == game.homeTeam.club.id and (g.otherData == "off" or g.otherData == null) %}
                                     <div>{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
@@ -60,11 +60,11 @@
                         <img class="m-2" height="50" width="50"
                              src="{{ vich_uploader_asset(game.awayTeam.club, 'imageFile') }}">
                         <h2 class="text-center text-primary">{{ game.awayTeam.club.name }}</h2>
-                        {% if game.awayTeam.score is not null %}<h1>{{ game.awayTeam.score }}</h1>{% endif %}
+                        {% if game.awayTeam.score is not null %}<h1 id="away-score">{{ game.awayTeam.score }}</h1>{% endif %}
                         {% if game.awayTeam.penaltyShootoutScore is not null %}<h6>
                             ({{ game.awayTeam.penaltyShootoutScore }} w karnych)</h6>{% endif %}
                         <div>
-                            <div>
+                            <div id="goals-footballers-away">
 
                                 {% for g in game.events if g.eventType == 4 and g.player1.gameTeam.club.id == game.awayTeam.club.id and (g.otherData == "off" or g.otherData == null) %}
                                     <div>{{ g.minute }}'&nbsp; {{ g.player1.footballer.name }}
@@ -136,32 +136,7 @@
                 </div>
             {% endif %}
 
-
-
-            {#
-            <div class="card-body border-top">
-                <div id="events-container">
-                    {% for event in game.events|reverse %}
-                        <div class=" event-div"  data-id ="{{ event.id }}" style="color: red;">
-                            {{ event.minute }}
-                            {{ event.message }}
-                            {{ event.eventType }}
-                            {{ event.otherData }}
-                            {% if event.player1 is not null %}
-                                {{ event.player1.number }} {{ event.player1.footballer.surname }} {{ event.player1.footballer.name }}
-                            {% endif %}
-                            {% if event.player2 is not null %}
-                                {{ event.player2.number }} {{ event.player2.footballer.surname }} {{ event.player2.footballer.name }}
-                            {% endif %}
-                        </div>
-                    {% else %}
-                        {{ 'index.display.noEvents' |trans }}
-                    {% endfor %}
-                </div>
-            </div>
-            #}
-
-            <div class="card-body m-0 p-0">
+            <div class="card-body m-0 p-0" id="events-container">
                 {% if game.events|length < 1 %}
                     <div>
                         <h2 class="text-gray text-center">Brak wydarzeń meczu</h2>
@@ -176,13 +151,6 @@
                                 <div class="border p-2 m-2 rounded shadow-sm"><h5
                                             class="m-2 border-bottom">{{ e.minute }}'</h5>
                                     <div class="m-2">{{ e.message }}</div>
-                                    {% if is_granted('ROLE_MODERATOR') %}
-                                        <div>
-                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 1 }) }}'
-                                               class="btn-xs btn-outline-danger"
-                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
-                                        </div>
-                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -195,13 +163,6 @@
                                         <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
-                                    {% if is_granted('ROLE_MODERATOR') %}
-                                        <div>
-                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 2 }) }}'
-                                               class="btn-xs btn-outline-danger"
-                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
-                                        </div>
-                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -219,13 +180,6 @@
                                     </h4>
 
                                     <div class="m-2">{{ e.message }}</div>
-                                    {% if is_granted('ROLE_MODERATOR') %}
-                                        <div>
-                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 4 }) }}'
-                                               class="btn-xs btn-outline-danger"
-                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
-                                        </div>
-                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -241,13 +195,6 @@
                                         {{ e.player2.footballer.surname }}
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
-                                    {% if is_granted('ROLE_MODERATOR') %}
-                                        <div>
-                                            <a href='{{ path('events_undo', { 'id': e.id, 'type': 5 }) }}'
-                                               class="btn-xs btn-outline-danger"
-                                               onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
-                                        </div>
-                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -259,13 +206,6 @@
                                         <u>{{ e.player1.footballer.name ~ " " ~ e.player1.footballer.surname }}</u>
                                     </h4>
                                     <div class="m-2">{{ e.message }}</div>
-                                    <div>
-                                        {% if is_granted('ROLE_MODERATOR') %}
-                                        <a href='{{ path('events_undo', { 'id': e.id, 'type': 6 }) }}'
-                                           class="btn-xs btn-outline-danger"
-                                           onclick="return confirm('Na pewno chcesz cofnąć dodanie wydarzenie? (Zostanie ono usunięte)');">Cofnij</a>
-                                    </div>
-                                    {% endif %}
                                 </div>
                             {% endif %}
 
@@ -513,25 +453,141 @@
                     gameId: "{{ game.id }}",
                 },
                 success: function (response) {
+                    let home = 0;
+                    let away = 0;
                     $("#events-container").empty();
+                    $('#goals-footballers-home').empty();
+                    $('#goals-footballers-away').empty();
                     console.log(response);
                     for(let i = 0; i < response.length; i++ ){
-                        let div = document.createElement('div');
-                        div.setAttribute('data-id' , response.id);
-                        let p = document.createElement('p');
-                        if(response[i].name1 == null){
-                                p.innerText= response[i].minute + " " + response[i].message;
-                        }else if(response[i].name2 == null){
-                                p.innerText= response[i].minute + " " + response[i].message + " " +
-                                + response[i].number1 + " " + response[i].surnamename1 + " "  + response[i].name1;
-                        }else{
-                                p.innerText= response[i].minute + " " + response[i].message + " " +
-                                    + response[i].number1 + " " + response[i].surnamename1 + " "  + response[i].name1
-                                    + " " +response[i].number2 + " " + response[i].surnamename2 + " "  + response[i].name2 ;
-                        }
-                        div.appendChild(p);
+                        if(response[i].eventType == 1){
+                            let div = document.createElement("div");
+                            div.setAttribute("class" , "p-2");
+                            let divBorder = document.createElement("div");
+                            divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm");
+                            let h5 = document.createElement("h5");
+                            h5.setAttribute("class" , "m-2 border-bottom");
+                            h5.innerHTML = response[i].minute + "'";
+                            divBorder.appendChild(h5);
+                            let divMsg = document.createElement("div");
+                            divMsg.setAttribute("class" , "m-2");
+                            divMsg.innerHTML = response[i].message;
+                            divBorder.appendChild(divMsg);
+                            div.appendChild(divBorder);
+                            $("#events-container").prepend(div);
+                        }else if(response[i].eventType == 2){
+                            let div = document.createElement("div");
+                            div.setAttribute("class" , "p-2");
+                            let divBorder = document.createElement("div");
+                            let h4 = document.createElement("h4");
+                            h4.setAttribute("class" , "p-2 border-bottom");
+                            if(response[i].otherData == "yellow") {
+                                divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm yellow-card");
+                                h4.innerHTML = response[i].minute + "'" + " Żółta kartka ";
+                            }else {
+                                divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm red-card");
+                                h4.innerHTML = response[i].minute + "'" + " Czerwona kartka ";
+                            }
+                            let u = document.createElement("u");
+                            u.innerHTML = response[i].name1 + " " + response[i].surname1;
+                            h4.appendChild(u);
+                            divBorder.appendChild(h4);
+                            let divMsg = document.createElement("div");
+                            divMsg.setAttribute("class" , "m-2");
+                            divMsg.innerHTML = response[i].message;
+                            divBorder.appendChild(divMsg);
+                            div.appendChild(divBorder);
+                            $("#events-container").prepend(div);
+                        }else if(response[i].eventType == 4){
+                            let div = document.createElement("div");
+                            div.setAttribute("class" , "p-2");
+                            let divBorder = document.createElement("div");
+                            divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm");
+                            let h4 = document.createElement("h4");
+                            let homeId = "{{ game.homeTeam.club.id }}";
+                            let awayId = "{{ game.awayTeam.club.id }}";
+                            if(response[i].otherData == "on") {
+                                h4.setAttribute("class" , "p-2 border-bottom text-secondary");
+                                h4.innerHTML = response[i].minute + "'" + " Bramka samobójcza. ";
+                                if (response[i].clubId1 == homeId){
+                                    away = away +1;
+                                    let divGoal = document.createElement("div");
+                                    divGoal.setAttribute("class" , "text-danger");
+                                    divGoal.innerHTML = response[i].minute + "' &nbsp" + response[i].name1 + " &nbsp " + response[i].surname1 +
+                                                        " (Gol samobójczy)";
+                                    $('#goals-footballers-away').prepend(divGoal);
+                                }else if (response[i].clubId1 == awayId){
+                                    home = home +1;
+                                    let divGoal = document.createElement("div");
+                                    divGoal.setAttribute("class" , "text-danger");
+                                    divGoal.innerHTML = response[i].minute + "' &nbsp" + response[i].name1 + " &nbsp " + response[i].surname1 +
+                                        " (Gol samobójczy)";
+                                    $('#goals-footballers-home').prepend(divGoal);
+                                }
+                            }else {
+                                h4.setAttribute("class" , "p-2 border-bottom text-primary");
+                                h4.innerHTML = response[i].minute + "'" + " GOL! ";
+                                if (response[i].clubId1 == homeId){
+                                    home = home +1;
+                                    let divGoal = document.createElement("div");
+                                    divGoal.innerHTML = response[i].minute + "' &nbsp" + response[i].name1 + " &nbsp " + response[i].surname1;
+                                    $('#goals-footballers-home').prepend(divGoal);
+                                }else if (response[i].clubId1 == awayId){
+                                    away = away +1;
+                                    let divGoal = document.createElement("div");
+                                    divGoal.innerHTML = response[i].minute + "' &nbsp" + response[i].name1 + " &nbsp " + response[i].surname1;
+                                    $('#goals-footballers-away').prepend(divGoal);
+                                }
+                            }
+                            let u = document.createElement("u");
+                            u.innerHTML = response[i].name1 + " " + response[i].surname1;
+                            h4.appendChild(u);
+                            divBorder.appendChild(h4);
+                            let divMsg = document.createElement("div");
+                            divMsg.setAttribute("class" , "m-2");
+                            divMsg.innerHTML = response[i].message;
+                            divBorder.appendChild(divMsg);
+                            div.appendChild(divBorder);
+                            $("#events-container").prepend(div);
+                            let hscore = document.getElementById('home-score');
+                            hscore.innerHTML = home;
+                            let ascore = document.getElementById('away-score');
+                            ascore.innerHTML = away;
 
-                        $("#events-container").prepend(div);
+                        }else if (response[i].eventType == 5){
+                            let div = document.createElement("div");
+                            div.setAttribute("class" , "p-2");
+                            let divBorder = document.createElement("div");
+                            divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm");
+                            let h4 = document.createElement("h4");
+                            h4.setAttribute("class" , "p-2 border-bottom");
+                            h4.innerHTML = response[i].minute + "'" + " Zmiana: Schodzi: " +
+                                           response[i].name1 + " " + response[i].surname1 + ", Wchodzi: " +
+                                           response[i].name2 + " " + response[i].surname2;
+                            divBorder.appendChild(h4);
+                            let divMsg = document.createElement("div");
+                            divMsg.setAttribute("class" , "m-2");
+                            divMsg.innerHTML = response[i].message;
+                            divBorder.appendChild(divMsg);
+                            div.appendChild(divBorder);
+                            $("#events-container").prepend(div);
+                        }else if (response[i].eventType == 6){
+                            let div = document.createElement("div");
+                            div.setAttribute("class" , "p-2");
+                            let divBorder = document.createElement("div");
+                            divBorder.setAttribute("class" , "border p-2 m-2 rounded shadow-sm");
+                            let h4 = document.createElement("h4");
+                            h4.setAttribute("class" , "p-2 border-bottom");
+                            h4.innerHTML = response[i].minute + "'" + " " +
+                                response[i].name1 + " " + response[i].surname1;
+                            divBorder.appendChild(h4);
+                            let divMsg = document.createElement("div");
+                            divMsg.setAttribute("class" , "m-2");
+                            divMsg.innerHTML = response[i].message;
+                            divBorder.appendChild(divMsg);
+                            div.appendChild(divBorder);
+                            $("#events-container").prepend(div);
+                        }
                         }
 
                 },
