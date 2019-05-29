@@ -166,17 +166,25 @@ class IndexController extends AbstractController
                     $name1 = $footballer1->getName();
                     $surname1 = $footballer1->getSurname();
                     $number1 = $player1->getNumber();
+                    $gameTeam1 = $player1->getGameTeam();
+                    $club1 = $gameTeam1->getClub();
+                    $clubId1 = $club1->getId();
+
                 }
                 if ($player2 != null) {
                     $footballer2 = $player2->getFootballer();
                     $name2 = $footballer2->getName();
                     $surname2 = $footballer2->getSurname();
                     $number2 = $player2->getNumber();
+                    $gameTeam2 = $player2->getGameTeam();
+                    $club2 = $gameTeam2->getClub();
+                    $clubId2 = $club2->getId();
                 }
 
                 array_push($responseArray, [
-                    "name1" => $name1,
-                    "surname1" => $surname1, "number1" => $number1, "name2" => $name2, "surname2" => $surname2, "number2" => $number2, "eventType" => $events[$i]->getEventType(),
+                    "name1" => $name1, "surname1" => $surname1, "number1" => $number1, 'clubId1' => $clubId1,
+                    "name2" => $name2, "surname2" => $surname2, "number2" => $number2, 'clubId2' => $clubId2,
+                    "eventType" => $events[$i]->getEventType(),
                     "message" => $events[$i]->getMessage(),
                     'minute' => $events[$i]->getMinute(),
                     'otherData' => $events[$i]->getOtherData(), "id" => $events[$i]->getId()
