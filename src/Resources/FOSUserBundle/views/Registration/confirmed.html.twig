@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Zakończenie rejestracji{% endblock %}
+
+{% block templateCss %}
+    <style>
+        body
+        {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        label::after {
+            content: "";
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="splash-container">
+    <div class="card">
+        <div class="card-header text-center">
+            <a href="{{path("index")}}">
+                <h1 class="text-primary">PILKARSKI</h1>
+            </a>
+            <span class="splash-description">Zakończenie rejestracji</span>
+        </div>
+        <div class="card-body">
+            <p>Twoje kontro zostało utworzone poprawnie.</p>
+            <p>Aby przejść na stronę główną <a href="../">kliknij tutaj</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
