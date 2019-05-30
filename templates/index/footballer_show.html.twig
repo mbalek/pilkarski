@@ -1,17 +1,74 @@
 {% extends 'base_user.html.twig' %}
 {% block body %}
-    <a href="{{ path('display_club_show' , {'id':club}) }}">powrot button</a>
-    <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
-    {{ footballer.surname }}
-    {{ footballer.name }}
-    {{ footballer.birthdate |date('Y-m-d') }}
-    {{ footballer.country }}
-    {{ footballer.position.name }}
-    <br/>
-    Statystyki we wszystkich meczach:
-    {{ footballer.goals }}
-    {{ footballer.assists }}
-    {{ footballer.yellowCards }}
-    {{ footballer.redCards }}
-    <br/>
+
+    <div class="my-3 mx-1 row">
+        <div class="card col-xs-12 col-md-3 mx-1 p-0">
+            <div class="card-header">
+                <h5 class="p-1 m-0">{{ footballer.name }} {{ footballer.surname }} - Piłkarz</h5>
+            </div>
+            <div class="card-body p-0">
+                    <div class="border-top text-center p-1"><a href="{{ path("display_club_show", { "id": club.id }) }}">Powrót {{ club.name }}</a></div>
+            </div>
+        </div>
+
+        <div class="card col-xs-12 col-md mx-1 p-0">
+
+            <div class="card-header m-0">
+                <h4 class="m-0 p-0">{{ club.name }} - Szczegóły</h4>
+            </div>
+            <div class="tab-content card-body">
+
+                <div class="tab-pane active" id="clubs" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label>{{ 'footballer.fields.image' |trans }}</label>
+                                <p><img height="100" width="100" src="{{ vich_uploader_asset(footballer, 'imageFile') }}"></p>
+                            </div>
+                            <label>{{ 'footballer.fields.name' |trans }}</label>
+                            <p>
+                                {{ footballer.name }}
+                            </p>
+                            <label>{{ 'footballer.fields.surname' |trans }}</label>
+                            <p>
+                                {{ footballer.surname }}
+                            </p>
+                            <label>{{ 'footballer.fields.birthdate' |trans }}</label>
+                            <p>
+                                {{ footballer.birthdate |date('Y-m-d') }}
+                            </p>
+                            <label>{{ 'league.fields.country' |trans }}</label>
+                            <p>
+                                {{ footballer.country }}
+                            </p>
+                            <label>{{ 'position.display.position' |trans }}</label>
+                            <p>
+                                {{ footballer.position.name }}
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <p>Statystyki ze wszystkich rozegranych meczy:</p>
+                            <label>{{ 'footballer.fields.goal' |trans }}</label>
+                            <p>
+                                {{ footballer.goals }}
+                            </p>
+                            <label>{{ 'footballer.fields.assists' |trans }}</label>
+                            <p>
+                                {{ footballer.assists }}
+                            </p>
+                            <label>{{ 'footballer.fields.yellowCards' |trans }}</label>
+                            <p>
+                                {{ footballer.yellowCards }}
+                            </p>
+                            <label>{{ 'footballer.fields.redCards' |trans }}</label>
+                            <p>
+                                {{ footballer.redCards }}
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

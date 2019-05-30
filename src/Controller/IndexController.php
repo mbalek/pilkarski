@@ -116,7 +116,7 @@ class IndexController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $footballer = $em->getRepository(Footballer::class)->find($request->get('id'));
         $leagues = $em->getRepository(League::class)->findAll();
-        $club = $request->get('club');
+        $club = $em->getRepository(Club::class)->find($request->get('club'));
         return $this->render('index/footballer_show.html.twig', [
             'club' => $club,
             'footballer' => $footballer,
