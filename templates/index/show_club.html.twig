@@ -3,6 +3,32 @@
 
 {% block body %}
 
+
+    <div class="my-3 mx-1 row">
+        <div class="card col-xs-12 col-md-3 mx-1 p-0">
+            <div class="card-header">
+                <h5 class="p-1 m-0">{{ club.name }} - Piłkarze</h5>
+            </div>
+            <div class="card-body p-0">
+                {% for footballer in club.footballers %}
+                    <div class="border-top text-center p-1"><a href="{{ path("index_footballer_show", { "id": footballer.id }) }}">{{ footballer.name }} {{ footballer.surname }}</a></div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card col-xs-12 col-md mx-1 p-0">
+
+            <div class="card-header m-0">
+                <h4 class="m-0 p-0">{{ club.name }} - Mecze</h4>
+            </div>
+            <p><img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" /></p>
+            {{ club.name }}
+            {{ club.city }}
+            {{ club.stadium }}
+        </div>
+    </div>
+
+    {#
     <div class="row my-3 mx-0 p-0 col-xs-12">
 
         <div class="card col-xs-12 col-md m-1">
@@ -17,16 +43,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>#}
 
 
 
 
     {# informacje o klubie #}
-    <img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
-    {{ club.name }}
-    {{ club.city }}
-    {{ club.stadium }}
+
 
     {# piłkarze #}
     {% for footballer in club.footballers %}
@@ -40,6 +63,7 @@
     {% else %}
         {{ 'global.noRecords' |trans }}
     {% endfor %}
+
 
     {# statystyki z konkretnych runnd nie mam pomyslu za nic#}
 {% endblock %}
