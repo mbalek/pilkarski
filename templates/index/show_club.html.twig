@@ -11,7 +11,7 @@
             </div>
             <div class="card-body p-0">
                 {% for footballer in club.footballers %}
-                    <div class="border-top text-center p-1"><a href="{{ path("index_footballer_show", { "id": footballer.id }) }}">{{ footballer.name }} {{ footballer.surname }}</a></div>
+                    <div class="border-top text-center p-1"><a href="{{ path("index_footballer_show", { "id": footballer.id , "club":club.id}) }}">{{ footballer.name }} {{ footballer.surname }}</a></div>
                 {% endfor %}
             </div>
         </div>
@@ -19,50 +19,32 @@
         <div class="card col-xs-12 col-md mx-1 p-0">
 
             <div class="card-header m-0">
-                <h4 class="m-0 p-0">{{ club.name }} - Mecze</h4>
+                <h4 class="m-0 p-0">{{ club.name }} - Szczegóły</h4>
             </div>
-            <p><img width="70px" height="70px" src="{{ vich_uploader_asset(club, 'imageFile') }}" /></p>
-            {{ club.name }}
-            {{ club.city }}
-            {{ club.stadium }}
+            <div class="tab-content card-body">
+
+                <div class="tab-pane active" id="clubs" role="tabpanel">
+
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>{{ 'club.fields.name' |trans }}</label>
+                        <p>
+                            {{ club.name }}
+                        </p>
+                        <label>{{ 'club.fields.city' |trans }}</label>
+                        <p>{{ club.city }}</p>
+                        <label>{{ 'club.fields.stadium' |trans }}</label>
+                        <p>{{ club.stadium }}</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>{{ 'club.fields.logo' |trans }}</label>
+                        <p><img height="100" width="100" src="{{ vich_uploader_asset(club, 'imageFile') }}"></p>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-
-    {#
-    <div class="row my-3 mx-0 p-0 col-xs-12">
-
-        <div class="card col-xs-12 col-md m-1">
-            <div class="card-header p-0">
-                <div class="row p-2 border-bottom">
-                    <img class="img-fluid img-thumbnail" src="{{ vich_uploader_asset(club, 'imageFile') }}" />
-                    <h2 class="py-2 px-1">{{ club.name }}</h2>
-                </div>
-                <div>
-                    <div><b>Liga:</b> {{ club.league }}</div>
-                    <div><b>Stadion:</b> {{ club.stadium }}</div>
-                </div>
-            </div>
-        </div>
-    </div>#}
-
-
-
-
-    {# informacje o klubie #}
-
-
-    {# piłkarze #}
-    {% for footballer in club.footballers %}
-        <img height="50" width="50" src="{{ vich_uploader_asset(footballer, 'imageFile') }}">
-        {{ footballer.surname }}
-        {{ footballer.name }}
-        {{ footballer.birthdate |date('Y-m-d') }}
-        {{ footballer.country }}
-        <a href="{{ path('index_footballer_show' , {'id':footballer.id , 'club':club.id}) }}">szczegoly</a>
-        <br/>
-    {% else %}
-        {{ 'global.noRecords' |trans }}
-    {% endfor %}
 
 
     {# statystyki z konkretnych runnd nie mam pomyslu za nic#}
