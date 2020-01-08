@@ -108,7 +108,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(EditUserType::class, $user);
-        $form->handleRequest($request);
+        $form->handleRequest($request)->remove();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $selected = $form->get('permissions')->getData();

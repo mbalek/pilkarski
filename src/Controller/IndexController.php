@@ -159,6 +159,8 @@ class IndexController extends AbstractController
                 $surname2 = null;
                 $number1 = null;
                 $number2 = null;
+                $clubId1 = null;
+                $clubId2 = null;
                 $player1 = $events[$i]->getPlayer1();
                 $player2 = $events[$i]->getPlayer2();
                 if ($player1 != null) {
